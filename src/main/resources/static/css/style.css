@@ -1,0 +1,13 @@
+
+.footer{
+position: fixed;
+bottom:0;
+width:68%;
+}
+
+/* media query */
+@media (max-width:684px) {
+.footer{
+    width:100%;
+    }
+ }

@@ -1,13 +1,13 @@
 package fr.helpad.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="CANDIDATURE")
@@ -19,15 +19,15 @@ public class Candidature {
     @Column(name = "information_complementaire")
     private String informationComplementaire;
     @Column(name="Jour_de_candidature")
-    private Date jourDeCandidature;
+    private LocalDate jourDeCandidature;
 
     public Candidature() {
     }
 
-    public Candidature( String pathologie, String informationComplementaire, Date jourDeCandidature) {
+    public Candidature( String pathologie, String informationComplementaire, LocalDate jourDeCandidature) {
         this.pathologie = pathologie;
         this.informationComplementaire = informationComplementaire;
-        this.jourDeCandidature = new Date();
+        this.jourDeCandidature = jourDeCandidature;
     }
 
     public Long getId() {
@@ -54,11 +54,11 @@ public class Candidature {
         this.informationComplementaire = informationComplementaire;
     }
 
-    public Date getJourDeCandidature() {
+    public LocalDate getJourDeCandidature() {
         return jourDeCandidature;
     }
 
-    public void setJourDeCandidature(Date jourDeCandidature) {
+    public void setJourDeCandidature(LocalDate jourDeCandidature) {
         this.jourDeCandidature = jourDeCandidature;
     }
 }

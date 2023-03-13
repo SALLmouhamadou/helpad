@@ -12,45 +12,79 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "CANDIDAT")
-@PrimaryKeyJoinColumn(name = "id")
-public class Candidat  extends Personne {
-    @Column(name = "date_Naissance")
+@PrimaryKeyJoinColumn(name = "idPersonne")
+public class Candidat extends Personne {
+	@Column(name = "date_Naissance")
+	private LocalDate dateNaissance;
+	@Column(name = "date_entree")
+	private LocalDate dateEntree;
+	@Column(name = "numero_security_social")
+	private String numeroSecuriteSocial;
+	@Column(name = "numero_de_caf")
+	private String numeroDeCaf;
+	private double revenu;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Candidature> MesCandidatures;
 
-    private LocalDate dateNaissance;
-    private String telephone;
-    @OneToMany (cascade = CascadeType.ALL)
-    private List<Candidature> MesCandidatures;
-    public Candidat() {
-    }
+	public Candidat() {}
+	
+	public Candidat(String nom, String prenom, String telephone, String numero, String rue, String ville,
+			String codePostale, String email, LocalDate dateNaissance, LocalDate dateEntree,
+			String numeroSecuriteSocial, String numeroDeCaf, double revenu, List<Candidature> mesCandidatures) {
+		super(nom, prenom, telephone, numero, rue, ville, codePostale, email);
+		this.dateNaissance = dateNaissance;
+		this.dateEntree = dateEntree;
+		this.numeroSecuriteSocial = numeroSecuriteSocial;
+		this.numeroDeCaf = numeroDeCaf;
+		this.revenu = revenu;
+		MesCandidatures = mesCandidatures;
+	}
 
-    public Candidat(String nom, String prenom, Adresse adresse, String email, LocalDate dateNaissance, String telephone, List<Candidature> mesCandidatures) {
-        super(nom, prenom, adresse, email);
-        this.dateNaissance = dateNaissance;
-        this.telephone = telephone;
-        MesCandidatures = mesCandidatures;
-    }
+	public LocalDate getDateNaissance() {
+		return dateNaissance;
+	}
 
+	public void setDateNaissance(LocalDate dateNaissance) {
+		this.dateNaissance = dateNaissance;
+	}
 
-    public LocalDate getDateNaissance() {
-        return dateNaissance;
-    }
+	public LocalDate getDateEntree() {
+		return dateEntree;
+	}
 
-    public void setDateNaissance(LocalDate dateNaissance) {
-        this.dateNaissance = dateNaissance;
-    }
-    public String getTelephone() {
-        return telephone;
-    }
+	public void setDateEntree(LocalDate dateEntree) {
+		this.dateEntree = dateEntree;
+	}
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
+	public String getNumeroSecuriteSocial() {
+		return numeroSecuriteSocial;
+	}
 
-    public List<Candidature> getMesCandidatures() {
-        return MesCandidatures;
-    }
+	public void setNumeroSecuriteSocial(String numeroSecuriteSocial) {
+		this.numeroSecuriteSocial = numeroSecuriteSocial;
+	}
 
-    public void setMesCandidatures(List<Candidature> mesCandidatures) {
-        MesCandidatures = mesCandidatures;
-    }
+	public String getNumeroDeCaf() {
+		return numeroDeCaf;
+	}
+
+	public void setNumeroDeCaf(String numeroDeCaf) {
+		this.numeroDeCaf = numeroDeCaf;
+	}
+
+	public double getRevenu() {
+		return revenu;
+	}
+
+	public void setRevenu(double revenu) {
+		this.revenu = revenu;
+	}
+
+	public List<Candidature> getMesCandidatures() {
+		return MesCandidatures;
+	}
+
+	public void setMesCandidatures(List<Candidature> mesCandidatures) {
+		MesCandidatures = mesCandidatures;
+	}
 }

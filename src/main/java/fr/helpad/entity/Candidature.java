@@ -14,7 +14,8 @@ import javax.persistence.Table;
 public class Candidature {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+	@Column(name = "id_candidature")
+    private Long idCandidature;
     private String pathologie;
     @Column(name = "information_complementaire")
     private String informationComplementaire;
@@ -30,12 +31,12 @@ public class Candidature {
         this.jourDeCandidature = jourDeCandidature;
     }
 
-    public Long getId() {
-        return Id;
+    public Long getIdCandidature() {
+        return idCandidature;
     }
 
-    public void setId(Long id) {
-        Id = id;
+    public void setIdCandidature(Long idCandidature) {
+    	this.idCandidature = idCandidature;
     }
 
     public String getPosologie() {

@@ -1,10 +1,15 @@
 package fr.helpad;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import fr.helpad.entity.Adresse;
+import fr.helpad.entity.Candidat;
+import fr.helpad.entity.Candidature;
 import fr.helpad.entity.Personne;
 import fr.helpad.service.CandidatService;
 import fr.helpad.service.PersonneService;
@@ -15,17 +20,16 @@ public class HelpadApplication {
 	public static void main(String[] args) {
 		
 		ApplicationContext appContext =SpringApplication.run(HelpadApplication.class, args);
-		PersonneService personneService = appContext.getBean(PersonneService.class);
-		Personne personne1 = new Personne("SALL", "Mouhamadou", new Adresse("12" ,"avenue de la gare", "Longjumeau", "91160"), "sallmouhamadou.pro@gmail.com", "azerty" );
-		Personne personne2 = new Personne("Ba", "Moussa", new Adresse("12" ,"rue de l'observatoire", "Trappes", "78190"), "ba.moussa@gmail.com", "qwerty" );
-		Personne personne3 = new Personne("Plasse", "Michel", new Adresse("37" ,"rue de l'elise", "Paris", "75016"), "m.plasse@free.fr", "qsdfghj" );
-		//Personne personne4 = new Personne("SALL", "Mouhamadou", new Adresse("12" ,"avenue de la gare", "Longjumeau", "91160"), "sallmouhamadou.pro@gmail.com", "azerty" );
-		personneService.sauvePersonne(personne1);
-		personneService.sauvePersonne(personne2);
-		personneService.sauvePersonne(personne3);
-
-	CandidatService candidatService = appContext.getBean(CandidatService.class);
-		//Candidat candidat = new Candidat("SALL", "Mouhamadou", new Adresse("12" ,"avenue de la gare", "Longjumeau", "91160"), "sallmouhamadou.pro@gmail.com", "azerty",new LocalDate(2000-05-31),)
+		
+		CandidatService candidat = appContext.getBean(CandidatService.class);
+		
+		ArrayList<Candidature> mesCandidatures= new ArrayList<Candidature>();
+		mesCandidatures.add(new Candidature("Asthmatique", "Complétement con" , LocalDate.now()));
+		
+		Candidat c1 =new Candidat("SALL", "Mouhamadou", "0753051721", "6", "avenue de la gare", "Longjumeau ","9300",
+				"salllmouha10@gmail.com", LocalDate.of(2000,05,31),LocalDate.of(2023,03,13), "1000599341125", "278654W", 40000, mesCandidatures);
+		
+		candidat.sauveCandidat(c1);
 	}
 
 }

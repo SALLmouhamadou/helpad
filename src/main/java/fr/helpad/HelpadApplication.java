@@ -7,12 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
-import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
-import fr.helpad.entity.Personne;
 import fr.helpad.service.CandidatService;
-import fr.helpad.service.PersonneService;
 
 @SpringBootApplication
 public class HelpadApplication {

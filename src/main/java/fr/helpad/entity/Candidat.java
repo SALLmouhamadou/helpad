@@ -28,10 +28,9 @@ public class Candidat extends Personne {
 
 	public Candidat() {}
 	
-	public Candidat(String nom, String prenom, String telephone, String numero, String rue, String ville,
-			String codePostale, String email, LocalDate dateNaissance, LocalDate dateEntree,
+	public Candidat(String nom, String prenom, String telephone, String email, Adresse adresse, LocalDate dateNaissance, LocalDate dateEntree,
 			String numeroSecuriteSocial, String numeroDeCaf, double revenu, List<Candidature> mesCandidatures) {
-		super(nom, prenom, telephone, numero, rue, ville, codePostale, email);
+		super(nom, prenom, telephone, email, adresse);
 		this.dateNaissance = dateNaissance;
 		this.dateEntree = dateEntree;
 		this.numeroSecuriteSocial = numeroSecuriteSocial;

@@ -31,13 +31,16 @@ public class Candidat extends Personne {
 	public Candidat(String nom, String prenom, String telephone, String email, Adresse adresse, LocalDate dateNaissance, LocalDate dateEntree,
 			String numeroSecuriteSocial, String numeroDeCaf, double revenu, List<Candidature> mesCandidatures) {
 		super(nom, prenom, telephone, email, adresse);
-		this.dateNaissance = dateNaissance;
-		this.dateEntree = dateEntree;
-		this.numeroSecuriteSocial = numeroSecuriteSocial;
-		this.numeroDeCaf = numeroDeCaf;
-		this.revenu = revenu;
-		MesCandidatures = mesCandidatures;
+
+	public Candidat(String nom, String prenom, String telephone, Adresse adresse, String email, String password,
+			LocalDate dateNaissance, LocalDate dateEntree, String numeroSecuriteSocial, String numeroDeCaf,
+			double revenu, List<Candidature> mesCandidatures) {
+		super(nom, prenom, telephone, adresse, email, password);
+	public Candidat() {
+		super();
 	}
+
+	
 
 	public LocalDate getDateNaissance() {
 		return dateNaissance;

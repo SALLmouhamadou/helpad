@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,6 +31,18 @@ public class Personne {
 	private String password;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Adresse adresse;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_personne")
+	private Long idPersonne;
+	private String nom;
+	private String prenom;
+	private String telephone;
+	@ManyToOne
+	@JoinColumn(name = "ADRESSE")
+	private Adresse adresse;
+	private String email;
+	private String password;
 
 	/**
 	 * @return the idPersonne
@@ -49,6 +63,11 @@ public class Personne {
 	 */
 	public String getPrenom() {
 		return prenom;
+	/**
+	 * @return the nom
+	 */
+	public String getNom() {
+		return nom;
 	}
 
 	/**
@@ -56,6 +75,11 @@ public class Personne {
 	 */
 	public String getEmail() {
 		return email;
+	/**
+	 * @return the prenom
+	 */
+	public String getPrenom() {
+		return prenom;
 	}
 
 	/**
@@ -100,12 +124,18 @@ public class Personne {
 		this.password = password;
 	}
 
+	/**
+	 * @return the telephone
+	 */
 	public String getTelephone() {
 		return telephone;
 	}
 
-	public void setTelephone(String telephone) {
-		telephone = telephone;
+	/**
+	 * @return the adresse
+	 */
+	public Adresse getAdresse() {
+		return adresse;
 	}
 
 	public Personne(String nom, String prenom, String email, String password) {
@@ -119,7 +149,19 @@ public class Personne {
 	public Personne(String nom, String prenom, String telephone, String email,Adresse adresse) {
 		super();
 		this.nom = nom;
+	}
+
+	/**
+	 * @param prenom the prenom to set
+	 */
+	public void setPrenom(String prenom) {
 		this.prenom = prenom;
+	}
+
+	/**
+	 * @param telephone the telephone to set
+	 */
+	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 		this.email = email;
 		this.adresse = adresse;
@@ -147,6 +189,10 @@ public class Personne {
 				&& Objects.equals(nom, other.nom) && Objects.equals(password, other.password) 
 				&& Objects.equals(prenom, other.prenom);
 				
+		return Objects.equals(adresse, other.adresse) && Objects.equals(email, other.email)
+				&& Objects.equals(idPersonne, other.idPersonne) && Objects.equals(nom, other.nom)
+				&& Objects.equals(password, other.password) && Objects.equals(prenom, other.prenom)
+				&& Objects.equals(telephone, other.telephone);
 	}
 
 }

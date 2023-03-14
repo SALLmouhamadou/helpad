@@ -2,14 +2,45 @@ package fr.helpad;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
+import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
+import fr.helpad.entity.Chambre;
+import fr.helpad.entity.Employe;
+import fr.helpad.entity.Etage;
+import fr.helpad.entity.Fonction;
+import fr.helpad.entity.Infirmiere;
+import fr.helpad.entity.Medecin;
+import fr.helpad.entity.Medicament;
+import fr.helpad.entity.Ordonnance;
+import fr.helpad.entity.Pensionnaire;
+import fr.helpad.entity.Personne;
+import fr.helpad.entity.Prescription;
+import fr.helpad.entity.PriseMedicament;
+import fr.helpad.entity.Visite;
+import fr.helpad.service.AdresseBusiness;
 import fr.helpad.service.CandidatService;
+import fr.helpad.service.ChambreBusiness;
+import fr.helpad.service.EtageBusiness;
+import fr.helpad.service.FonctionBusiness;
+import fr.helpad.service.InfirmiereBusiness;
+import fr.helpad.service.MédecinBusiness;
+import fr.helpad.service.MédicamentBusiness;
+import fr.helpad.service.OrdonnanceBusiness;
+import fr.helpad.service.PensionnaireBusiness;
+import fr.helpad.service.PersonneServiceImpl;
+import fr.helpad.service.PrescriptionBusiness;
+import fr.helpad.service.PrescriptionBusinessI;
+import fr.helpad.service.PriseMedicamentBusiness;
+import fr.helpad.service.PriseMedicamentBusinessImpl;
+import fr.helpad.service.VisiteBusiness;
 
 @SpringBootApplication
 public class HelpadApplication {
@@ -20,13 +51,153 @@ public class HelpadApplication {
 		
 		CandidatService candidat = appContext.getBean(CandidatService.class);
 		
+		Adresse a = new Adresse();
+		a.setCodePostal(91300);
+		a.setNumero(20);
+		a.setPays("FRANCE");
+		a.setRue("rue Vaugirard");
+		a.setVille("JUVISY");
+		
+		Adresse a1 = new Adresse();
+		a1.setCodePostal(91430);
+		a1.setNumero(51);
+		a1.setPays("FRANCE");
+		a1.setRue("rue des médecins");
+		a1.setVille("MASSY");
+		
 		ArrayList<Candidature> mesCandidatures= new ArrayList<Candidature>();
 		mesCandidatures.add(new Candidature("Asthmatique", "Complétement con" , LocalDate.now()));
 		
-		Candidat c1 =new Candidat("SALL", "Mouhamadou", "0753051721", "6", "avenue de la gare", "Longjumeau ","9300",
-				"salllmouha10@gmail.com", LocalDate.of(2000,05,31),LocalDate.of(2023,03,13), "1000599341125", "278654W", 40000, mesCandidatures);
+		//(String nom, String prenom, String telephone, Adresse adresse, String email, String password,
+		//LocalDate dateNaissance, LocalDate dateEntree, String numeroSecuriteSocial, String numeroDeCaf,
+		//double revenu, List<Candidature> mesCandidatures)
+		
+		Candidat c1 =new Candidat("SALL", "Mouhamadou", "0753051721", a1,
+				"salllmouha10@gmail.com", "278654W", LocalDate.of(2000,05,31),LocalDate.of(2023,03,13), 
+				"1000599341125","1234567", 40000, mesCandidatures);
 		
 		candidat.sauveCandidat(c1);
+		
+//		ArrayList<Pensionnaire> pensionnaireList = new ArrayList<Pensionnaire>();
+//		ArrayList<Visite> visiteList = new ArrayList<Visite>();
+//		ArrayList<Medecin> medecinList = new ArrayList<>();
+//		ArrayList<Employe> employeList = new ArrayList<>();
+//
+//		AdresseBusiness adrBusiness = (AdresseBusiness) appContext.getBean("adresseBusiness");
+//		
+//		a = adrBusiness.sauvegarder(a);
+//		a1 = adrBusiness.sauvegarder(a1);
+//
+//		Personne p = new Personne();
+//
+//		p.setAdresse(a);
+//		p.setEmail("tinkiet@pas.lol");
+//		p.setNom("Poulain");
+//		p.setPrenom("Bernard");
+//		p.setPassword("camarcheEnthropie63");
+//		p.setTelephone("0659823518");
+//
+//		Etage e = new Etage();
+//		e.setEtageSecurise(true);
+//
+//		Chambre c = new Chambre();
+//		c.setChambreDouble(false);
+//		c.setEtage(e);
+//		c.setNoChambre("101");
+//
+//		ArrayList<Chambre> cList = new ArrayList<Chambre>();
+//		cList.add(c);
+//
+//		EtageBusiness etBusiness = (EtageBusiness) appContext.getBean("etageBusiness");
+//		etBusiness.sauvegarder(e);
+//
+//		e.setChambres(cList);
+//
+//		ChambreBusiness chBusiness = (ChambreBusiness) appContext.getBean("chambreBusiness");
+//		chBusiness.sauvegarder(c);
+//
+//		//Medecin m = new Medecin("Le Boucher", "Bertrand", "0652348591", a1, "leboucher.bertrand@doctissimo.fr",
+//				//"lullaby", pensionnaireList, "généraliste", visiteList);
+//		//medecinList.add(m);
+//
+//		//Pensionnaire papy = new Pensionnaire("Pitivier", "Jean", "0653026590", a, "telepathe@dudimanche.fr",
+//				//"motDePasseVieux52", c, "135049190090080", medecinList, visiteList, p);
+//
+//		PersonneServiceImpl persService = (PersonneServiceImpl) appContext.getBean("personneBusiness");
+//		
+//		persService.sauvePersonne(p);
+//
+//		//Visite visite = new Visite(new Date(123, 2, 8), m, papy);
+//
+//		MédecinBusiness mBusiness = (MédecinBusiness) appContext.getBean("medecinBusiness");
+//		//mBusiness.sauvegarder(m);
+//
+//		PensionnaireBusiness pBusiness = (PensionnaireBusiness) appContext.getBean("pensionnaireBusiness");
+//		//pBusiness.sauvegarder(papy);
+//
+//		//visiteList.add(visite);
+//
+//		VisiteBusiness vBusiness = (VisiteBusiness) appContext.getBean("visiteBusiness");
+//		//vBusiness.sauvegarder(visite);
+//		
+//		//Ordonnance o = new Ordonnance(new Date(123,1,8), m, papy, "JAVAPATH");
+//		
+//		OrdonnanceBusiness oBusiness = (OrdonnanceBusiness) appContext.getBean("ordonnanceBusiness");
+//		//oBusiness.sauvegarder(o);
+//		
+//		Infirmiere inf = new Infirmiere();
+//		inf.setAdresse(a1);
+//		inf.setEmail("brigitte.bardot@infirmiere.com");
+//		
+//		employeList.add(inf);
+//		
+//		Fonction f = new Fonction("infirmiere", employeList);
+//
+//		inf.setFonction(f);
+//		inf.setNom("BIRDOT");
+//		inf.setNoRpps("123456789123456");
+//		inf.setNoSecu("012345678912345");
+//		inf.setPassword("mypasswordisWeak");
+//		inf.setPrenom("Brigitte");
+//		inf.setTelephone("0667895234");
+//		
+//		InfirmiereBusiness iBusiness = (InfirmiereBusiness) appContext.getBean("infirmiereBusiness");
+//		
+//		
+//		FonctionBusiness fBusiness = (FonctionBusiness) appContext.getBean("fonctionBusiness");
+//		fBusiness.sauvegarder(f);
+//		iBusiness.sauvegarder(inf);
+//		
+//		Medicament medic = new Medicament();
+//		medic.setFonction("antalgique");
+//		medic.setNom("Doliprane");
+//		medic.setStock(15);
+//		
+//		MédicamentBusiness medicBusiness = (MédicamentBusiness) appContext.getBean("medicamentBusiness");
+//		medic = medicBusiness.sauvegarder(medic);
+//		
+//		PriseMedicament pM = new PriseMedicament();
+//		pM.setHeure(new Date(123, 1, 8, 12, 15));
+//		pM.setIdInfirmiere(inf.getIdPersonne());
+//		pM.setIdMedicament(medic.getIdMedicament());
+//		pM.setIdPensionnaire(papy.getIdPersonne());
+//		
+//		System.out.println(pM.toString());
+//		
+//		PriseMedicamentBusiness pMBusiness = (PriseMedicamentBusinessImpl) appContext.getBean("priseMedocBusiness");
+//		pM = pMBusiness.sauvegarder(pM);
+//		
+//		Prescription pr = new Prescription();
+//		pr.setDateDebutTraitement(new Date(123,1,8));
+//		pr.setDateFinTraitement(new Date(123,1,13));
+//		pr.setIdMedicament(medic.getIdMedicament());
+//		pr.setIdPensionnaire(papy.getIdPersonne());
+//		pr.setPosologie("1x/j; voie orale");
+//		
+//		System.out.println(pr.toString());
+//		
+//		PrescriptionBusinessI prBusiness = (PrescriptionBusiness) appContext.getBean("prescrptionBusiness");
+//		pr = prBusiness.sauvegarder(pr);
 	}
 
 }

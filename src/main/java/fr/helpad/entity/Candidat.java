@@ -26,12 +26,14 @@ public class Candidat extends Personne {
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Candidature> MesCandidatures;
 
-	public Candidat() {}
-	
-	public Candidat(String nom, String prenom, String telephone, String numero, String rue, String ville,
-			String codePostale, String email, LocalDate dateNaissance, LocalDate dateEntree,
-			String numeroSecuriteSocial, String numeroDeCaf, double revenu, List<Candidature> mesCandidatures) {
-		super(nom, prenom, telephone, numero, rue, ville, codePostale, email);
+	public Candidat() {
+		super();
+	}
+
+	public Candidat(String nom, String prenom, String telephone, Adresse adresse, String email, String password,
+			LocalDate dateNaissance, LocalDate dateEntree, String numeroSecuriteSocial, String numeroDeCaf,
+			double revenu, List<Candidature> mesCandidatures) {
+		super(nom, prenom, telephone, adresse, email, password);
 		this.dateNaissance = dateNaissance;
 		this.dateEntree = dateEntree;
 		this.numeroSecuriteSocial = numeroSecuriteSocial;

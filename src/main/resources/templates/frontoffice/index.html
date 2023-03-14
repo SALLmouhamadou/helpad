@@ -3,8 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Helpad</title>
+<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
+	<nav th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 	<h2>Jette moi sur github con....</h2>
+	
+	<footer th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
 </body>
 </html>

@@ -45,7 +45,7 @@ public class HelpadApplication {
 				LocalDate.of(2000,05,31),LocalDate.of(2023,03,13), "1000599341125", "278654W", 40000, mesCandidatures1);
 		
 		Candidat c2 =new Candidat("ROUCHON", "Damien", "0753051721",
-				"damien.rouchon@gmail.com",a1 ,LocalDate.of(1995,05,23),LocalDate.of(2023,03,13), 
+				"damien.rouchon@email.com",a1 ,LocalDate.of(1995,05,23),LocalDate.of(2023,03,13), 
 				"19505342252","1234567W", 60000, mesCandidatures2);
 		
 		candidat.sauveCandidat(c1);

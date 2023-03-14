@@ -2,8 +2,6 @@ package fr.helpad;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,35 +10,7 @@ import org.springframework.context.ApplicationContext;
 import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
-import fr.helpad.entity.Chambre;
-import fr.helpad.entity.Employe;
-import fr.helpad.entity.Etage;
-import fr.helpad.entity.Fonction;
-import fr.helpad.entity.Infirmiere;
-import fr.helpad.entity.Medecin;
-import fr.helpad.entity.Medicament;
-import fr.helpad.entity.Ordonnance;
-import fr.helpad.entity.Pensionnaire;
-import fr.helpad.entity.Personne;
-import fr.helpad.entity.Prescription;
-import fr.helpad.entity.PriseMedicament;
-import fr.helpad.entity.Visite;
-import fr.helpad.service.AdresseBusiness;
 import fr.helpad.service.CandidatService;
-import fr.helpad.service.ChambreBusiness;
-import fr.helpad.service.EtageBusiness;
-import fr.helpad.service.FonctionBusiness;
-import fr.helpad.service.InfirmiereBusiness;
-import fr.helpad.service.MédecinBusiness;
-import fr.helpad.service.MédicamentBusiness;
-import fr.helpad.service.OrdonnanceBusiness;
-import fr.helpad.service.PensionnaireBusiness;
-import fr.helpad.service.PersonneServiceImpl;
-import fr.helpad.service.PrescriptionBusiness;
-import fr.helpad.service.PrescriptionBusinessI;
-import fr.helpad.service.PriseMedicamentBusiness;
-import fr.helpad.service.PriseMedicamentBusinessImpl;
-import fr.helpad.service.VisiteBusiness;
 
 @SpringBootApplication
 public class HelpadApplication {
@@ -65,33 +35,21 @@ public class HelpadApplication {
 		a1.setRue("rue des médecins");
 		a1.setVille("MASSY");
 		
-		ArrayList<Candidature> mesCandidatures= new ArrayList<Candidature>();
-		mesCandidatures.add(new Candidature("Asthmatique", "Complétement con" , LocalDate.now()));
+		ArrayList<Candidature> mesCandidatures1= new ArrayList<Candidature>();
+		mesCandidatures1.add(new Candidature("Asthmatique", "Complétement con" , LocalDate.now()));
 		
+		ArrayList<Candidature> mesCandidatures2= new ArrayList<Candidature>();
+		mesCandidatures1.add(new Candidature("Grippe", "Vraiment con" , LocalDate.now()));
 		
+		Candidat c1 =new Candidat("SALL", "Mouhamadou", "0753051721","salllmouha10@gmail.com",a, 
+				LocalDate.of(2000,05,31),LocalDate.of(2023,03,13), "1000599341125", "278654W", 40000, mesCandidatures1);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		Candidat c1 =new Candidat("SALL", "Mouhamadou", "0753051721","salllmouha10@gmail.com",new Adresse("6", "avenue de la gare", "Longjumeau ","9300"), 
-				LocalDate.of(2000,05,31),LocalDate.of(2023,03,13), "1000599341125", "278654W", 40000, mesCandidatures);
-		//(String nom, String prenom, String telephone, Adresse adresse, String email, String password,
-		//LocalDate dateNaissance, LocalDate dateEntree, String numeroSecuriteSocial, String numeroDeCaf,
-		//double revenu, List<Candidature> mesCandidatures)
-		
-		Candidat c1 =new Candidat("SALL", "Mouhamadou", "0753051721", a1,
-				"salllmouha10@gmail.com", "278654W", LocalDate.of(2000,05,31),LocalDate.of(2023,03,13), 
-				"1000599341125","1234567", 40000, mesCandidatures);
-		
+		Candidat c2 =new Candidat("ROUCHON", "Damien", "0753051721",
+				"damien.rouchon@gmail.com",a1 ,LocalDate.of(1995,05,23),LocalDate.of(2023,03,13), 
+				"19505342252","1234567W", 60000, mesCandidatures2);
 		
 		candidat.sauveCandidat(c1);
+		candidat.sauveCandidat(c2);
 		
 //		ArrayList<Pensionnaire> pensionnaireList = new ArrayList<Pensionnaire>();
 //		ArrayList<Visite> visiteList = new ArrayList<Visite>();

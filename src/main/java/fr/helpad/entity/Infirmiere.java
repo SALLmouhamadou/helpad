@@ -16,9 +16,11 @@ public class Infirmiere extends Employe {
 		this.noRpps = noRpps;
 	}
 
-	public Infirmiere(String nom, String prenom, String telephone, Adresse adresse, String email, String password,
-			String noSecu, Fonction fonction, String noRpps) {
-		super(nom, prenom, telephone, adresse, email, password, noSecu, fonction);
+	
+
+	public Infirmiere(String nom, String prenom, String telephone, String email, Adresse adresse, String noSecu,
+			Fonction fonction, String noRpps) {
+		super(nom, prenom, telephone, email, adresse, noSecu, fonction);
 		this.noRpps = noRpps;
 	}
 

@@ -16,9 +16,11 @@ public class Medecin extends Personne {
 	@OneToMany(cascade = CascadeType.MERGE)
 	private List<Visite> visites;
 
-	public Medecin(String nom, String prenom, String telephone, Adresse adresse, String email, String password,
+	
+
+	public Medecin(String nom, String prenom, String telephone, String email, Adresse adresse,
 			List<Pensionnaire> pensionnaires, String fonction, List<Visite> visites) {
-		super(nom, prenom, telephone, adresse, email, password);
+		super(nom, prenom, telephone, email, adresse);
 		this.pensionnaires = pensionnaires;
 		this.fonction = fonction;
 		this.visites = visites;

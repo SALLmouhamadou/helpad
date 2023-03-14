@@ -32,9 +32,9 @@ public class Pensionnaire extends Personne implements Serializable {
 	@OneToOne
 	private Personne contactUrgence;
 
-	public Pensionnaire(String nom, String prenom, String telephone, Adresse adresse, String email, String password,
-			Chambre chambre, String noSecu, List<Medecin> medecins, List<Visite> visites, Personne contactUrgence) {
-		super(nom, prenom, telephone, adresse, email, password);
+	public Pensionnaire(String nom, String prenom, String telephone, String email, Adresse adresse, Chambre chambre,
+			String noSecu, List<Medecin> medecins, List<Visite> visites, Personne contactUrgence) {
+		super(nom, prenom, telephone, email, adresse);
 		this.chambre = chambre;
 		this.noSecu = noSecu;
 		this.medecins = medecins;

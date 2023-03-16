@@ -1,0 +1,19 @@
+@startuml
+participant Navigateur
+participant Vue
+
+Navigateur -> Controller : Post /sendAdmission
+Controller -> Controller : instancier Candidat\net Candidature
+Controller -> Service : CandidatService.\nsauveCandidat\n( candidat)
+Service -> Repository : CandidatReposioty.\nsauve(candidat)
+Repository -> Service : Ok ou throw exception
+Service -> Controller : ok ou throw exception
+== Si on throw Exception ==
+Controller -> Vue : admission.html
+Vue -> Navigateur : formulaire avec\n le message d'erreur
+== Si OK ==
+Controller ->  Navigateur:redirect \n/mesCandidatures/{id}
+Navigateur -> Controller : get /mesCandidatures/{id}
+
+ 
+@enduml

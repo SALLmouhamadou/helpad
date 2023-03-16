@@ -16,115 +16,80 @@
 		<form>
 			<h4>Nous vous remercions de bien vouloir candidater via le
 				formulaire de candidature en ligne ci-après :</h4>
-			<div class="row">
-				<input class="form-control" name="id" id="id" type="hidden" />
-				<div class="col-md-6 mb-4">
-					<label for="nom">Nom</label><span class="text-danger">*</span>
-					<input class="form-control" name="nom"
-						id="nom" type="text" placeholder="Entrez votre nom"
-						data-sb-validations="required" /> 
-					<div class="invalid-feedback" data-sb-feedback="name:required">Nom
-						est obligatoire.</div>
-				</div>
-				<div class="col-md-6 mb-4">
-					<label for="prenom">Prénom</label> <input class="form-control"
-						name="prenom" id="prenom" type="text"
-						placeholder="Entrez votre prénom" data-sb-validations="required" />
-					<div class="invalid-feedback" data-sb-feedback="name:required">Prenom
-						est obligatoire.</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-6 mb-4">
-					<label for="dateNaissance">Date de Naissance</label> <input
-						class="form-control" name="dateNaissance" id="DateNaissance"
-						type="date" data-sb-validations="required" />
-					<div class="invalid-feedback" data-sb-feedback="name:required">Date
-						de naissance obligatoire.</div>
-				</div>
-			</div>
-			<div class="form-floating mb-3">
-				<label for="email">Email</label> <input class="form-control"
-					name="email" id="email" type="email"
-					placeholder="john.alvarez@gmail.com"
-					data-sb-validations="required,email" />
-				<div class="invalid-feedback" data-sb-feedback="email:required">Email
-					obligatoire.</div>
-				<div class="invalid-feedback" data-sb-feedback="email:email">Email
-					n'est pas valide.</div>
-			</div>
-			<!-- Phone number input-->
-			<div class="form-floating mb-3">
-				<label for="phone">Téléphone</label> <input class="form-control"
-					id="phone" type="tel" placeholder="(123) 456-7890"
-					data-sb-validations="required" />
-				<div class="invalid-feedback" data-sb-feedback="phone:required">Téléphone
-					obligatoire.</div>
-			</div>
-			<div class="row">
-				<div class="col-md-6 mb-4">
-					<label for="numero">N°</label> <input class="form-control"
-						name="numero" id="numero" type="text" placeholder="6"
-						data-sb-validations="required" />
-					<div class="invalid-feedback" data-sb-feedback="name:required">numero
-						de rue obligatoire.</div>
-				</div>
-				<div class="col-md-6 mb-4">
-					<label for="rue">Rue</label> <input class="form-control" name="rue"
-						id="rue" type="text" placeholder="Boulevard haussman"
-						data-sb-validations="required" />
-					<div class="invalid-feedback" data-sb-feedback="name:required">Rue
-						est obligatoire.</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-6 mb-4">
-					<label for="ville">Ville</label> <input class="form-control"
-						name="ville" id="ville" type="text" placeholder="Paris"
-						data-sb-validations="required" />
-					<div class="invalid-feedback" data-sb-feedback="name:required">Ville
-						est obligatoire.</div>
-				</div>
-				<div class="col-md-6 mb-4">
-					<label for="ville">Code postale</label> <input class="form-control"
-						name="codePostale" id="CodePostale" type="text"
-						placeholder="75015" data-sb-validations="required" />
-					<div class="invalid-feedback" data-sb-feedback="name:required">Code
-						Postale est obligatoire.</div>
-				</div>
-			</div>
-			<!-- Message input-->
-			<div class="form-floating mb-3">
-				<label for="pathologie">Posologie</label>
-				<textarea class="form-control" name="pathologie" id="pathologie"
-					type="text" placeholder="Entrez la pathologie"
-					style="height: 10rem" data-sb-validations="required"></textarea>
-				<div class="invalid-feedback" data-sb-feedback="message:required">Posologie
-					obligatoire.</div>
-			</div>
-			<div class="form-floating mb-3">
-				<label for="informationComplementaire">Informations
-					complémentaires</label>
-				<textarea class="form-control" name="informationComplementaire"
-					id="informationComplementaire" type="text"
-					placeholder="Entrez la des informations complémentaires"
-					style="height: 10rem"></textarea>
 
+			<div>
+				<label class="">Nom :<span class="text-danger m-4">*</span></label>
+				<input type="text" class="input-control" name="nom" required />
 			</div>
-			<div class="d-none" id="submitErrorMessage">
-				<div class="text-center text-danger mb-3">Error sending
-					message!</div>
+			<div>
+				<label>Prenom : <span class="text-danger m-3">*</span></label> <input
+					type="text" name="prenom" required />
 			</div>
-			<!-- Submit Button-->
-			<div class="d-grid">
-				<input class="btn btn-primary btn-lg m-3" id="submitButton"
-					type="submit" value="Valide" />
+			<div>
+				<label>Email : <span class="text-danger m-4">*</span></label> <input
+					type="text" name="email" required />
+			</div>
+			<div>
+				<label>Telephone : <span class="text-danger m-3">*</span></label> <input
+					type="text" name="telephone" required />
+			</div>
+			<div>
+				<label>Date naissance : <span class="text-danger m-2">*</span></label>
+				<input type="text" name="dateNaissance" required />
+			</div>
+			<hr>
+			<div>
+				<h6>Adresse</h6>
+				<label>N° :<span class="text-danger m-3">*</span></label> <input
+					type="text" name="numero" required />
+			</div>
+			<div>
+				<label>Rue : <span class="text-danger m-2">*</span></label> <input
+					type="text" name="rue" required />
+			</div>
+			<div>
+				<label>ville : <span class="text-danger m-2">*</span></label> <input
+					type="text" name="ville" required />
 			</div>
 
+			<div>
+				<label>Code postale :<span class="text-danger ">*</span></label> <input
+					type="text" name="codePostal" required />
+			</div>
+			<div>
+				<label>Pays<span class="text-danger m-2">*</span></label> <input
+					type="text" name="pays" required />
+			</div>
+			<hr>
+			<div>
+				<h6>Information importantes</h6>
+				<label>Date entrée Souhaite:<span class="text-danger m-3">*</span></label>
+				<input type="date" name="dateEntree" required />
+			</div>
+			<div>
+				<label> Numéro sécurité social : <span
+					class="text-danger m-2">*</span></label> <input type="text"
+					name="numeroSecuritySocial" required />
+			</div>
+			<div>
+				<label>Ville : </label> <input type="text" name="numeroDeCaf" />
+			</div>
 
+			<div>
+				<label>Revenu annuelle:<span class="text-danger ">*</span></label> <input
+					type="number" name="revenu" required />
+			</div>
+			<div>
+				<label>Pathologie<span class="text-danger m-2"></span></label> <input
+					type="text" name="pathologie" />
+			</div>
+			<div class="form-outline">
+				<label class="form-label" for="informationComplementaire">Informations complémentaires : </label>
+				<textarea class="form-control"  name="informationComplementaire" rows="4"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary">Envoyer</button>
 		</form>
-		<footer
-			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
+		<footer th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
 	</div>
 </body>
 </html>

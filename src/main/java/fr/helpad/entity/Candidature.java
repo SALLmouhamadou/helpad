@@ -20,7 +20,7 @@ public class Candidature {
     @Column(name = "information_complementaire")
     private String informationComplementaire;
     @Column(name="Jour_de_candidature")
-    private LocalDate jourDeCandidature;
+    private LocalDate jourDeCandidature= LocalDate.now();
 
     public Candidature() {
     }
@@ -28,7 +28,7 @@ public class Candidature {
     public Candidature( String pathologie, String informationComplementaire, LocalDate jourDeCandidature) {
         this.pathologie = pathologie;
         this.informationComplementaire = informationComplementaire;
-        this.jourDeCandidature = jourDeCandidature;
+        this.jourDeCandidature = LocalDate.now();
     }
 
     public Long getIdCandidature() {
@@ -39,12 +39,12 @@ public class Candidature {
     	this.idCandidature = idCandidature;
     }
 
-    public String getPosologie() {
+    public String getPathologie() {
         return pathologie;
     }
 
-    public void setPosologie(String posologie) {
-        this.pathologie = posologie;
+    public void setPathologie(String pathologie) {
+        this.pathologie = pathologie;
     }
 
     public String getInformationComplementaire() {

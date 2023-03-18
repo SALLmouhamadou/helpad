@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Table(name = "CANDIDAT")
 @PrimaryKeyJoinColumn(name = "idPersonne")
 public class Candidat extends Personne {
+	private String civilite;
 	@Column(name = "date_Naissance")
 	private LocalDate dateNaissance;
 	@Column(name = "date_entree")
@@ -24,25 +25,34 @@ public class Candidat extends Personne {
 	private String numeroDeCaf;
 	private double revenu;
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<Candidature> MesCandidatures;
+	private List<Candidature> mesCandidatures;
 
-	public Candidat() {}
+	public Candidat() {
+	}
 	
-	
-
-	public Candidat(String nom, String prenom, String telephone, String email, Adresse adresse, LocalDate dateNaissance,
-			LocalDate dateEntree, String numeroSecuriteSocial, String numeroDeCaf, double revenu,
-			List<Candidature> mesCandidatures) {
+	public Candidat(String nom, String prenom, String telephone, String email, Adresse adresse, String civilite,
+			LocalDate dateNaissance, LocalDate dateEntree, String numeroSecuriteSocial, String numeroDeCaf,
+			double revenu, List<Candidature> mesCandidatures) {
 		super(nom, prenom, telephone, email, adresse);
+		this.civilite = civilite;
 		this.dateNaissance = dateNaissance;
 		this.dateEntree = dateEntree;
 		this.numeroSecuriteSocial = numeroSecuriteSocial;
 		this.numeroDeCaf = numeroDeCaf;
 		this.revenu = revenu;
-		MesCandidatures = mesCandidatures;
+		this.mesCandidatures = mesCandidatures;
 	}
 
 
+
+
+	public String getCivilite() {
+		return civilite;
+	}
+
+	public void setCivilite(String civilite) {
+		this.civilite = civilite;
+	}
 
 	public LocalDate getDateNaissance() {
 		return dateNaissance;
@@ -85,10 +95,10 @@ public class Candidat extends Personne {
 	}
 
 	public List<Candidature> getMesCandidatures() {
-		return MesCandidatures;
+		return mesCandidatures;
 	}
 
 	public void setMesCandidatures(List<Candidature> mesCandidatures) {
-		MesCandidatures = mesCandidatures;
+		this.mesCandidatures = mesCandidatures;
 	}
 }

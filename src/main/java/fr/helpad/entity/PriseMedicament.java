@@ -1,6 +1,7 @@
 package fr.helpad.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -11,6 +12,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "PRISE_MEDICAMENT")
@@ -26,9 +29,9 @@ public class PriseMedicament implements Serializable {
 	private Long idMedicament;
 	private Long idInfirmiere;
 	@Id
-	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@OrderBy
-	private Date heure;
+	private LocalDate heure;
 
 	public Long getIdPensionnaire() {
 		return idPensionnaire;
@@ -54,11 +57,17 @@ public class PriseMedicament implements Serializable {
 		this.idInfirmiere = idInfirmiere;
 	}
 
-	public Date getHeure() {
+	/**
+	 * @return the heure
+	 */
+	public LocalDate getHeure() {
 		return heure;
 	}
 
-	public void setHeure(Date heure) {
+	/**
+	 * @param heure the heure to set
+	 */
+	public void setHeure(LocalDate heure) {
 		this.heure = heure;
 	}
 
@@ -66,7 +75,14 @@ public class PriseMedicament implements Serializable {
 		return serialVersionUID;
 	}
 
-	public PriseMedicament(Long idPensionnaire, Long idMedicament, Long idInfirmiere, Date heure) {
+	public PriseMedicament(Long idMedicament, Long idInfirmiere, LocalDate heure) {
+		super();
+		this.idMedicament = idMedicament;
+		this.idInfirmiere = idInfirmiere;
+		this.heure = heure;
+	}
+
+	public PriseMedicament(Long idPensionnaire, Long idMedicament, Long idInfirmiere, LocalDate heure) {
 		super();
 		this.idPensionnaire = idPensionnaire;
 		this.idMedicament = idMedicament;

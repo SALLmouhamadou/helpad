@@ -23,6 +23,10 @@ public class Medicament implements Serializable {
 	private String fonction;
 	private int stock;
 
+	enum typeMedicament {
+		LIQUIDE, UNITAIRE, INHALATION
+	}
+
 	public Medicament(Long idMedicament, String nom, String fonction, int stock) {
 		super();
 		this.idMedicament = idMedicament;

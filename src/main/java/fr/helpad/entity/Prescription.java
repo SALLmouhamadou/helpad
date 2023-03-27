@@ -1,6 +1,7 @@
 package fr.helpad.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @IdClass(Prescription.class)
@@ -28,11 +30,12 @@ public class Prescription implements Serializable {
 	@Id
 	@Column(name = "ID_PERSONNE", unique = true, nullable = false)
 	private Long idPensionnaire;
-	@Temporal(TemporalType.DATE)
-	private Date dateDebutTraitement;
-	@Temporal(TemporalType.DATE)
-	private Date dateFinTraitement;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dateDebutTraitement;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dateFinTraitement;
 	private String posologie;
+	private int quantiteParPrise;
 
 	public Long getIdMedicament() {
 		return idMedicament;
@@ -50,19 +53,31 @@ public class Prescription implements Serializable {
 		this.idPensionnaire = idPensionnaire;
 	}
 
-	public Date getDateDebutTraitement() {
+	/**
+	 * @return the dateDebutTraitement
+	 */
+	public LocalDate getDateDebutTraitement() {
 		return dateDebutTraitement;
 	}
 
-	public void setDateDebutTraitement(Date dateDebutTraitement) {
-		this.dateDebutTraitement = dateDebutTraitement;
-	}
-
-	public Date getDateFinTraitement() {
+	/**
+	 * @return the dateFinTraitement
+	 */
+	public LocalDate getDateFinTraitement() {
 		return dateFinTraitement;
 	}
 
-	public void setDateFinTraitement(Date dateFinTraitement) {
+	/**
+	 * @param dateDebutTraitement the dateDebutTraitement to set
+	 */
+	public void setDateDebutTraitement(LocalDate dateDebutTraitement) {
+		this.dateDebutTraitement = dateDebutTraitement;
+	}
+
+	/**
+	 * @param dateFinTraitement the dateFinTraitement to set
+	 */
+	public void setDateFinTraitement(LocalDate dateFinTraitement) {
 		this.dateFinTraitement = dateFinTraitement;
 	}
 
@@ -105,8 +120,17 @@ public class Prescription implements Serializable {
 				&& Objects.equals(idPensionnaire, other.idPensionnaire) && Objects.equals(posologie, other.posologie);
 	}
 
-	public Prescription(Long idMedicament, Long idPensionnaire, Date dateDebutTraitement, Date dateFinTraitement,
+	public Prescription(Long idPensionnaire, LocalDate dateDebutTraitement, LocalDate dateFinTraitement,
 			String posologie) {
+		super();
+		this.idPensionnaire = idPensionnaire;
+		this.dateDebutTraitement = dateDebutTraitement;
+		this.dateFinTraitement = dateFinTraitement;
+		this.posologie = posologie;
+	}
+
+	public Prescription(Long idMedicament, Long idPensionnaire, LocalDate dateDebutTraitement,
+			LocalDate dateFinTraitement, String posologie) {
 		super();
 		this.idMedicament = idMedicament;
 		this.idPensionnaire = idPensionnaire;

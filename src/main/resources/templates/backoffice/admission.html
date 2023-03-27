@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Helpad</title>
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+	<div class="container">
+		<nav
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
+		<h2>Prise de médicament</h2>
+		<p></p>
+		<form action="sendPrepare" method="post" th:object="${pensionnaire}">
+			<h4>Veuillez sélectionner un pensionnaire :</h4>
+			<tr th:each="pensionnaire : ${pensionnaires}">
+				<td th:text="${pensionnaire.nom} ${pensionnaire.prenom}"></td>
+				<td><a th:href="@{/preparerPilulier}" th:text="Pilulier">Pilulier</a></td>
+				<td th:each="ing : ${menu.ingredient}">
+					<!-- I have only modified here -->
+					<ul>
+						<li th:text=${ing.ingredientName}></li>
+					</ul>
+				</td>
+
+				<button type="submit" class="btn btn-primary">Envoyer</button>
+		</form>
+		<footer
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
+	</div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package fr.helpad.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Objects;
 
@@ -14,30 +15,32 @@ import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Visite {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_VISITE")
 	private Long idVisite;
-	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@OrderBy
-	private Date jour;
-	@OneToOne(cascade=CascadeType.MERGE)
+	private LocalDate jour;
+	@OneToOne(cascade = CascadeType.MERGE)
 	private Medecin medecin;
-	@OneToOne(cascade=CascadeType.MERGE)
+	@OneToOne(cascade = CascadeType.MERGE)
 	private Pensionnaire pensionnaire;
 
-	public Visite(Long idVisite, Date jour, Medecin medecin, Pensionnaire pensionnaire) {
+	public Visite(LocalDate jour, Medecin medecin, Pensionnaire pensionnaire) {
 		super();
-		this.idVisite = idVisite;
 		this.jour = jour;
 		this.medecin = medecin;
 		this.pensionnaire = pensionnaire;
 	}
 
-	public Visite(Date jour, Medecin medecin, Pensionnaire pensionnaire) {
+	public Visite(Long idVisite, LocalDate jour, Medecin medecin, Pensionnaire pensionnaire) {
 		super();
+		this.idVisite = idVisite;
 		this.jour = jour;
 		this.medecin = medecin;
 		this.pensionnaire = pensionnaire;
@@ -61,11 +64,17 @@ public class Visite {
 		this.idVisite = idVisite;
 	}
 
-	public Date getJour() {
+	/**
+	 * @return the jour
+	 */
+	public LocalDate getJour() {
 		return jour;
 	}
 
-	public void setJour(Date jour) {
+	/**
+	 * @param jour the jour to set
+	 */
+	public void setJour(LocalDate jour) {
 		this.jour = jour;
 	}
 

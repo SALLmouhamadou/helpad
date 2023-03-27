@@ -1,5 +1,6 @@
 package fr.helpad.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -13,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 public class Repas {
 	@Id
@@ -22,8 +25,8 @@ public class Repas {
 	private Horaire horaire;
 	@ManyToMany
 	private List<Plat> plats;
-	@Temporal(TemporalType.DATE)
-	private Date date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate date;
 
 	public enum Horaire {
 		PETIT_DEJEUNER, DEJEUNER, GOUTER, SOUPER;
@@ -53,11 +56,17 @@ public class Repas {
 		this.plats = plats;
 	}
 
-	public Date getDate() {
+	/**
+	 * @return the date
+	 */
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -84,16 +93,16 @@ public class Repas {
 		return "Repas [idRepas=" + idRepas + ", horaire=" + horaire + ", plats=" + plats + ", date=" + date + "]";
 	}
 
-	public Repas(Long idRepas, Horaire horaire, List<Plat> plats, Date date) {
+	public Repas(Horaire horaire, List<Plat> plats, LocalDate date) {
 		super();
-		this.idRepas = idRepas;
 		this.horaire = horaire;
 		this.plats = plats;
 		this.date = date;
 	}
 
-	public Repas(Horaire horaire, List<Plat> plats, Date date) {
+	public Repas(Long idRepas, Horaire horaire, List<Plat> plats, LocalDate date) {
 		super();
+		this.idRepas = idRepas;
 		this.horaire = horaire;
 		this.plats = plats;
 		this.date = date;

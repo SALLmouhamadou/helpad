@@ -18,6 +18,10 @@ public class MédicamentBusiness implements MédicamentBusinessI {
 	public Medicament sauvegarder(Medicament entity) {
 		return repo.save(entity);
 	}
+	
+	public int getConso(Medicament medicament) {
+		return repo.sauvegarderConsoMois(conso);
+	}
 
 	@Override
 	public List<Medicament> listerTout() {

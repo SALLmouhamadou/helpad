@@ -6,6 +6,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 
@@ -19,14 +21,16 @@ public class Prescription implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 6L;
-	@Autowired
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID_PRESCRIPTION")
+	private Long id;
+	@Autowired
 	@Column(name = "ID_MEDICAMENT", unique = true, nullable = false)
-	private Long idMedicament;
+	private Medicament medicament;
 	@Autowired
-	@Id
 	@Column(name = "ID_PERSONNE", unique = true, nullable = false)
-	private Long idPensionnaire;
+	private Pensionnaire pensionnaire;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateDebutTraitement;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -34,34 +38,87 @@ public class Prescription implements Serializable {
 	private String posologie;
 	private int quantiteParPrise;
 
-	/**
-	 * @return the quantiteParPrise
-	 */
-	public int getQuantiteParPrise() {
-		return quantiteParPrise;
+	@Override
+	public int hashCode() {
+		return Objects.hash(dateDebutTraitement, dateFinTraitement, id, medicament, pensionnaire, posologie,
+				quantiteParPrise);
 	}
 
-	/**
-	 * @param quantiteParPrise the quantiteParPrise to set
-	 */
-	public void setQuantiteParPrise(int quantiteParPrise) {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Prescription other = (Prescription) obj;
+		return Objects.equals(dateDebutTraitement, other.dateDebutTraitement)
+				&& Objects.equals(dateFinTraitement, other.dateFinTraitement) && Objects.equals(id, other.id)
+				&& Objects.equals(medicament, other.medicament) && Objects.equals(pensionnaire, other.pensionnaire)
+				&& Objects.equals(posologie, other.posologie) && quantiteParPrise == other.quantiteParPrise;
+	}
+
+	@Override
+	public String toString() {
+		return "Prescription [id=" + id + ", medicament=" + medicament + ", pensionnaire=" + pensionnaire
+				+ ", dateDebutTraitement=" + dateDebutTraitement + ", dateFinTraitement=" + dateFinTraitement
+				+ ", posologie=" + posologie + ", quantiteParPrise=" + quantiteParPrise + "]";
+	}
+
+	public Prescription() {
+		super();
+	}
+
+	public Prescription(Medicament medicament, Pensionnaire pensionnaire, LocalDate dateDebutTraitement,
+			LocalDate dateFinTraitement, String posologie, int quantiteParPrise) {
+		super();
+		this.medicament = medicament;
+		this.pensionnaire = pensionnaire;
+		this.dateDebutTraitement = dateDebutTraitement;
+		this.dateFinTraitement = dateFinTraitement;
+		this.posologie = posologie;
 		this.quantiteParPrise = quantiteParPrise;
 	}
 
-	public Long getIdMedicament() {
-		return idMedicament;
+	public Prescription(Long id, Medicament medicament, Pensionnaire pensionnaire, LocalDate dateDebutTraitement,
+			LocalDate dateFinTraitement, String posologie, int quantiteParPrise) {
+		super();
+		this.id = id;
+		this.medicament = medicament;
+		this.pensionnaire = pensionnaire;
+		this.dateDebutTraitement = dateDebutTraitement;
+		this.dateFinTraitement = dateFinTraitement;
+		this.posologie = posologie;
+		this.quantiteParPrise = quantiteParPrise;
 	}
 
-	public void setIdMedicament(Long idMedicament) {
-		this.idMedicament = idMedicament;
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-	public Long getIdPensionnaire() {
-		return idPensionnaire;
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdPensionnaire(Long idPensionnaire) {
-		this.idPensionnaire = idPensionnaire;
+	/**
+	 * @return the medicament
+	 */
+	public Medicament getMedicament() {
+		return medicament;
+	}
+
+	/**
+	 * @return the pensionnaire
+	 */
+	public Pensionnaire getPensionnaire() {
+		return pensionnaire;
 	}
 
 	/**
@@ -79,6 +136,41 @@ public class Prescription implements Serializable {
 	}
 
 	/**
+	 * @return the posologie
+	 */
+	public String getPosologie() {
+		return posologie;
+	}
+
+	/**
+	 * @return the quantiteParPrise
+	 */
+	public int getQuantiteParPrise() {
+		return quantiteParPrise;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * @param medicament the medicament to set
+	 */
+	public void setMedicament(Medicament medicament) {
+		this.medicament = medicament;
+	}
+
+	/**
+	 * @param pensionnaire the pensionnaire to set
+	 */
+	public void setPensionnaire(Pensionnaire pensionnaire) {
+		this.pensionnaire = pensionnaire;
+	}
+
+	/**
 	 * @param dateDebutTraitement the dateDebutTraitement to set
 	 */
 	public void setDateDebutTraitement(LocalDate dateDebutTraitement) {
@@ -92,67 +184,18 @@ public class Prescription implements Serializable {
 		this.dateFinTraitement = dateFinTraitement;
 	}
 
-	public String getPosologie() {
-		return posologie;
-	}
-
+	/**
+	 * @param posologie the posologie to set
+	 */
 	public void setPosologie(String posologie) {
 		this.posologie = posologie;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	@Override
-	public String toString() {
-		return "Prescription [idMedicament=" + idMedicament + ", idPensionnaire=" + idPensionnaire
-				+ ", dateDebutTraitement=" + dateDebutTraitement + ", dateFinTraitement=" + dateFinTraitement
-				+ ", posologie=" + posologie + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(dateDebutTraitement, dateFinTraitement, idMedicament, idPensionnaire, posologie);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Prescription other = (Prescription) obj;
-		return Objects.equals(dateDebutTraitement, other.dateDebutTraitement)
-				&& Objects.equals(dateFinTraitement, other.dateFinTraitement)
-				&& Objects.equals(idMedicament, other.idMedicament)
-				&& Objects.equals(idPensionnaire, other.idPensionnaire) && Objects.equals(posologie, other.posologie);
-	}
-
-	public Prescription(LocalDate dateDebutTraitement, LocalDate dateFinTraitement, String posologie,
-			int quantiteParPrise) {
-		super();
-		this.dateDebutTraitement = dateDebutTraitement;
-		this.dateFinTraitement = dateFinTraitement;
-		this.posologie = posologie;
+	/**
+	 * @param quantiteParPrise the quantiteParPrise to set
+	 */
+	public void setQuantiteParPrise(int quantiteParPrise) {
 		this.quantiteParPrise = quantiteParPrise;
-	}
-
-	public Prescription(Long idMedicament, Long idPensionnaire, LocalDate dateDebutTraitement,
-			LocalDate dateFinTraitement, String posologie, int quantiteParPrise) {
-		super();
-		this.idMedicament = idMedicament;
-		this.idPensionnaire = idPensionnaire;
-		this.dateDebutTraitement = dateDebutTraitement;
-		this.dateFinTraitement = dateFinTraitement;
-		this.posologie = posologie;
-		this.quantiteParPrise = quantiteParPrise;
-	}
-
-	public Prescription() {
-		super();
 	}
 
 }

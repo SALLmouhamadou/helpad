@@ -10,13 +10,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "CANDIDAT")
 @PrimaryKeyJoinColumn(name = "idPersonne")
 public class Candidat extends Personne {
 	private String civilite;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "date_Naissance")
 	private LocalDate dateNaissance;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "date_entree")
 	private LocalDate dateEntree;
 	@Column(name = "numero_security_social")

@@ -33,6 +33,10 @@ public class AdmissionController {
 	public String getCandiduture() {
 		return "frontoffice/mesCandidatures";
 	}
+	@GetMapping("/confirmation")
+	public String getConfirmationAdmission() {
+		return "frontoffice/confirmationAdmission";
+	}
 
 	@PostMapping("/sendAdmission")
 	public String saveCandidature(@ModelAttribute Candidat candidat, @ModelAttribute Candidature candidature,
@@ -50,6 +54,6 @@ public class AdmissionController {
 		System.out.println("c'est bon");
 		candidatService.sauveCandidat(candidat);
 		System.out.println("envoyer");
-		return "redirect:mesCandidatures";
+		return "redirect:confirmation";
 	}
 }

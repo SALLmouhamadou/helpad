@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Confirmation</title>
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css"/>
+</head>
+</head>
+<body>
+	<div class="container">
+		<nav 
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }">
+		</nav>
+		
+		 <div class="container">
+      		<h1>Formulaire envoyé avec succès !</h1>
+      		<p>Nous avons bien reçu votre demande d'admission et nous vous répondrons dans 15 jours </p>
+    	</div>
+	
+		<footer
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }">
+		</footer>
+	</div>
+</body>
+</html>

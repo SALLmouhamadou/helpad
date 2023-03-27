@@ -16,11 +16,9 @@ public class Medecin extends Personne {
 	@OneToMany(cascade = CascadeType.MERGE)
 	private List<Visite> visites;
 
-	
-
-	public Medecin(String nom, String prenom, String telephone, String email, Adresse adresse,
-			List<Pensionnaire> pensionnaires, String fonction, List<Visite> visites) {
-		super(nom, prenom, telephone, email, adresse);
+	public Medecin(String nom, String prenom, String email, String password, List<Pensionnaire> pensionnaires,
+			String fonction, List<Visite> visites) {
+		super(nom, prenom, email, password);
 		this.pensionnaires = pensionnaires;
 		this.fonction = fonction;
 		this.visites = visites;
@@ -35,6 +33,9 @@ public class Medecin extends Personne {
 		return "Medecin [pensionnaires=" + pensionnaires + ", fonction=" + fonction + ", visites=" + visites + "]";
 	}
 
+	/**
+	 * @return the pensionnaires
+	 */
 	public List<Pensionnaire> getPensionnaires() {
 		return pensionnaires;
 	}

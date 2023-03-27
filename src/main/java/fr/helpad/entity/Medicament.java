@@ -22,28 +22,70 @@ public class Medicament implements Serializable {
 	private String nom;
 	private String fonction;
 	private int stock;
+	private typeMedicament typeStock;
+	private int consoMois;
 
 	enum typeMedicament {
 		LIQUIDE, UNITAIRE, INHALATION
 	}
 
-	public Medicament(Long idMedicament, String nom, String fonction, int stock) {
+	public Medicament(String nom, String fonction, int stock, typeMedicament typeStock, int consoMois) {
+		super();
+		this.nom = nom;
+		this.fonction = fonction;
+		this.stock = stock;
+		this.typeStock = typeStock;
+		this.consoMois = consoMois;
+	}
+
+	public Medicament(Long idMedicament, String nom, String fonction, int stock, typeMedicament typeStock,
+			int consoMois) {
 		super();
 		this.idMedicament = idMedicament;
 		this.nom = nom;
 		this.fonction = fonction;
 		this.stock = stock;
-	}
-
-	public Medicament(String nom, String fonction, int stock) {
-		super();
-		this.nom = nom;
-		this.fonction = fonction;
-		this.stock = stock;
+		this.typeStock = typeStock;
+		this.consoMois = consoMois;
 	}
 
 	public Medicament() {
 		super();
+	}
+
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	/**
+	 * @return the consoMois
+	 */
+	public int getConsoMois() {
+		return consoMois;
+	}
+
+	/**
+	 * @param consoMois the consoMois to set
+	 */
+	public void setConsoMois(int consoMois) {
+		this.consoMois = consoMois;
+	}
+
+	/**
+	 * @return the typeStock
+	 */
+	public typeMedicament getTypeStock() {
+		return typeStock;
+	}
+
+	/**
+	 * @param typeStock the typeStock to set
+	 */
+	public void setTypeStock(typeMedicament typeStock) {
+		this.typeStock = typeStock;
 	}
 
 	public Long getIdMedicament() {

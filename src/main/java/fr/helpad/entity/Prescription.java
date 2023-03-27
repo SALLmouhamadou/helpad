@@ -2,15 +2,12 @@ package fr.helpad.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -36,6 +33,20 @@ public class Prescription implements Serializable {
 	private LocalDate dateFinTraitement;
 	private String posologie;
 	private int quantiteParPrise;
+
+	/**
+	 * @return the quantiteParPrise
+	 */
+	public int getQuantiteParPrise() {
+		return quantiteParPrise;
+	}
+
+	/**
+	 * @param quantiteParPrise the quantiteParPrise to set
+	 */
+	public void setQuantiteParPrise(int quantiteParPrise) {
+		this.quantiteParPrise = quantiteParPrise;
+	}
 
 	public Long getIdMedicament() {
 		return idMedicament;
@@ -120,23 +131,24 @@ public class Prescription implements Serializable {
 				&& Objects.equals(idPensionnaire, other.idPensionnaire) && Objects.equals(posologie, other.posologie);
 	}
 
-	public Prescription(Long idPensionnaire, LocalDate dateDebutTraitement, LocalDate dateFinTraitement,
-			String posologie) {
+	public Prescription(LocalDate dateDebutTraitement, LocalDate dateFinTraitement, String posologie,
+			int quantiteParPrise) {
 		super();
-		this.idPensionnaire = idPensionnaire;
 		this.dateDebutTraitement = dateDebutTraitement;
 		this.dateFinTraitement = dateFinTraitement;
 		this.posologie = posologie;
+		this.quantiteParPrise = quantiteParPrise;
 	}
 
 	public Prescription(Long idMedicament, Long idPensionnaire, LocalDate dateDebutTraitement,
-			LocalDate dateFinTraitement, String posologie) {
+			LocalDate dateFinTraitement, String posologie, int quantiteParPrise) {
 		super();
 		this.idMedicament = idMedicament;
 		this.idPensionnaire = idPensionnaire;
 		this.dateDebutTraitement = dateDebutTraitement;
 		this.dateFinTraitement = dateFinTraitement;
 		this.posologie = posologie;
+		this.quantiteParPrise = quantiteParPrise;
 	}
 
 	public Prescription() {

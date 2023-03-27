@@ -1,5 +1,6 @@
 package fr.helpad.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class Ordonnance {
@@ -20,9 +22,9 @@ public class Ordonnance {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_ORDONNANCE")
 	private Long idOrdonnance;
-	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@OrderBy
-	private Date jour;
+	private LocalDate jourVisite;
 	@Autowired
 	@OneToOne
 	private Medecin medecin;
@@ -33,7 +35,7 @@ public class Ordonnance {
 
 	@Override
 	public String toString() {
-		return "Ordonnance [idOrdonnance=" + idOrdonnance + ", jour=" + jour + ", medecin=" + medecin
+		return "Ordonnance [idOrdonnance=" + idOrdonnance + ", jourVisite=" + jourVisite + ", medecin=" + medecin
 				+ ", pensionnaire=" + pensionnaire + ", chemin=" + chemin + "]";
 	}
 
@@ -45,12 +47,18 @@ public class Ordonnance {
 		this.idOrdonnance = idOrdonnance;
 	}
 
-	public Date getJour() {
-		return jour;
+	/**
+	 * @return the jourVisite
+	 */
+	public LocalDate getJourVisite() {
+		return jourVisite;
 	}
 
-	public void setJour(Date jour) {
-		this.jour = jour;
+	/**
+	 * @param jourVisite the jourVisite to set
+	 */
+	public void setJourVisite(LocalDate jourVisite) {
+		this.jourVisite = jourVisite;
 	}
 
 	public Medecin getMedecin() {
@@ -77,18 +85,19 @@ public class Ordonnance {
 		this.chemin = chemin;
 	}
 
-	public Ordonnance(Long idOrdonnance, Date jour, Medecin medecin, Pensionnaire pensionnaire, String chemin) {
+	public Ordonnance(LocalDate jourVisite, Medecin medecin, Pensionnaire pensionnaire, String chemin) {
 		super();
-		this.idOrdonnance = idOrdonnance;
-		this.jour = jour;
+		this.jourVisite = jourVisite;
 		this.medecin = medecin;
 		this.pensionnaire = pensionnaire;
 		this.chemin = chemin;
 	}
 
-	public Ordonnance(Date jour, Medecin medecin, Pensionnaire pensionnaire, String chemin) {
+	public Ordonnance(Long idOrdonnance, LocalDate jourVisite, Medecin medecin, Pensionnaire pensionnaire,
+			String chemin) {
 		super();
-		this.jour = jour;
+		this.idOrdonnance = idOrdonnance;
+		this.jourVisite = jourVisite;
 		this.medecin = medecin;
 		this.pensionnaire = pensionnaire;
 		this.chemin = chemin;

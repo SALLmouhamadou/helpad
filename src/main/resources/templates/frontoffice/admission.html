@@ -16,7 +16,14 @@
 		<form action="sendAdmission" method="post" th:object="${candidat}">
 			<h4>Nous vous remercions de bien vouloir candidater via le
 				formulaire de candidature en ligne ci-après :</h4>
-
+			<div> 
+			<p>Civilité</p>
+			<input type="radio" id="civiliteChoice1" name="civilite"
+				value="Monsieur"> <label for="civiliteChoice1">Monsieur</label> 
+				<input
+				type="radio" id="civiliteChoice2" name="civilite" value="Madame">
+			<label for="civiliteChoice2">Madame</label>
+			</div>
 			<div>
 				<label class="">Nom :<span class="text-danger m-4">*</span></label>
 				<input type="text" class="input-control" name="nom"

@@ -28,6 +28,7 @@ public class Candidat extends Personne {
 	@Column(name = "numero_de_caf")
 	private String numeroDeCaf;
 	private double revenu;
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Candidature> mesCandidatures;
 

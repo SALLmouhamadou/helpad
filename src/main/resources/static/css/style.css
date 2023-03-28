@@ -1,16 +1,5 @@
 
-.footer{
-position: fixed;
-bottom:0;
-width:68%;
-}
 
-/* media query */
-@media (max-width:684px) {
-.footer{
-    width:100%;
-    }
- }
  /*admission*/
  body{
     background: #eaeaea;
@@ -62,7 +51,7 @@ width:68%;
     line-height: 60px;
     margin: 0 50px 0;
     color:white;
-    background:rgb(85, 85, 246);
+    background:#4242f8;
     border-radius: 50%;
     display: inline-block;
     opacity: 0.9;
@@ -94,3 +83,17 @@ h1 {
 p {
   font-size: 24px;
 }
+
+@media (max-width:1400px) {
+    .step{
+        height: 35px;
+        width: 90px;
+        line-height: 30px;
+        margin: 0 20px 0;
+        color:white;
+        background:#4242f8;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.9;
+        }
+     }

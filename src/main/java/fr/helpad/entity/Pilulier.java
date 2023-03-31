@@ -5,13 +5,18 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Pilulier {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_PILULIER")
 	private Long idPululier;
 	private Jour jour;
@@ -19,7 +24,7 @@ public class Pilulier {
 	@Autowired
 	@OneToOne
 	private Pensionnaire pensionnaire;
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@OneToMany(cascade = CascadeType.MERGE)
 	private List<Medicament> medicaments;
 
 	enum Horaire {

@@ -169,7 +169,7 @@ public class HelpadApplication {
 //		
 //		System.out.println(pr.toString());
 //		
-//		PrescriptionServiceI prBusiness = (PrescriptionBusiness) appContext.getBean("prescrptionBusiness");
+//		PrescriptionServiceI prBusiness = (PrescriptionService) appContext.getBean("prescrptionBusiness");
 //		pr = prBusiness.sauvegarder(pr);
 	}
 

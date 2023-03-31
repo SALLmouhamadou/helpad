@@ -24,6 +24,8 @@ public class Medicament implements Serializable {
 	private int stock;
 	private typeMedicament typeStock;
 	private int consoMois;
+	@Column(name = "QUANTITE_PAR_BOITE", unique = false, nullable = false)
+	private int quantiteParBoite;
 
 	enum typeMedicament {
 		LIQUIDE, UNITAIRE, INHALATION

@@ -6,23 +6,22 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.helpad.entity.Infirmiere;
-import fr.helpad.repository.InfirmiereRepository;
+import fr.helpad.entity.Visite;
+import fr.helpad.repository.VisiteRepository;
 
-@Service("infirmiereBusiness")
-public class InfirmiereBusiness implements InfirmiereBusinessI {
-
+@Service("visiteBusiness")
+public class VisiteService implements VisiteServiceI {
 	@Autowired
-	InfirmiereRepository repo;
+	VisiteRepository repo;
 
 	@Override
-	public Infirmiere sauvegarder(Infirmiere entity) {
+	public Visite sauvegarder(Visite entity) {
 		return repo.save(entity);
 	}
 
 	@Override
-	public List<Infirmiere> listerTout() {
-		return (List<Infirmiere>) repo.findAll();
+	public List<Visite> listerTout() {
+		return (List<Visite>) repo.findAll();
 	}
 
 	@Override
@@ -31,8 +30,7 @@ public class InfirmiereBusiness implements InfirmiereBusinessI {
 	}
 
 	@Override
-	public Infirmiere get(Long id) throws NoSuchElementException {
+	public Visite get(Long id) throws NoSuchElementException {
 		return repo.findById(id).get();
 	}
-
 }

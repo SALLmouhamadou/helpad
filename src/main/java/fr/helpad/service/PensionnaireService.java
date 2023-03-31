@@ -11,7 +11,7 @@ import fr.helpad.repository.PensionnaireRepository;
 
 
 @Service("pensionnaireBusiness")
-public class PensionnaireBusiness implements PensionnaireBusinessI {
+public class PensionnaireService implements PensionnaireServiceI {
 	@Autowired
 	PensionnaireRepository repo;
 

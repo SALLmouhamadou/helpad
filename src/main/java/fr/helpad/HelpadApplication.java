@@ -81,12 +81,12 @@ public class HelpadApplication {
 //		ArrayList<Chambre> cList = new ArrayList<Chambre>();
 //		cList.add(c);
 //
-//		EtageBusiness etBusiness = (EtageBusiness) appContext.getBean("etageBusiness");
+//		EtageService etBusiness = (EtageService) appContext.getBean("etageBusiness");
 //		etBusiness.sauvegarder(e);
 //
 //		e.setChambres(cList);
 //
-//		ChambreBusiness chBusiness = (ChambreBusiness) appContext.getBean("chambreBusiness");
+//		ChambreService chBusiness = (ChambreService) appContext.getBean("chambreBusiness");
 //		chBusiness.sauvegarder(c);
 //
 //		//Medecin m = new Medecin("Le Boucher", "Bertrand", "0652348591", a1, "leboucher.bertrand@doctissimo.fr",
@@ -102,20 +102,20 @@ public class HelpadApplication {
 //
 //		//Visite visite = new Visite(new Date(123, 2, 8), m, papy);
 //
-//		MédecinBusiness mBusiness = (MédecinBusiness) appContext.getBean("medecinBusiness");
+//		MedecinService mBusiness = (MedecinService) appContext.getBean("medecinBusiness");
 //		//mBusiness.sauvegarder(m);
 //
-//		PensionnaireBusiness pBusiness = (PensionnaireBusiness) appContext.getBean("pensionnaireBusiness");
+//		PensionnaireService pBusiness = (PensionnaireService) appContext.getBean("pensionnaireBusiness");
 //		//pBusiness.sauvegarder(papy);
 //
 //		//visiteList.add(visite);
 //
-//		VisiteBusiness vBusiness = (VisiteBusiness) appContext.getBean("visiteBusiness");
+//		VisiteService vBusiness = (VisiteService) appContext.getBean("visiteBusiness");
 //		//vBusiness.sauvegarder(visite);
 //		
 //		//Ordonnance o = new Ordonnance(new Date(123,1,8), m, papy, "JAVAPATH");
 //		
-//		OrdonnanceBusiness oBusiness = (OrdonnanceBusiness) appContext.getBean("ordonnanceBusiness");
+//		OrdonnanceService oBusiness = (OrdonnanceService) appContext.getBean("ordonnanceBusiness");
 //		//oBusiness.sauvegarder(o);
 //		
 //		Infirmiere inf = new Infirmiere();
@@ -134,10 +134,10 @@ public class HelpadApplication {
 //		inf.setPrenom("Brigitte");
 //		inf.setTelephone("0667895234");
 //		
-//		InfirmiereBusiness iBusiness = (InfirmiereBusiness) appContext.getBean("infirmiereBusiness");
+//		InfirmiereService iBusiness = (InfirmiereService) appContext.getBean("infirmiereBusiness");
 //		
 //		
-//		FonctionBusiness fBusiness = (FonctionBusiness) appContext.getBean("fonctionBusiness");
+//		FonctionService fBusiness = (FonctionService) appContext.getBean("fonctionBusiness");
 //		fBusiness.sauvegarder(f);
 //		iBusiness.sauvegarder(inf);
 //		
@@ -146,7 +146,7 @@ public class HelpadApplication {
 //		medic.setNom("Doliprane");
 //		medic.setStock(15);
 //		
-//		MédicamentBusiness medicBusiness = (MédicamentBusiness) appContext.getBean("medicamentBusiness");
+//		MedicamentService medicBusiness = (MedicamentService) appContext.getBean("medicamentBusiness");
 //		medic = medicBusiness.sauvegarder(medic);
 //		
 //		PriseMedicament pM = new PriseMedicament();
@@ -157,7 +157,7 @@ public class HelpadApplication {
 //		
 //		System.out.println(pM.toString());
 //		
-//		PriseMedicamentBusiness pMBusiness = (PriseMedicamentBusinessImpl) appContext.getBean("priseMedocBusiness");
+//		PriseMedicamentService pMBusiness = (PriseMedicamentBusinessImpl) appContext.getBean("priseMedocBusiness");
 //		pM = pMBusiness.sauvegarder(pM);
 //		
 //		Prescription pr = new Prescription();
@@ -169,7 +169,7 @@ public class HelpadApplication {
 //		
 //		System.out.println(pr.toString());
 //		
-//		PrescriptionBusinessI prBusiness = (PrescriptionBusiness) appContext.getBean("prescrptionBusiness");
+//		PrescriptionServiceI prBusiness = (PrescriptionService) appContext.getBean("prescrptionBusiness");
 //		pr = prBusiness.sauvegarder(pr);
 	}
 

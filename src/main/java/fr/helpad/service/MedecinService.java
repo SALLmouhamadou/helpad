@@ -6,22 +6,22 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.helpad.entity.Medicament;
-import fr.helpad.repository.MédicamentRepository;
+import fr.helpad.entity.Medecin;
+import fr.helpad.repository.MédecinRepository;
 
-@Service("medicamentBusiness")
-public class MédicamentService implements MédicamentServiceI {
+@Service("medecinBusiness")
+public class MedecinService implements MedecinServiceI {
 	@Autowired
-	MédicamentRepository repo;
+	MédecinRepository repo;
 
 	@Override
-	public Medicament sauvegarder(Medicament entity) {
+	public Medecin sauvegarder(Medecin entity) {
 		return repo.save(entity);
 	}
 
 	@Override
-	public List<Medicament> listerTout() {
-		return (List<Medicament>) repo.findAll();
+	public List<Medecin> listerTout() {
+		return (List<Medecin>) repo.findAll();
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class MédicamentService implements MédicamentServiceI {
 	}
 
 	@Override
-	public Medicament get(Long id) throws NoSuchElementException {
+	public Medecin get(Long id) throws NoSuchElementException {
 		return repo.findById(id).get();
 	}
 }

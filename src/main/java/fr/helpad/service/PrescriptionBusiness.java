@@ -17,7 +17,7 @@ public class PrescriptionBusiness implements PrescriptionServiceI {
 	PrescriptionRepository repo;
 	
 	@Autowired
-	MédicamentService medic;
+	MedicamentService medic;
 
 	@Override
 	public Prescription sauvegarder(Prescription entity) {

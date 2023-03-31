@@ -102,7 +102,7 @@ public class HelpadApplication {
 //
 //		//Visite visite = new Visite(new Date(123, 2, 8), m, papy);
 //
-//		MédecinService mBusiness = (MédecinService) appContext.getBean("medecinBusiness");
+//		MedecinService mBusiness = (MedecinService) appContext.getBean("medecinBusiness");
 //		//mBusiness.sauvegarder(m);
 //
 //		PensionnaireService pBusiness = (PensionnaireService) appContext.getBean("pensionnaireBusiness");
@@ -146,7 +146,7 @@ public class HelpadApplication {
 //		medic.setNom("Doliprane");
 //		medic.setStock(15);
 //		
-//		MédicamentService medicBusiness = (MédicamentService) appContext.getBean("medicamentBusiness");
+//		MedicamentService medicBusiness = (MedicamentService) appContext.getBean("medicamentBusiness");
 //		medic = medicBusiness.sauvegarder(medic);
 //		
 //		PriseMedicament pM = new PriseMedicament();

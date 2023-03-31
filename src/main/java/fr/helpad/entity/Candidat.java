@@ -28,27 +28,13 @@ public class Candidat extends Personne {
 	@Column(name = "numero_de_caf")
 	private String numeroDeCaf;
 	private double revenu;
-	private String file;
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Candidature> mesCandidatures;
 
 	public Candidat() {
 	}
 	
-	public Candidat(String nom, String prenom, String telephone, String email, Adresse adresse, String civilite,
-			LocalDate dateNaissance, LocalDate dateEntree, String numeroSecuriteSocial, String numeroDeCaf,
-			double revenu, String file, List<Candidature> mesCandidatures) {
-		super(nom, prenom, telephone, email, adresse);
-		this.civilite = civilite;
-		this.dateNaissance = dateNaissance;
-		this.dateEntree = dateEntree;
-		this.numeroSecuriteSocial = numeroSecuriteSocial;
-		this.numeroDeCaf = numeroDeCaf;
-		this.revenu = revenu;
-		this.file = file;
-		this.mesCandidatures = mesCandidatures;
-	}
-
 	public Candidat(String nom, String prenom, String telephone, String email, Adresse adresse, String civilite,
 			LocalDate dateNaissance, LocalDate dateEntree, String numeroSecuriteSocial, String numeroDeCaf,
 			double revenu, List<Candidature> mesCandidatures) {
@@ -120,16 +106,4 @@ public class Candidat extends Personne {
 	public void setMesCandidatures(List<Candidature> mesCandidatures) {
 		this.mesCandidatures = mesCandidatures;
 	}
-
-	public String getFile() {
-		return file;
-	}
-
-	public void setFile(String file) {
-		this.file = file;
-		
-	}
-
-	
-	
 }

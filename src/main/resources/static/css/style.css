@@ -1,16 +1,61 @@
 
-.footer{
-position: fixed;
-bottom:0;
-width:68%;
-}
 
-/* media query */
-@media (max-width:684px) {
-.footer{
-    width:100%;
-    }
- }
+ /*admission*/
+ body{
+    background: #eaeaea;
+  }
+  
+  form{
+    background: #ffffff;
+    margin: 100px auto;
+    padding: 15px 40px 40px 40px;
+    width: 70%;
+  }
+  
+  .tab p{
+    font-size: 20px;
+    margin: 0 0 10px 0;
+  }
+  
+  input{
+    margin: 10px 0;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 17px;
+    border: 1px solid #aaaaaa;
+  }
+  
+  .index-btn-wrapper{
+    display: flex;
+  }
+  
+  .index-btn{
+    margin: 20px 15px 0 0;
+    background:blue;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .index-btn:hover{
+    opacity: 0.8;
+  }
+  
+  .step{
+    height: 80px;
+    width: 150px;
+    line-height: 60px;
+    margin: 0 50px 0;
+    color:white;
+    background:#4242f8;
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0.9;
+  }
  
  /* confirmation */
  * {
@@ -19,7 +64,7 @@ width:68%;
   box-sizing: border-box;
 }
 
-.container {
+.container-confirmation{
   width: 80%;
   margin: 0 auto;
   text-align: center;
@@ -38,3 +83,17 @@ h1 {
 p {
   font-size: 24px;
 }
+
+@media (max-width:1400px) {
+    .step{
+        height: 35px;
+        width: 90px;
+        line-height: 30px;
+        margin: 0 20px 0;
+        color:white;
+        background:#4242f8;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.9;
+        }
+     }

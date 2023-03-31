@@ -26,11 +26,14 @@ import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
 import fr.helpad.service.CandidatService;
+import fr.helpad.service.StorageService;
 
 @Controller
 public class AdmissionController {
 	@Autowired
 	CandidatService candidatService;
+	@Autowired
+	StorageService storageService;
 
 	@GetMapping("/admission")
 	public String getAdmission() {
@@ -50,10 +53,9 @@ public class AdmissionController {
 	public String saveCandidature(@ModelAttribute Candidat candidat, @ModelAttribute Candidature candidature,
 			@ModelAttribute Adresse adresse, 
 			HttpServletRequest request, 
-			HttpServletResponse response
-			//@RequestParam("file") MultipartFile file
+			HttpServletResponse response,
+			@RequestParam("fileName") MultipartFile file
 			)throws IOException{
-		
 		String revenu = request.getParameter("revenu");
 		double revenuAnnuelle = Double.parseDouble(revenu);
 		candidat.setRevenu(revenuAnnuelle);
@@ -61,17 +63,12 @@ public class AdmissionController {
 		List<Candidature> candidatures = new ArrayList<Candidature>();
 		candidatures.add(candidature);
 		candidat.setMesCandidatures(candidatures);
-//		if (!file.isEmpty()) {
-//	        byte[] bytes = file.getBytes();
-//	     // Générer un nom de fichier unique
-//	        String originalFilename = file.getOriginalFilename();
-//	        String filename = UUID.randomUUID().toString() + "-" + originalFilename;
-//	     // Enregistrer l'image dans le répertoire de stockage des images
-//	        Path filePath = Paths.get("/home/gnahiet/images/").resolve(filename);
-//	        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-//		}
+		System.out.println("J'arrive");
+		String store = storageService.store(file);
+		System.out.println("je suis au milieu");
+		candidat.setFile(store);
+		System.out.println("je suis sortie");
 		candidatService.sauveCandidat(candidat);
-		
 		return "redirect:confirmation";
 	}
 }

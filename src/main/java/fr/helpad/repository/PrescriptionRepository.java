@@ -13,7 +13,7 @@ public interface PrescriptionRepository extends JpaRepository<Prescription, Long
 	public List<Prescription> chercherParPensionnaire(@Param("pensionnaire") Long idPensionnaire);
 	@Query(value = "SELECT c FROM Prescription c WHERE c.idMedicament LIKE '%' || :medicament || '%'")
 	public List<Prescription> findByMedicament(@Param("medicament") Long idMedicament);
-	@Query(value = "SELECT SUM(c.quantiteParPrise * c.priseParJour * 30) FROM Prescription c WHERE c.dateDebutTraitement >= CURRENT_DATE "
+	@Query(value = "SELECT SUM(c.quantiteParPrise * c.priseParJour) FROM Prescription c WHERE c.dateDebutTraitement >= CURRENT_DATE "
 			+ "AND c.idMedicament = medicament")
 	public Long getSumConsoMois(@Param("medicament") Long idMedicament);
 }

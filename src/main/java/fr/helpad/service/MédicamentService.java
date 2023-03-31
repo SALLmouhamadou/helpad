@@ -10,17 +10,13 @@ import fr.helpad.entity.Medicament;
 import fr.helpad.repository.MédicamentRepository;
 
 @Service("medicamentBusiness")
-public class MédicamentBusiness implements MédicamentBusinessI {
+public class MédicamentService implements MédicamentServiceI {
 	@Autowired
 	MédicamentRepository repo;
 
 	@Override
 	public Medicament sauvegarder(Medicament entity) {
 		return repo.save(entity);
-	}
-	
-	public int getConso(Medicament medicament) {
-		return repo.sauvegarderConsoMois(conso);
 	}
 
 	@Override

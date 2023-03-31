@@ -10,7 +10,7 @@ import fr.helpad.entity.PriseMedicament;
 import fr.helpad.repository.PriseMedicamentRepository;
 
 @Service("priseMedocBusiness")
-public class PriseMedicamentBusinessImpl implements PriseMedicamentBusiness {
+public class PriseMedicamentBusinessImpl implements PriseMedicamentService {
 	@Autowired
 	PriseMedicamentRepository repo;
 	

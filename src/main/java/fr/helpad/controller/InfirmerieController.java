@@ -1,8 +1,5 @@
 package fr.helpad.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,10 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import fr.helpad.entity.Adresse;
-import fr.helpad.entity.Candidat;
-import fr.helpad.entity.Candidature;
 import fr.helpad.entity.Medicament;
-import fr.helpad.service.CandidatService;
 import fr.helpad.service.MedicamentService;
 
 @Controller

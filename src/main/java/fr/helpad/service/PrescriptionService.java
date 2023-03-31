@@ -7,17 +7,19 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.helpad.entity.Medicament;
+import fr.helpad.entity.Pensionnaire;
 import fr.helpad.entity.Prescription;
 import fr.helpad.repository.PrescriptionRepository;
 
 @Service("prescrptionBusiness")
-public class PrescriptionBusiness implements PrescriptionServiceI {
+public class PrescriptionService implements PrescriptionServiceI {
 
 	@Autowired
 	PrescriptionRepository repo;
 	
 	@Autowired
-	MédicamentService medic;
+	MedicamentService medic;
 
 	@Override
 	public Prescription sauvegarder(Prescription entity) {
@@ -39,13 +41,11 @@ public class PrescriptionBusiness implements PrescriptionServiceI {
 		return repo.findById(id).get();
 	}
 	
-	@Override
-	public List<Prescription> chercherParPensionnaire(Long pensionnaire) {
-		return repo.chercherParPensionnaire(pensionnaire);
+	public List<Prescription> chercherParPensionnaire(Pensionnaire pensionnaire) {
+		return repo.chercherParPensionnaire(pensionnaire.getIdPersonne());
 	}
 
-	@Override
-	public List<Prescription> chercherParMedicament(Long medicament) {
-		return repo.chercherParMedicament(medicament);
+	public List<Prescription> chercherParMedicament(Medicament medicament) {
+		return repo.chercherParMedicament(medicament.getIdMedicament());
 	}
 }

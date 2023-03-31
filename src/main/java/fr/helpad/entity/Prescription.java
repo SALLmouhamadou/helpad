@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.OneToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,10 +27,10 @@ public class Prescription implements Serializable {
 	@Column(name = "ID_PRESCRIPTION")
 	private Long id;
 	@Autowired
-	@Column(name = "ID_MEDICAMENT", unique = true, nullable = false)
+	@OneToOne
 	private Medicament medicament;
 	@Autowired
-	@Column(name = "ID_PERSONNE", unique = true, nullable = false)
+	@OneToOne
 	private Pensionnaire pensionnaire;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateDebutTraitement;

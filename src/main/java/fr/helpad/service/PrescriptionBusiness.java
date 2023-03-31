@@ -11,13 +11,13 @@ import fr.helpad.entity.Prescription;
 import fr.helpad.repository.PrescriptionRepository;
 
 @Service("prescrptionBusiness")
-public class PrescriptionBusiness implements PrescriptionBusinessI {
+public class PrescriptionBusiness implements PrescriptionServiceI {
 
 	@Autowired
 	PrescriptionRepository repo;
 	
 	@Autowired
-	MédicamentBusiness medic;
+	MédicamentService medic;
 
 	@Override
 	public Prescription sauvegarder(Prescription entity) {

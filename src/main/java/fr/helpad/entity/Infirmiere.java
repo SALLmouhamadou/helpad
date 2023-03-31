@@ -16,11 +16,9 @@ public class Infirmiere extends Employe {
 		this.noRpps = noRpps;
 	}
 
-	
-
-	public Infirmiere(String nom, String prenom, String telephone, String email, Adresse adresse, String noSecu,
-			Fonction fonction, String noRpps) {
-		super(nom, prenom, telephone, email, adresse, noSecu, fonction);
+	public Infirmiere(String nom, String prenom, String email, String password, String noSecu, Fonction fonction,
+			String noRpps) {
+		super(nom, prenom, email, password, noSecu, fonction);
 		this.noRpps = noRpps;
 	}
 
@@ -32,4 +30,5 @@ public class Infirmiere extends Employe {
 	public String toString() {
 		return "Infirmiere [noRpps=" + noRpps + "]";
 	}
+
 }

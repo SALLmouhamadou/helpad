@@ -59,11 +59,8 @@ public class Employe extends Personne {
 		return "Employe [noSecu=" + noSecu + ", fonction=" + fonction + "]";
 	}
 
-	
-
-	public Employe(String nom, String prenom, String telephone, String email, Adresse adresse, String noSecu,
-			Fonction fonction) {
-		super(nom, prenom, telephone, email, adresse);
+	public Employe(String nom, String prenom, String email, String password, String noSecu, Fonction fonction) {
+		super(nom, prenom, email, password);
 		this.noSecu = noSecu;
 		this.fonction = fonction;
 	}

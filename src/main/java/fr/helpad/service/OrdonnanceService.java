@@ -6,23 +6,22 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.helpad.entity.Fonction;
-import fr.helpad.repository.FonctionRepository;
+import fr.helpad.entity.Ordonnance;
+import fr.helpad.repository.OrdonnanceRepository;
 
-@Service("fonctionBusiness")
-public class FonctionBusiness implements BasicBusiness<Fonction> {
-
+@Service("ordonnanceBusiness")
+public class OrdonnanceService  implements OrdonnanceServiceI {
 	@Autowired
-	FonctionRepository repo;
+	OrdonnanceRepository repo;
 
 	@Override
-	public Fonction sauvegarder(Fonction entity) {
+	public Ordonnance sauvegarder(Ordonnance entity) {
 		return repo.save(entity);
 	}
 
 	@Override
-	public List<Fonction> listerTout() {
-		return (List<Fonction>) repo.findAll();
+	public List<Ordonnance> listerTout() {
+		return (List<Ordonnance>) repo.findAll();
 	}
 
 	@Override
@@ -31,8 +30,7 @@ public class FonctionBusiness implements BasicBusiness<Fonction> {
 	}
 
 	@Override
-	public Fonction get(Long id) throws NoSuchElementException {
+	public Ordonnance get(Long id) throws NoSuchElementException {
 		return repo.findById(id).get();
 	}
-
 }

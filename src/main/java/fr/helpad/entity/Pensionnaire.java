@@ -29,16 +29,21 @@ public class Pensionnaire extends Personne implements Serializable {
 	private List<Medecin> medecins;
 	@OneToMany(cascade = CascadeType.MERGE)
 	private List<Visite> visites;
+	@OneToMany(cascade = CascadeType.MERGE)
+	private List<Medicament> medicaments;
+	@OneToMany(cascade = CascadeType.MERGE)
+	private List<Prescription> prescriptions;
 	@OneToOne
 	private Personne contactUrgence;
 
-	public Pensionnaire(String nom, String prenom, String telephone, String email, Adresse adresse, Chambre chambre,
-			String noSecu, List<Medecin> medecins, List<Visite> visites, Personne contactUrgence) {
-		super(nom, prenom, telephone, email, adresse);
+	public Pensionnaire(String nom, String prenom, String email, String password, Chambre chambre, String noSecu,
+			List<Medecin> medecins, List<Visite> visites, List<Medicament> medicaments, Personne contactUrgence) {
+		super(nom, prenom, email, password);
 		this.chambre = chambre;
 		this.noSecu = noSecu;
 		this.medecins = medecins;
 		this.visites = visites;
+		this.medicaments = medicaments;
 		this.contactUrgence = contactUrgence;
 	}
 
@@ -58,8 +63,46 @@ public class Pensionnaire extends Personne implements Serializable {
 		return noSecu;
 	}
 
+	/**
+	 * @return the medicaments
+	 */
+	public List<Medicament> getMedicaments() {
+		return medicaments;
+	}
+
+	/**
+	 * @param medicaments the medicaments to set
+	 */
+	public void setMedicaments(List<Medicament> medicaments) {
+		this.medicaments = medicaments;
+	}
+
+	/**
+	 * @return the serialversionuid
+	 */
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	/**
+	 * @return the contactUrgence
+	 */
+	public Personne getContactUrgence() {
+		return contactUrgence;
+	}
+
+	/**
+	 * @param noSecu the noSecu to set
+	 */
 	public void setNoSecu(String noSecu) {
 		this.noSecu = noSecu;
+	}
+
+	/**
+	 * @param contactUrgence the contactUrgence to set
+	 */
+	public void setContactUrgence(Personne contactUrgence) {
+		this.contactUrgence = contactUrgence;
 	}
 
 	public List<Medecin> getMedecins() {

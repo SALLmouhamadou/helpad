@@ -1,14 +1,13 @@
 package fr.helpad.repository;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import fr.helpad.entity.Personne;
 
-public interface PersonneRepository extends CrudRepository<Personne, Long> {
+public interface PersonneRepository extends JpaRepository<Personne, Long> {
 
-    @Query(value = "SELECT p FROM Personne p WHERE p.email = ?1 "
-            + " AND p.password = ?2 ")
-    public Personne findByEmail(String email, String password);
+	public Optional<Personne> findByUsername(String username);
+
 }

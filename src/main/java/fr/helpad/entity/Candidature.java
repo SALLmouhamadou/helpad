@@ -21,7 +21,11 @@ public class Candidature {
     private String informationComplementaire;
     @Column(name="Jour_de_candidature")
     private LocalDate jourDeCandidature= LocalDate.now();
-
+    @Column(name="condition_general")
+    private String conditionGeneral;
+    @Column(name="declaration_exactitude_des_informations")
+    private String declarationExactitudeDesInformations;
+    private String numeroRef;
     public Candidature() {
     }
 
@@ -30,8 +34,21 @@ public class Candidature {
         this.informationComplementaire = informationComplementaire;
         this.jourDeCandidature = LocalDate.now();
     }
+    
+    
 
-    public Long getIdCandidature() {
+	public Candidature(String pathologie, String informationComplementaire, LocalDate jourDeCandidature,
+			String conditionGeneral, String declarationExactitudeDesInformations, String numeroRef) {
+		super();
+		this.pathologie = pathologie;
+		this.informationComplementaire = informationComplementaire;
+		this.jourDeCandidature = jourDeCandidature;
+		this.conditionGeneral = conditionGeneral;
+		this.declarationExactitudeDesInformations = declarationExactitudeDesInformations;
+		this.numeroRef += "HEL100";
+	}
+
+	public Long getIdCandidature() {
         return idCandidature;
     }
 
@@ -62,4 +79,29 @@ public class Candidature {
     public void setJourDeCandidature(LocalDate jourDeCandidature) {
         this.jourDeCandidature = jourDeCandidature;
     }
+
+	public String getConditionGeneral() {
+		return conditionGeneral;
+	}
+
+	public void setConditionGeneral(String conditionGeneral) {
+		this.conditionGeneral = conditionGeneral;
+	}
+
+	public String getDeclarationExactitudeDesInformations() {
+		return declarationExactitudeDesInformations;
+	}
+
+	public void setDeclarationExactitudeDesInformations(String declarationExactitudeDesInformations) {
+		this.declarationExactitudeDesInformations = declarationExactitudeDesInformations;
+	}
+
+	public String getNumeroRef() {
+		return numeroRef;
+	}
+
+	public void setNumeroRef(String numeroRef) {
+		this.numeroRef = numeroRef;
+	}
+    
 }

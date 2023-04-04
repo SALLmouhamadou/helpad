@@ -61,15 +61,6 @@ public class AdmissionController {
 		List<Candidature> candidatures = new ArrayList<Candidature>();
 		candidatures.add(candidature);
 		candidat.setMesCandidatures(candidatures);
-//		if (!file.isEmpty()) {
-//	        byte[] bytes = file.getBytes();
-//	     // Générer un nom de fichier unique
-//	        String originalFilename = file.getOriginalFilename();
-//	        String filename = UUID.randomUUID().toString() + "-" + originalFilename;
-//	     // Enregistrer l'image dans le répertoire de stockage des images
-//	        Path filePath = Paths.get("/home/gnahiet/images/").resolve(filename);
-//	        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-//		}
 		candidatService.sauveCandidat(candidat);
 		
 		return "redirect:confirmation";

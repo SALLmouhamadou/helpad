@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
@@ -8,116 +8,126 @@
 	th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" href="../static/css/style.css"
 	th:href="@{/css/style.css}" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 	<div class="container">
 		<nav
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 	</div>
-		<h2 class="text-centre">Formulaire de candidature</h2>
-		
-		<form class="p-2" id="myForm" action="sendAdmission" method="post" th:object="${candidat}">
-      <h1 align = center>Register</h1>
+	<form class="p-2" id="myForm" action="sendAdmission" method="post"
+		th:object="${candidat}">
+		<h1 align=center>Formulaire de demande d'admission</h1>
 
-      <div style="text-align:center;">
-        <span class="step" id = "step-1">Identité</span>
-        <span class="step" id = "step-2">Adresse</span>
-        <span class="step" id = "step-3">Candidautres</span>
-        <span class="step" id = "step-4">Documents</span>
-      </div>
+		<div style="text-align: center;">
+			<span class="step" id="step-1">Identité</span> <span class="step"
+				id="step-2">Adresse</span> <span class="step" id="step-3">Candidautres</span>
+			<span class="step" id="step-4">Documents</span>
+		</div>
 
-      <div class="tab" id = "tab-1">
-        <p>Identité</p>
-        <select name="civilite" id="civilité-select">
-            <option value="">Civilité</option>
-            <option value="Monsieur">Monsieur</option>
-            <option value="Madame">Madame</option>
-        </select>
-        <input type = "text" placeholder="Nom" name="nom" required>
-        <input type = "text" placeholder="Prenom" name="prenom" required>
-        <input type = "email" placeholder="email" name="email" required>
-        <input type = "text" placeholder="telephone" name="telephone" required>
-        <input type = "date" placeholder="Date naissance" name="dateNaissance" required>
-        <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(1, 2);">Next</div>
-        </div>
-      </div>
+		<div class="tab" id="tab-1">
+			<p>Identité</p>
+			<select name="civilite" id="civilité-select">
+				<option value="">Civilité</option>
+				<option value="Monsieur">Monsieur</option>
+				<option value="Madame">Madame</option>
+			</select> <input type="text" placeholder="Nom" name="nom" required> <input
+				type="text" placeholder="Prenom" name="prenom" required> <input
+				type="email" placeholder="email" name="email" required> <input
+				type="text" placeholder="telephone" name="telephone" required>
+			<input type="date" placeholder="Date naissance" name="dateNaissance"
+				required>
+			<div class="index-btn-wrapper">
+				<div class="index-btn" onclick="run(1, 2);">Suivant</div>
+			</div>
+		</div>
 
-      <div class="tab" id = "tab-2">
-        <p>Adresse:</p>
-        <input type = "text" placeholder="N° " name="numero" required>
-        <input type = "text" placeholder="Rue" name="rue" required>
-        <input type = "text" placeholder="ville" name="ville" required>
-        <input type = "text" placeholder="Code postale" name="codePostal" required>
-        <input type = "text" placeholder="Pays" name="pays" required>
-        <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(2, 1);">Previous</div>
-          <div class="index-btn" onclick="run(2, 3);">Next</div>
-        </div>
-      </div>
+		<div class="tab" id="tab-2">
+			<p>Adresse:</p>
+			<input type="text" placeholder="N° " name="numero" required>
+			<input type="text" placeholder="Rue" name="rue" required> <input
+				type="text" placeholder="ville" name="ville" required> <input
+				type="text" placeholder="Code postale" name="codePostal" required>
+			<input type="text" placeholder="Pays" name="pays" required>
+			<div class="index-btn-wrapper">
+				<div class="index-btn" onclick="run(2, 1);">Précedent</div>
+				<div class="index-btn" onclick="run(2, 3);">Suivant</div>
+			</div>
+		</div>
 
-      <div class="tab" id = "tab-3">
-        <p>Candidature</p>
-        <input type = "date" placeholder="Date entrée souhaitée" name="dateEntree" required>
-        <input type = "text" placeholder="N° sécurité social" name="numeroSecuriteSocial" required>
-        <input type = "text" placeholder="N° de CAF" name="numeroDeCaf" >
-        <input type = "text" placeholder="Revenu" name="revenu" required>
-        <select name="pathologie" id="pathologie-select" required>
-            <option value=""> Avez vous des pathologies ?</option>
-            <option value="Oui">Oui</option>
-            <option value="Non">Non</option>
-        </select>
-        <input type = "text" placeholder="Information complémentaire" name="informationComplementaire">
-        <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(3, 2);">Previous</div>
-          <div class="index-btn" onclick="run(3, 4);">Next</div>
-        </div>
-      </div>
+		<div class="tab" id="tab-3">
+			<p>Candidature</p>
+			<input type="date" placeholder="Date entrée souhaitée"
+				name="dateEntree" required> <input type="text"
+				placeholder="N° sécurité social" name="numeroSecuriteSocial"
+				required> <input type="text" placeholder="N° de CAF"
+				name="numeroDeCaf"> <input type="text" placeholder="Revenu"
+				name="revenu" required> <select name="pathologie"
+				id="pathologie-select" required>
+				<option value="">Avez vous des pathologies ?</option>
+				<option value="Oui">Oui</option>
+				<option value="Non">Non</option>
+			</select> <input type="text" placeholder="Information complémentaire"
+				name="informationComplementaire">
+			<div class="index-btn-wrapper">
+				<div class="index-btn" onclick="run(3, 2);">Précedent</div>
+				<div class="index-btn" onclick="run(3, 4);">Suivant</div>
+			</div>
+		</div>
 
-      <div class="tab" id = "tab-4">
-        <p>Piéce justificatifs</p>
-        <input type = "file" name="file">
-        <input type = "file" name="file">
-        <input type = "file" name="file">
-        <input type = "file" name="file">
-        <input type = "file" name="file">
-        <input type = "file" name="file">
-        <input type = "file" name="file">
-        <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(4, 3);">Previous</div>
-          <div class="index-btn" onclick="run(4, 5);">Next</div>
-        </div>
-      </div>
+		<div class="tab" id="tab-4">
+			<p>Piéce justificatifs</p>
+			<input type="file" name="file" required>
+			<div class="index-btn-wrapper">
+				<div class="index-btn" onclick="run(4, 3);">Précedent</div>
+				<div class="index-btn" onclick="run(4, 5);">Suivant</div>
+			</div>
+		</div>
 
-      <div class="tab" id = "tab-5">
-        <div class="index-btn-wrapper">
-          <div class="index-btn" onclick="run(5, 4);">Previous</div>
-          <button class = "index-btn" type="submit" name="submit" style = "background: blue;">Submit</button>
-        </div>
-      </div>
-    </form>
-    <div class="container">
+		<div class="tab" id="tab-5">
+			<div class="index-btn-wrapper">
+				<div>
+					<div>
+						<input type="checkbox" value="accepter"
+							name="declarationExactitudeDesInformations" id="flexCheckDefault">
+						<label class="form-check-label" for="flexCheckDefault">Je
+							déclare sur l'honneur de l'exactitude des informations renseignes</label>
+					</div>
+					<div>
+						<input type="checkbox" value="accepter" name="conditionGeneral"
+							id="flexCheckChecked" checked> <label
+							class="form-check-label" for="flexCheckChecked">J'ai lu
+							et accepter les conditions générales d'utilisations des données.
+						</label>
+					</div>
+				</div>
+				<button class="index-btn" type="submit" name="submit"
+					style="background: blue;">Valider</button>
+			</div>
+		</div>
+	</form>
+	<div class="container">
 		<footer
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
 	</div>
 	<script>
-      // Default tab
-      $(".tab").css("display", "none");
-      $("#tab-1").css("display", "block");
+		// Default tab
+		$(".tab").css("display", "none");
+		$("#tab-1").css("display", "block");
 
-      function run(hideTab, showTab){
+		function run(hideTab, showTab) {
 
-        // Progress bar
-        for (i = 1; i < showTab; i++){
-          $("#step-"+i).css("opacity", "4");
-        }
+			// Progress bar
+			for (i = 1; i < showTab; i++) {
+				$("#step-" + i).css("opacity", "4");
+			}
 
-        // Switch tab
-        $("#tab-"+hideTab).css("display", "none");
-        $("#tab-"+showTab).css("display", "block");
-        $("input").css("background", "#fff");
-      }
-    </script>
+			// Switch tab
+			$("#tab-" + hideTab).css("display", "none");
+			$("#tab-" + showTab).css("display", "block");
+			$("input").css("background", "#fff");
+		}
+	</script>
 </body>
 </html>

@@ -47,12 +47,14 @@ public class InfirmerieController {
 		String nom = request.getParameter("nom");
 		String fonction = request.getParameter("fonction");
 		String typeStock = request.getParameter("typeStock");
+		String typeStockDrop = request.getParameter("typeStockDrop");
 		
 		System.out.println("Quantité en stock (string) : " + quantiteEnStock);
 		System.out.println("Quantité par boîte (string) : " + quantiteParBoite);
 		System.out.println("Nom : " + nom);
 		System.out.println("Fonction : " + fonction);
 		System.out.println("typeStock (string) : " + typeStock);
+		System.out.println("typeStock (Drop) : " + typeStockDrop);
 		
 		if (nom.length() > 2 && nom.length() < 30)
 			medicament.setNom(nom);

@@ -13,18 +13,81 @@
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 		<h2>Inventaire de médicament</h2>
 		<p></p>
+		<div th:text="${message}" th:class="${alertClass}"></div>
+		<a class="btn btn-primary my-2" type="button"
+			th:href="@{/ajouter-medicament}">Ajouter un Médicament</a>
 		<h4>Veuillez sélectionner un médicament :</h4>
-		<tr th:each="medicament : ${medicaments}">
-			<td th:text="${medicament.nom}"></td>
-			<td th:text="Modifier">
-				<form action="modifier-stock" method="post"
-					th:object="${medicament}">
-					<label class="text description">Quantité :</label>
-					<input type="number" id=quantite name="quantite" />
-					<button type="submit" class="btn btn-primary">Valider</button>
-				</form>
-			</td>
-		</tr>
+
+		<div class="row g-8">
+			<div class="col-md-1">
+				<label class="form-label">ID</label>
+			</div>
+
+			<div class="col-md-2">
+				<label class="form-label">Nom</label>
+			</div>
+
+			<div class="col-md-2">
+				<label class="form-label">Fonction</label>
+			</div>
+
+			<div class="col-md-2">
+				<label class="form-label">Quantité par boîte</label>
+			</div>
+
+			<div class="col-md-2">
+				<label class="form-label">Type de stock</label>
+			</div>
+
+			<div class="col-md-2">
+				<label class="form-label">Stock</label>
+			</div>
+
+			<div class="col-md-1">
+				<label class="form-label">Action</label>
+			</div>
+		</div>
+
+		<form class="row g-8 my-2" action="modifier-stock" method="post"
+			th:object="${Medicament}" th:each="medicament : ${medicaments}">
+
+			<div class="col-md-1">
+				<input class="form-control" type="number" hidden="true" id="id"
+					name="id" th:value="${medicament.idMedicament}" /> <label
+					class="form-control" th:text="${medicament.idMedicament}"></label>
+			</div>
+
+			<div class="col-md-2">
+				<label class="form-control disabled" id="nom"
+					th:value="${medicament.nom}"></label>
+			</div>
+
+			<div class="col-md-2">
+				<label class="form-control disabled" id="fonction"
+					th:text="${medicament.fonction}"></label>
+			</div>
+
+			<div class="col-md-2">
+				<label class="form-control disabled" id="qt"
+					th:text="${medicament.quantiteParBoite}"></label>
+			</div>
+
+			<div class="col-md-2">
+				<label class="form-control disabled" id="type"
+					th:text="${medicament.typeStock}"></label>
+			</div>
+
+			<div class="col-md-2">
+				<input class="form-control" type="number" id="stock" name="stock"
+					th:value="${medicament.stock}" />
+			</div>
+
+			<div class="col-md-1">
+				<input class="btn btn-primary" type="submit" value="Modifier" />
+			</div>
+
+		</form>
+		<br />
 		<footer
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
 	</div>

@@ -2,7 +2,6 @@ package fr.helpad.service;
 
 import java.util.List;
 
-import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Personne;
 
 public interface PersonneService {

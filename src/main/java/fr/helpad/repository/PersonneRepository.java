@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import fr.helpad.entity.Personne;
 
-@Repository
 public interface PersonneRepository extends CrudRepository<Personne, Long> {
 
     @Query(value = "SELECT p FROM Personne p WHERE p.email = ?1 "

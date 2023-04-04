@@ -26,6 +26,7 @@ public class Candidature {
     @Column(name="declaration_exactitude_des_informations")
     private String declarationExactitudeDesInformations;
     private String numeroRef;
+    private String fileName;
     public Candidature() {
     }
 
@@ -103,5 +104,14 @@ public class Candidature {
 	public void setNumeroRef(String numeroRef) {
 		this.numeroRef = numeroRef;
 	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
     
 }

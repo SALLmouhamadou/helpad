@@ -16,10 +16,10 @@
 		<nav
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 	</div>
-	<form class="p-2" id="myForm" action="sendAdmission" method="post"
+	<form class="p-2" id="myForm" action="sendAdmission" method="post" enctype="multipart/form-data"
 		th:object="${candidat}">
 		<h1 align=center>Formulaire de demande d'admission</h1>
-
+		
 		<div style="text-align: center;">
 			<span class="step" id="step-1">Identité</span> <span class="step"
 				id="step-2">Adresse</span> <span class="step" id="step-3">Candidautres</span>
@@ -45,7 +45,7 @@
 
 		<div class="tab" id="tab-2">
 			<p>Adresse:</p>
-			<input type="text" placeholder="N° " name="numero" required>
+			<input type="number" placeholder="N° " name="numero" required>
 			<input type="text" placeholder="Rue" name="rue" required> <input
 				type="text" placeholder="ville" name="ville" required> <input
 				type="text" placeholder="Code postale" name="codePostal" required>

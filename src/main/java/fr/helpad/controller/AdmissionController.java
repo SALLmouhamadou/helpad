@@ -26,11 +26,14 @@ import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
 import fr.helpad.service.CandidatService;
+import fr.helpad.service.StorageService;
 
 @Controller
 public class AdmissionController {
 	@Autowired
 	CandidatService candidatService;
+	@Autowired
+	StorageService storageService;
 
 	@GetMapping("/admission")
 	public String getAdmission() {
@@ -50,17 +53,19 @@ public class AdmissionController {
 	public String saveCandidature(@ModelAttribute Candidat candidat, @ModelAttribute Candidature candidature,
 			@ModelAttribute Adresse adresse, 
 			HttpServletRequest request, 
-			HttpServletResponse response
-			//@RequestParam("file") MultipartFile file
+			HttpServletResponse response,
+			@RequestParam("file") MultipartFile file
 			)throws IOException{
 		
 		String revenu = request.getParameter("revenu");
 		double revenuAnnuelle = Double.parseDouble(revenu);
 		candidat.setRevenu(revenuAnnuelle);
 		candidat.setAdresse(adresse);
+		candidature.setFileName(storageService.store(file));
 		List<Candidature> candidatures = new ArrayList<Candidature>();
 		candidatures.add(candidature);
 		candidat.setMesCandidatures(candidatures);
+		
 		candidatService.sauveCandidat(candidat);
 		
 		return "redirect:confirmation";

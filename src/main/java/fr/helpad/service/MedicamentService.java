@@ -33,4 +33,9 @@ public class MedicamentService implements MedicamentServiceI {
 	public Medicament get(Long id) throws NoSuchElementException {
 		return repo.findById(id).get();
 	}
+
+	@Override
+	public List<Medicament> getByNom(String nom) throws NoSuchElementException {
+		return repo.getByNom(nom);
+	}
 }

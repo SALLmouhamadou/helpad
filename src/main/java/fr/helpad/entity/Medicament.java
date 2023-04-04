@@ -27,7 +27,7 @@ public class Medicament implements Serializable {
 	@Column(name = "QUANTITE_PAR_BOITE", unique = false, nullable = false)
 	private int quantiteParBoite;
 
-	enum typeMedicament {
+	public enum typeMedicament {
 		LIQUIDE, UNITAIRE, INHALATION
 	}
 
@@ -53,6 +53,20 @@ public class Medicament implements Serializable {
 
 	public Medicament() {
 		super();
+	}
+
+	/**
+	 * @return the quantiteParBoite
+	 */
+	public int getQuantiteParBoite() {
+		return quantiteParBoite;
+	}
+
+	/**
+	 * @param quantiteParBoite the quantiteParBoite to set
+	 */
+	public void setQuantiteParBoite(int quantiteParBoite) {
+		this.quantiteParBoite = quantiteParBoite;
 	}
 
 	/**

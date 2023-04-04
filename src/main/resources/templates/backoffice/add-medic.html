@@ -11,35 +11,44 @@
 	<div class="container">
 		<nav
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
-	
-	</div>
-	<h2>Formulaire d'ajout de médicament</h2>
-	<p></p>
-		<form action="AddMedic" method="post" th:object="${Medicament}">
-			<div> 
-				<input type="text" id="nom" name="nom" placeholder="Nom" aria-label="Nom">
+		<h2>Formulaire d'ajout de médicament</h2>
+		<p></p>
+		<div th:text="${message}" th:class="${alertClass}"></div>
+		<form action="ajout-medicament" method="post"
+			th:object="${Medicament}">
+			<div>
+				<input type="text" id="nom" name="nom" placeholder="Nom"
+					aria-label="Nom">
 			</div>
-			<div> 
-				<input type="text" id="fonction" name="fonction" placeholder="Fonction" aria-label="Fonction">
+			<div>
+				<input type="text" id="fonction" name="fonction"
+					placeholder="Fonction" aria-label="Fonction">
 			</div>
-			<div> 
-				<input type="number" id="stock" name="stock" placeholder="Quantité" aria-label="Quantité">
+			<div>
+				<input type="number" id="stock" name="stock"
+					placeholder="Quantité stockée" aria-label="Quantité">
 			</div>
-			<div> 
-			<p>Type de stockage : </p>
-			<input type="radio" id="type1" name="typeStock"
-				value="LIQUIDE"> <label for="type1">Liquide</label>
-				<input type="radio" id="type2" name="typeStock"
-				value="UNITAIRE"> <label for="type2">Unitaire</label>
-				<input type="radio" id="type3" name="typeStock"
-				value="INHALATION"> <label for="type3">Inhalation</label>
+			<div>
+				<input type="number" id="quantiteParBoite" name="quantiteParBoite"
+					placeholder="Quantité par boîte" aria-label="Quantité">
 			</div>
-			<div> 
-				<input type="number" id="consoMois" name="consoMois" placeholder="0" value="0" hidden="true" aria-label="Quantité">
+			<div>
+				<p>Type de stockage :</p>
+				<input type="radio" id="type1" name="typeStock" value="LIQUIDE">
+				<label for="type1">Liquide</label> <input type="radio" id="type2"
+					name="typeStock" value="UNITAIRE" checked="checked"> <label
+					for="type2">Unitaire</label> <input type="radio" id="type3"
+					name="typeStock" value="INHALATION"> <label for="type3">Inhalation</label>
+			</div>
+			<div>
+				<input type="number" id="consoMois" name="consoMois" placeholder="0"
+					value="0" hidden="true" aria-label="Quantité">
 			</div>
 			<button type="submit" class="btn btn-primary">Envoyer</button>
 		</form>
-	<footer
-		th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
+		<br />
+		<footer
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
+	</div>
 </body>
 </html>

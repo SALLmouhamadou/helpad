@@ -10,7 +10,7 @@ import fr.helpad.entity.Medicament;
 import fr.helpad.repository.MédicamentRepository;
 
 @Service("medicamentBusiness")
-public class MédicamentService implements MédicamentServiceI {
+public class MedicamentService implements MedicamentServiceI {
 	@Autowired
 	MédicamentRepository repo;
 
@@ -32,5 +32,10 @@ public class MédicamentService implements MédicamentServiceI {
 	@Override
 	public Medicament get(Long id) throws NoSuchElementException {
 		return repo.findById(id).get();
+	}
+
+	@Override
+	public List<Medicament> getByNom(String nom) throws NoSuchElementException {
+		return repo.getByNom(nom);
 	}
 }

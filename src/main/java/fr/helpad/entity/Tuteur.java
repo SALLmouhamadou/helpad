@@ -6,13 +6,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "idPersonne")
-public class Tuteur extends Personne{
-	@Column(name="lien_parentee")
+public class Tuteur extends Personne {
+	@Column(name = "lien_parentee")
 	private String lienParentee;
-	
-	
-	
-	
-	
-	
+
 }

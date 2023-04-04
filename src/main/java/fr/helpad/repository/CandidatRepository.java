@@ -6,7 +6,6 @@ import fr.helpad.service.CandidatService;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public interface CandidatRepository extends CrudRepository<Candidat, Long> {
 
 }

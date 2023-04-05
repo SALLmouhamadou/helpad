@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,8 +26,10 @@ public class Candidature {
     private String conditionGeneral;
     @Column(name="declaration_exactitude_des_informations")
     private String declarationExactitudeDesInformations;
-    private String numeroRef;
+    private String numeroRef="HELP1002";
     private String fileName;
+    @OneToOne
+    private Candidat candidat;
     public Candidature() {
     }
 
@@ -39,6 +42,20 @@ public class Candidature {
     
 
 	public Candidature(String pathologie, String informationComplementaire, LocalDate jourDeCandidature,
+			String conditionGeneral, String declarationExactitudeDesInformations, String numeroRef, String fileName,
+			Candidat candidat) {
+		super();
+		this.pathologie = pathologie;
+		this.informationComplementaire = informationComplementaire;
+		this.jourDeCandidature = jourDeCandidature;
+		this.conditionGeneral = conditionGeneral;
+		this.declarationExactitudeDesInformations = declarationExactitudeDesInformations;
+		this.numeroRef = numeroRef;
+		this.fileName = fileName;
+		this.candidat = candidat;
+	}
+
+	public Candidature(String pathologie, String informationComplementaire, LocalDate jourDeCandidature,
 			String conditionGeneral, String declarationExactitudeDesInformations, String numeroRef) {
 		super();
 		this.pathologie = pathologie;
@@ -46,7 +63,7 @@ public class Candidature {
 		this.jourDeCandidature = jourDeCandidature;
 		this.conditionGeneral = conditionGeneral;
 		this.declarationExactitudeDesInformations = declarationExactitudeDesInformations;
-		this.numeroRef += "HEL100";
+		this.numeroRef=numeroRef;
 	}
 
 	public Long getIdCandidature() {
@@ -111,6 +128,14 @@ public class Candidature {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public Candidat getCandidat() {
+		return candidat;
+	}
+
+	public void setCandidat(Candidat candidat) {
+		this.candidat = candidat;
 	}
 	
     

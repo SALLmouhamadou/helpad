@@ -23,12 +23,17 @@ public class WebSecurityConfig {
 
 			.authorizeHttpRequests(authorize -> authorize
 				.mvcMatchers("/admin/**").hasRole("ADMIN")
-				//.mvcMatchers("/user/**").hasRole("user")
+				//.mvcMatchers("/user/**").hasRole("USER")
 				.anyRequest().permitAll()
 			)
 			.formLogin()
 			.loginPage("/login")
+			.usernameParameter("email")
+			.loginProcessingUrl("/process-login")
+			.defaultSuccessUrl("/")
+			.failureUrl("/login?error=true")
 			.permitAll();
+			
 			
 
 		return http.build();

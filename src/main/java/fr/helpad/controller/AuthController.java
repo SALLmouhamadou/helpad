@@ -50,7 +50,7 @@ public class AuthController {
             } else {
             	try {
             		personneService.save(personne);
-                    mv.setViewName("redirect:/");
+                    mv.setViewName("redirect:/login");
             	}catch(Exception e){
             		List<Role> roles = roleServiceImpl.getRoles();
                     mv.addObject("roles", roles);

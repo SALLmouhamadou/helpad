@@ -34,7 +34,7 @@ public class PersonneServiceImpl implements PersonneService {
 
 	@Override
 	public void save(Personne user) {
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		//user.setPassword(passwordEncoder.encode(user.getPassword()));
 		personneRepository.save(user);
 	}
 	@Override

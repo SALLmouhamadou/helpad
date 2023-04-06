@@ -30,8 +30,8 @@ public class AdmissionController {
 	CandidatService candidatService;
 	@Autowired
 	StorageService storageService;
-	@Autowired 
-	CandidatureServiceImpl candidatureServiceImpl; 
+	@Autowired
+	CandidatureServiceImpl candidatureServiceImpl;
 
 	@GetMapping("/admission")
 	public String getAdmission() {
@@ -39,14 +39,13 @@ public class AdmissionController {
 	}
 
 	@GetMapping("/mesCandidatures/{id}")
-	public ModelAndView getAllCandiduturesById(@PathVariable("id")Long id,ModelAndView mav) {
+	public ModelAndView getAllCandiduturesById(@PathVariable("id") Long id, ModelAndView mav) {
 		List<Candidature> candidaturesById = candidatureServiceImpl.getCandidaturesById(id);
 		mav.addObject("candidature", candidaturesById);
 		mav.setViewName("frontoffice/mesCandidatures");
 		return mav;
 	}
-	
-	
+
 	@GetMapping("/confirmation")
 	public String getConfirmationAdmission() {
 		return "frontoffice/confirmationAdmission";
@@ -54,12 +53,9 @@ public class AdmissionController {
 
 	@PostMapping("/sendAdmission")
 	public String saveCandidature(@ModelAttribute Candidat candidat, @ModelAttribute Candidature candidature,
-			@ModelAttribute Adresse adresse, 
-			HttpServletRequest request, 
-			HttpServletResponse response,
-			@RequestParam("file") MultipartFile file
-			)throws IOException{
-		
+			@ModelAttribute Adresse adresse, HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("file") MultipartFile file) throws IOException {
+
 		String revenu = request.getParameter("revenu");
 		double revenuAnnuelle = Double.parseDouble(revenu);
 		candidat.setRevenu(revenuAnnuelle);
@@ -68,9 +64,18 @@ public class AdmissionController {
 		List<Candidature> candidatures = new ArrayList<Candidature>();
 		candidatures.add(candidature);
 		candidat.setMesCandidatures(candidatures);
-		
+
 		candidatService.sauveCandidat(candidat);
-		
+
 		return "redirect:confirmation";
+	}
+
+	@GetMapping("/consulter/{id}")
+	public ModelAndView getDetailCandidature(@PathVariable("id") Long id, ModelAndView mav) {
+		Candidat candidat = candidatService.get(id);
+		mav.addObject("candidat", candidat);
+		mav.addObject("title", "Recapitilatif");
+		mav.setViewName("frontoffice/recapitilatif");
+		return mav;
 	}
 }

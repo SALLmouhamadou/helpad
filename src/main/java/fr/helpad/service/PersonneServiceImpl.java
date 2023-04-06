@@ -34,19 +34,19 @@ public class PersonneServiceImpl implements PersonneService {
 
 	@Override
 	public void save(Personne user) {
-		//user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		personneRepository.save(user);
 	}
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Personne user = findByUsername(username).
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		Personne user = findByUsername(email).
 						orElseThrow(()-> new UsernameNotFoundException("inconnu"));
 		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 		Set<Role> roles = user.getRoles();
 		for (Role role : roles) {
 			auths.add(new SimpleGrantedAuthority(role.getLibelle()));
 		}
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), auths);
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), auths);
 	}
 
 }

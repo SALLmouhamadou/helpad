@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Recaptilatifs</title>
+</head>
+<body>
+	<div th:each="candidat : ${candidat}">
+		<h3>Informations d'identité</h3>
+		<p th:text="${candidat.nom}"></p>
+		<p th:text="${candidat.prenom}"></p>
+		<p th:text="${candidat.email}"></p>
+		<p th:text="${candidat.telephone}"></p>
+		<p th:text="${candidat.dateNaissance}"></p>
+	</div>
+	<div>
+		<h3>Adresse</h3>
+		<p th:text="${candidat.adresse.numero}"></p>
+		<p th:text="${candidat.adresse.rue}"></p>
+		<p th:text="${candidat.adresse.ville}"></p>
+		<p th:text="${candidat.adresse.codePostal}"></p>
+		<p th:text="${candidat.adresse.pays}"></p> 
+	</div>
+	<div th:each="candidature : ${candidat.mesCandidatures}">
+		<h3>Information du candidature</h3>
+		<p th:text="${candidature.numeroRef}"></p>
+		<p th:text="${candidature.pathologie}"></p>
+		<p th:text="${candidature.jourDeCandidature}"></p>
+		<p th:text="${candidature.informationComplementaire}"></p>
+		<p th:text="${candidature.declarationExactitudeDesInformations}"></p>
+		<p th:text="${candidature.conditionGeneral}"></p>
+		
+	</div>
+</body>
+</html>

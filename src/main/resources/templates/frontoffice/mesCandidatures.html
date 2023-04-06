@@ -27,7 +27,7 @@
 				<th th:text="${candidature.numeroRef}"></th>
 				<td th:text="${candidature.jourDeCandidature}"></td>
 				<td></td>
-				<td><a>
+				<td><a th:href="@{/consulter/{id}}">
 						<Button class="btn btn-primary">Consulter</Button>
 				</a></td>
 			</tr>

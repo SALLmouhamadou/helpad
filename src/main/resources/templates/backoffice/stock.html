@@ -13,7 +13,7 @@
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 		<h2>Inventaire de médicament</h2>
 		<p></p>
-		<div th:text="${message}" th:class="${alertClass}"></div>
+		<div th:text="${message}" th:class="${alertClass}" role="alert"></div>
 		<form action="rechercher-medicament" method="post">
 			<div class="md-2 row g-8 my-2">
 				<div class="col-md-2">

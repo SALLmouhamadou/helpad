@@ -13,6 +13,8 @@
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 		<h2>Formulaire d'ajout de médicament</h2>
 		<p></p>
+		<div th:text="${message}" th:class="${alertClass}" role="alert"></div>
+		<p></p>
 		<div class="row g-12 text-center">
 			<div class="col-md-2">
 				<label class="form-label">Nom</label>
@@ -33,7 +35,7 @@
 				<label class="form-label">Action</label>
 			</div>
 		</div>
-		<div th:text="${message}" th:class="${alertClass}"></div>
+
 		<form action="ajout-medicament" method="post"
 			th:object="${Medicament}">
 			<div class="row g-12 my-1 text-center">
@@ -68,7 +70,9 @@
 					</div>
 				</div>
 				<div class="col-md-2">
-					<button type="submit" class="btn btn-primary">Envoyer</button>
+					<button type="submit" class="btn btn-primary mb-2">Envoyer</button>
+					<br /> <a class="btn btn-secondary" type="button"
+						th:href="@{/inventaire}">Retour</a>
 				</div>
 			</div>
 			<div>

@@ -19,12 +19,15 @@ import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Medicament;
 import fr.helpad.entity.Medicament.typeMedicament;
 import fr.helpad.service.MedicamentServiceI;
+import fr.helpad.service.PrescriptionServiceI;
 
 @Controller
 public class InfirmerieController {
 
 	@Autowired
 	MedicamentServiceI service;
+	@Autowired
+	PrescriptionServiceI pres;
 
 	@GetMapping("/inventaire")
 	public String inventory(Model model) {
@@ -35,6 +38,22 @@ public class InfirmerieController {
 	@GetMapping("/ajouter-medicament")
 	public String addMedic() {
 		return "backoffice/add-medic";
+	}
+	
+	@GetMapping("/prevision-medicament")
+	public String verifStock(Model model) {
+		
+		List<Medicament> medocs = service.listerTout();
+		List<Medicament> renouveler = new ArrayList<>();
+		
+		for (Medicament medic : medocs) {
+			if (medic.getStock() < pres.getConsoMois(medic))
+				renouveler.add(medic);
+		}
+		
+		model.addAttribute("medicaments", renouveler);
+		
+		return "backoffice/verifier-stock";
 	}
 
 	@PostMapping("/rechercher-medicament")
@@ -110,7 +129,9 @@ public class InfirmerieController {
 		}
 
 		if (fonction.length() > 2 && fonction.length() < 40)
-			medicament.setFonction(fonction);
+			System.out.println("TODO");
+			//TODO
+			//medicament.setFonction(fonction);
 		else {
 			redirectAttributes.addFlashAttribute("message",
 					"Erreur : La fonction du médicament doit contenir entre 3 et 40 caractères.");

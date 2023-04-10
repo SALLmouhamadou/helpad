@@ -11,4 +11,5 @@ import fr.helpad.entity.Prescription;
 public interface PrescriptionServiceI extends BasicBusiness<Prescription> {
 	public List<Prescription> chercherParPensionnaire(@Param("pensionnaire") Pensionnaire pensionnaire);
 	public List<Prescription> chercherParMedicament(@Param("medicament") Medicament medicament);
+	public Long getConsoMois(@Param("medicament") Medicament medicament);
 }

@@ -2,9 +2,42 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Mes candidatures</title>
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
-	mes Candidatures
+	<div class="container">
+		<nav
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
+	</div>
+	<div class="container">
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Réference</th>
+				<th scope="col">crée le</th>
+				<th scope="col">Status</th>
+				<th scope="col">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="candidature :${candidature}">
+				<th th:text="${candidature.numeroRef}"></th>
+				<td th:text="${candidature.jourDeCandidature}"></td>
+				<td></td>
+				<td><a th:href="@{/consulter/{id}}">
+						<Button class="btn btn-primary">Consulter</Button>
+				</a></td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+
+	<div class="container">
+		<footer
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
+	</div>
 </body>
 </html>

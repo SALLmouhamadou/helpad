@@ -28,8 +28,8 @@ public class PersonneServiceImpl implements PersonneService {
     PasswordEncoder passwordEncoder;
 
     @Override
-	public Optional<Personne> findByUsername(String user) {
-		return personneRepository.findByUsername(user);
+	public Optional<Personne> findByEmail(String user) {
+		return personneRepository.findByEmail(user);
 	}
 
 	@Override
@@ -37,16 +37,32 @@ public class PersonneServiceImpl implements PersonneService {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		personneRepository.save(user);
 	}
-	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Personne user = findByUsername(email).
-						orElseThrow(()-> new UsernameNotFoundException("inconnu"));
-		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
-		Set<Role> roles = user.getRoles();
-		for (Role role : roles) {
-			auths.add(new SimpleGrantedAuthority(role.getLibelle()));
-		}
-		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), auths);
+//	@Override
+//	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//		Personne user = findByEmail(email).
+//						orElseThrow(()-> new UsernameNotFoundException("inconnu"));
+//		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
+//		Set<Role> roles = user.getRoles();
+//		for (Role role : roles) {
+//			auths.add(new SimpleGrantedAuthority(role.getLibelle()));
+//		}
+//		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), auths);
+//	}
+
+	public PersonneRepository getPersonneRepository() {
+		return personneRepository;
 	}
 
+	public void setPersonneRepository(PersonneRepository personneRepository) {
+		this.personneRepository = personneRepository;
+	}
+
+	public PasswordEncoder getPasswordEncoder() {
+		return passwordEncoder;
+	}
+
+	public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
+	}
+	
 }

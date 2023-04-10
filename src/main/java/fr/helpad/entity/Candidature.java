@@ -2,6 +2,7 @@ package fr.helpad.entity;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +29,8 @@ public class Candidature {
     private String declarationExactitudeDesInformations;
     private String numeroRef="HELP1002";
     private String fileName;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Status status;
     @OneToOne
     private Candidat candidat;
     public Candidature() {
@@ -55,15 +58,21 @@ public class Candidature {
 		this.candidat = candidat;
 	}
 
+	
+
 	public Candidature(String pathologie, String informationComplementaire, LocalDate jourDeCandidature,
-			String conditionGeneral, String declarationExactitudeDesInformations, String numeroRef) {
+			String conditionGeneral, String declarationExactitudeDesInformations, String numeroRef, String fileName,
+			Status status, Candidat candidat) {
 		super();
 		this.pathologie = pathologie;
 		this.informationComplementaire = informationComplementaire;
 		this.jourDeCandidature = jourDeCandidature;
 		this.conditionGeneral = conditionGeneral;
 		this.declarationExactitudeDesInformations = declarationExactitudeDesInformations;
-		this.numeroRef=numeroRef;
+		this.numeroRef = numeroRef;
+		this.fileName = fileName;
+		this.status = status;
+		this.candidat = candidat;
 	}
 
 	public Long getIdCandidature() {
@@ -137,6 +146,16 @@ public class Candidature {
 	public void setCandidat(Candidat candidat) {
 		this.candidat = candidat;
 	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+	
+	
 	
     
 }

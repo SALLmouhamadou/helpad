@@ -19,7 +19,7 @@
 	<form class="p-2" id="myForm" action="sendAdmission" method="post" enctype="multipart/form-data"
 		th:object="${candidat}">
 		<h1 align=center>Formulaire de demande d'admission</h1>
-		
+		<h3 class="text-danger" th:text="${error}"></h3>
 		<div style="text-align: center;">
 			<span class="step" id="step-1">Identité</span> <span class="step"
 				id="step-2">Adresse</span> <span class="step" id="step-3">Candidautres</span>
@@ -106,6 +106,7 @@
 					style="background: blue;">Valider</button>
 			</div>
 		</div>
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 	</form>
 	<div class="container">
 		<footer

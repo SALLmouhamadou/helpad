@@ -1,6 +1,4 @@
-package fr.helpad;
-
-import static org.springframework.security.config.Customizer.withDefaults;
+package fr.helpad.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,7 +27,7 @@ public class WebSecurityConfig {
 			.formLogin()
 			.loginPage("/login")
 			.usernameParameter("email")
-			.loginProcessingUrl("/process-login")
+			//.loginProcessingUrl("/process-login")
 			.defaultSuccessUrl("/")
 			.failureUrl("/login?error=true")
 			.permitAll();

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,10 +54,11 @@ public class AdmissionController {
 	}
 
 	@PostMapping("/sendAdmission")
-	public String saveCandidature(@ModelAttribute Candidat candidat, @ModelAttribute Candidature candidature,
+	public ModelAndView saveCandidature(ModelAndView mav,@ModelAttribute Candidat candidat, @ModelAttribute Candidature candidature,
 			@ModelAttribute Adresse adresse, HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("file") MultipartFile file) throws IOException {
-
+			@RequestParam("file") MultipartFile file,BindingResult errors) {
+		
+		try{
 		String revenu = request.getParameter("revenu");
 		double revenuAnnuelle = Double.parseDouble(revenu);
 		candidat.setRevenu(revenuAnnuelle);
@@ -64,10 +67,17 @@ public class AdmissionController {
 		List<Candidature> candidatures = new ArrayList<Candidature>();
 		candidatures.add(candidature);
 		candidat.setMesCandidatures(candidatures);
-
 		candidatService.sauveCandidat(candidat);
-
-		return "redirect:confirmation";
+		mav.setViewName("redirect:/confirmation");
+		return mav;
+		
+		}catch(Exception e) {
+			mav.addObject("candidat", candidat);
+			mav.addObject("error", "formulaire invalide merci de verifier votre saisi");
+			mav.setViewName("frontoffice/admission");
+		}
+		
+		return mav;
 	}
 
 	@GetMapping("/consulter/{id}")

@@ -1,13 +1,9 @@
 package fr.helpad.repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import fr.helpad.entity.Allergene;
 import fr.helpad.entity.Plat;
 import fr.helpad.entity.Repas;
 
@@ -19,5 +15,5 @@ public interface RepasRepository extends JpaRepository<Repas, Long> {
 
     List<Plat> findByNomContaining(String nom);
 
-    List<Plat> findByAllergenes(Allergene allergene);
+//    List<Plat> findByAllergene(Allergene allergene);
 }

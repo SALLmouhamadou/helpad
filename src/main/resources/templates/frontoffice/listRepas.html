@@ -19,14 +19,14 @@
         </thead>
         <tbody>
             <tr th:each="repas : ${repasList}">
-                <td th:text="${repas.id}"></td>
+                <td th:text="${repas.idRepas}"></td>
                 <td th:text="${repas.nom}"></td>
                 <td th:text="${repas.date}"></td>
-                <td th:text="${repas.heure}"></td>
+                <td th:text="${repas.horaire}"></td>
             </tr>
         </tbody>
     </table>
 
-    <a th:href="@{/repas/add}">Ajouter un repas</a>
+    <a th:href="@{/repas/addRepas}">Ajouter un repas</a>
 </body>
 </html>

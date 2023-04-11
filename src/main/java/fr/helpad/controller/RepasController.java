@@ -31,11 +31,11 @@ public class RepasController {
     @Autowired
     private AllergeneService allergeneService;
 
-    @GetMapping("")
+    @GetMapping("/list")
     public String showRepasList(Model model) {
         List<Repas> repasList = repasService.getAllRepas();
         model.addAttribute("repasList", repasList);
-        return "repas/listRepas";
+        return "frontoffice/listRepas";
     }
 
     @GetMapping("/addRepas")
@@ -45,21 +45,21 @@ public class RepasController {
         model.addAttribute("repas", new Repas());
         model.addAttribute("platList", platList);
         model.addAttribute("allergeneList", allergeneList);
-        return "repas/addRepas";
+        return "frontoffice/addRepas";
     }
 
     @PostMapping("/addRepas")
     public String addRepas(@ModelAttribute("repas") Repas repas, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            List<Plat> platList = platService.getAllPlats();
-            List<Allergene> allergeneList = allergeneService.getAllAllergenes();
-            model.addAttribute("platList", platList);
-            model.addAttribute("allergeneList", allergeneList);
-            return "repas/addRepas";
-        }
+//        if (result.hasErrors()) {
+//            List<Plat> platList = platService.getAllPlats();
+//            List<Allergene> allergeneList = allergeneService.getAllAllergenes();
+//            model.addAttribute("platList", platList);
+//            model.addAttribute("allergeneList", allergeneList);
+//            return "frontoffice/addRepas";
+//        }
 
         repasService.saveRepas(repas);
-        return "redirect:/repas";
+        return "redirect:/repas/list";
     }
     
     // autres méthodes pour éditer et supprimer les repas

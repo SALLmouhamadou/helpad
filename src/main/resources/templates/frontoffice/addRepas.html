@@ -8,19 +8,19 @@
 
 	<h1>Ajout de repas</h1>
 
-    <form method="post" th:object="${repas}">
-        <label>Nom :</label>
+    <form th:action="@{/repas/addRepas}" method="post" th:object="${repas}">
+<!--        <label>Nom :</label>
         <input type="text" th:field="*{nom}" />
-
+-->
         <label>Date :</label>
         <input type="date" th:field="*{date}" />
 
-        <label>Heure :</label>
-        <input type="time" th:field="*{heure}" />
+        <label>Horaire :</label>
+        <input type="text" th:field="*{horaire}" />
 
-        <input type="submit" value="Ajouter" />
+        <input type="submit" value="Accéder" />
     </form>
-
-    <a th:href="@{/repas}">Retour à la liste des repas</a>
+<!-- -->
+    <a th:href="@{/repas/list}">Retour à la liste des repas</a>
 </body>
 </html>

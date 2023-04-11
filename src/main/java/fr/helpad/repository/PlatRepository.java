@@ -1,9 +1,18 @@
 package fr.helpad.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import fr.helpad.entity.Allergene;
 import fr.helpad.entity.Plat;
 
-public interface PlatRepository extends CrudRepository<Plat, Long> {
+@Repository
+public interface PlatRepository extends JpaRepository<Plat, Long> {
+
+    List<Plat> findByNomContaining(String nom);
+
+    List<Plat> findByAllergenes(Allergene allergene);
 
 }

@@ -35,6 +35,24 @@ public class Pensionnaire extends Personne implements Serializable {
 	private List<Prescription> prescriptions;
 	@OneToOne
 	private Personne contactUrgence;
+	@ManyToMany
+	private List<Allergene> allergenes;
+
+	public List<Prescription> getPrescriptions() {
+		return prescriptions;
+	}
+
+	public void setPrescriptions(List<Prescription> prescriptions) {
+		this.prescriptions = prescriptions;
+	}
+
+	public List<Allergene> getAllergenes() {
+		return allergenes;
+	}
+
+	public void setAllergenes(List<Allergene> allergenes) {
+		this.allergenes = allergenes;
+	}
 
 	public Pensionnaire(String nom, String prenom, String email, String password, Chambre chambre, String noSecu,
 			List<Medecin> medecins, List<Visite> visites, List<Medicament> medicaments, Personne contactUrgence) {

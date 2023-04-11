@@ -14,21 +14,8 @@
 		<h2>Inventaire de médicament</h2>
 		<p></p>
 		<div th:text="${message}" th:class="${alertClass}"></div>
-		<form action="rechercher-medicament" method="post">
-			<div class="md-2 row g-8 my-2">
-				<div class="col-md-2">
-					<a class="btn btn-primary" type="button"
-						th:href="@{/ajouter-medicament}">Ajouter un Médicament</a>
-				</div>
-				<div class="col-md-3">
-					<input class="form-control" type="text" id="nom" name="nom"
-						placeholder="Rechercher par nom" />
-				</div>
-				<div class="col-md-3">
-					<input class="btn btn-primary" type="submit" value="Rechercher" />
-				</div>
-			</div>
-		</form>
+		<a class="btn btn-primary my-2" type="button"
+			th:href="@{/ajouter-medicament}">Ajouter un Médicament</a>
 		<h4>Veuillez sélectionner un médicament :</h4>
 
 		<div class="row g-8">

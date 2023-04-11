@@ -19,38 +19,38 @@ public class HelpadApplication {
 		
 		ApplicationContext appContext =SpringApplication.run(HelpadApplication.class, args);
 		
-		CandidatService candidat = appContext.getBean(CandidatService.class);
-		
-		Adresse a = new Adresse();
-		a.setCodePostal(91300);
-		a.setNumero(20);
-		a.setPays("FRANCE");
-		a.setRue("rue Vaugirard");
-		a.setVille("JUVISY");
-		
-		Adresse a1 = new Adresse();
-		a1.setCodePostal(91430);
-		a1.setNumero(51);
-		a1.setPays("FRANCE");
-		a1.setRue("rue des médecins");
-		a1.setVille("MASSY");
-		
-//		ArrayList<Candidature> mesCandidatures1= new ArrayList<Candidature>();
-//		mesCandidatures1.add(new Candidature("Asthmatique", "Complétement con" , LocalDate.now()));
-		
-		ArrayList<Candidature> mesCandidatures2= new ArrayList<Candidature>();
-		mesCandidatures2.add(new Candidature("Grippe", "Vraiment con" , LocalDate.now()));
-		
-		//Candidat c1 =new Candidat("SALL", "Mouhamadou", "0753051721","salllmouha10@gmail.com",a,"M", 
-		//		LocalDate.of(2000,05,31),LocalDate.of(2023,03,13), "1000599341125", "278654W", 40000, mesCandidatures1);
-		
-		Candidat c2 =new Candidat("ROUCHON", "Damien", "0753051721",
-				"damien.rouchon@gmail.com",a1 ,"M",LocalDate.of(1995,05,23),LocalDate.of(2023,03,13), 
-				"19505342252","1234567W", 60000, mesCandidatures2);
-		
-		//Scandidat.sauveCandidat(c1);
-		candidat.sauveCandidat(c2);
-		
+//		CandidatService candidat = appContext.getBean(CandidatService.class);
+//		
+//		Adresse a = new Adresse();
+//		a.setCodePostal(91300);
+//		a.setNumero(20);
+//		a.setPays("FRANCE");
+//		a.setRue("rue Vaugirard");
+//		a.setVille("JUVISY");
+//		
+//		Adresse a1 = new Adresse();
+//		a1.setCodePostal(91430);
+//		a1.setNumero(51);
+//		a1.setPays("FRANCE");
+//		a1.setRue("rue des médecins");
+//		a1.setVille("MASSY");
+//		
+////		ArrayList<Candidature> mesCandidatures1= new ArrayList<Candidature>();
+////		mesCandidatures1.add(new Candidature("Asthmatique", "Complétement con" , LocalDate.now()));
+//		
+//		ArrayList<Candidature> mesCandidatures2= new ArrayList<Candidature>();
+//		mesCandidatures2.add(new Candidature("Grippe", "Vraiment con" , LocalDate.now()));
+//		
+//		//Candidat c1 =new Candidat("SALL", "Mouhamadou", "0753051721","salllmouha10@gmail.com",a,"M", 
+//		//		LocalDate.of(2000,05,31),LocalDate.of(2023,03,13), "1000599341125", "278654W", 40000, mesCandidatures1);
+//		
+//		Candidat c2 =new Candidat("ROUCHON", "Damien", "0753051721",
+//				"damien.rouchon@gmail.com",a1 ,"M",LocalDate.of(1995,05,23),LocalDate.of(2023,03,13), 
+//				"19505342252","1234567W", 60000, mesCandidatures2);
+//		
+//		//Scandidat.sauveCandidat(c1);
+//		candidat.sauveCandidat(c2);
+//		
 //		ArrayList<Pensionnaire> pensionnaireList = new ArrayList<Pensionnaire>();
 //		ArrayList<Visite> visiteList = new ArrayList<Visite>();
 //		ArrayList<Medecin> medecinList = new ArrayList<>();

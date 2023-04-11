@@ -1,16 +1,20 @@
 package fr.helpad.entity;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,9 +32,14 @@ public class Personne {
 	private String telephone;
 	private String email;
 	private String password;
+	private String username;
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn(name = "ADRESSE")
 	private Adresse adresse;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	private Set<Role> roles;
+
+	
 
 	public Personne(String nom, String prenom, String email, String password) {
 		super();
@@ -38,6 +47,15 @@ public class Personne {
 		this.prenom = prenom;
 		this.email = email;
 		this.password = password;
+	}
+
+	public Personne(String nom, String prenom, String password, String username, Set<Role> roles) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.password = password;
+		this.username = username;
+		roles = new HashSet<>();
 	}
 
 	public Personne(String nom, String prenom, String telephone, String email, Adresse adresse) {
@@ -113,6 +131,23 @@ public class Personne {
 
 	public void setAdresse(Adresse adresse) {
 		this.adresse = adresse;
+	}
+	
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override

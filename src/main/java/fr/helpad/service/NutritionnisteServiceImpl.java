@@ -36,7 +36,7 @@ public class NutritionnisteServiceImpl implements NutritionnisteService {
 
 	@Override
 	public Nutritionniste login(String email, String password) {
-		return nutritionnisteRepo.findByEmail(email, password);
+		return nutritionnisteRepo.findByEmail(email);
 	}
 
 	public NutritionnisteRepository getNutritionnisteRepo() {

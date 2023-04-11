@@ -1,0 +1,28 @@
+<!DOCTYPE html> 
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Helpad</title>
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" href="../static/css/style.css"
+	th:href="@{/css/style.css}" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<nav
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
+	</div>
+		<h2 class="text-centre">Repas</h2>
+		
+		<form class="p-2" id="myForm" enctype="multipart/form-data" action="sendAdmission" method="post" th:object="${candidat}">
+      <h1 align = center>Repas</h1>
+      <p>Quelle date souhaitez vous ?</p>
+	<input type = "date" placeholder="Date entrée souhaitée" name="dateEntree" required>
+      
+
+    
+</body>
+</html>

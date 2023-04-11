@@ -23,7 +23,7 @@ public class Repas {
 	@ManyToMany
 	private List<Plat> plats;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private LocalDate dateRepas;
+	private LocalDate date;
 
 	public enum Horaire {
 		PETIT_DEJEUNER, DEJEUNER, GOUTER, SOUPER;
@@ -57,19 +57,19 @@ public class Repas {
 	 * @return the date
 	 */
 	public LocalDate getDate() {
-		return dateRepas;
+		return date;
 	}
 
 	/**
 	 * @param date the date to set
 	 */
 	public void setDate(LocalDate date) {
-		this.dateRepas = dateRepas;
+		this.date = date;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dateRepas, horaire, idRepas, plats);
+		return Objects.hash(date, horaire, idRepas, plats);
 	}
 
 	@Override
@@ -81,20 +81,20 @@ public class Repas {
 		if (getClass() != obj.getClass())
 			return false;
 		Repas other = (Repas) obj;
-		return Objects.equals(dateRepas, other.dateRepas) && horaire == other.horaire && Objects.equals(idRepas, other.idRepas)
+		return Objects.equals(date, other.date) && horaire == other.horaire && Objects.equals(idRepas, other.idRepas)
 				&& Objects.equals(plats, other.plats);
 	}
 
 	@Override
 	public String toString() {
-		return "Repas [idRepas=" + idRepas + ", horaire=" + horaire + ", plats=" + plats + ", date=" + dateRepas + "]";
+		return "Repas [idRepas=" + idRepas + ", horaire=" + horaire + ", plats=" + plats + ", date=" + date + "]";
 	}
 
 	public Repas(Horaire horaire, List<Plat> plats, LocalDate date) {
 		super();
 		this.horaire = horaire;
 		this.plats = plats;
-		this.dateRepas = date;
+		this.date = date;
 	}
 
 	public Repas(Long idRepas, Horaire horaire, List<Plat> plats, LocalDate date) {
@@ -102,7 +102,7 @@ public class Repas {
 		this.idRepas = idRepas;
 		this.horaire = horaire;
 		this.plats = plats;
-		this.dateRepas = date;
+		this.date = date;
 	}
 
 	public Repas() {

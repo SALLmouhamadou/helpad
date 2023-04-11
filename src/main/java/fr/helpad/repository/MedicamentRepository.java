@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import fr.helpad.entity.Medicament;
 
-public interface MédicamentRepository extends JpaRepository<Medicament, Long> {
+public interface MedicamentRepository extends JpaRepository<Medicament, Long> {
 	public List<Medicament> getByNom(String nom);
 }

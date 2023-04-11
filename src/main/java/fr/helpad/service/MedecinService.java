@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.helpad.entity.Medecin;
-import fr.helpad.repository.MédecinRepository;
+import fr.helpad.repository.MedecinRepository;
 
 @Service("medecinBusiness")
 public class MedecinService implements MedecinServiceI {
 	@Autowired
-	MédecinRepository repo;
+	MedecinRepository repo;
 
 	@Override
 	public Medecin sauvegarder(Medecin entity) {

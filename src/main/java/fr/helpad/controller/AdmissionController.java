@@ -43,6 +43,7 @@ public class AdmissionController {
 	public ModelAndView getAllCandiduturesById(@PathVariable("id") Long id, ModelAndView mav) {
 		List<Candidature> candidaturesById = candidatureServiceImpl.getCandidaturesById(id);
 		mav.addObject("candidatures", candidaturesById);
+		mav.addObject("title", "Espace usager");
 		mav.setViewName("frontoffice/mesCandidatures");
 		return mav;
 	}

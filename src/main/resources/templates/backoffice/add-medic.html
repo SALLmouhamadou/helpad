@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		<div th:text="${message}" th:class="${alertClass}"></div>
-		<form action="ajout-medicament" method="post"
+		<form th:action="ajout-medicament" method="post"
 			th:object="${Medicament}">
 			<div class="row g-12 my-1 text-center">
 				<div class="col-md-2">

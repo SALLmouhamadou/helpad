@@ -24,6 +24,7 @@ public class Repas {
 	private List<Plat> plats;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;
+	private String nom;
 
 	public enum Horaire {
 		PETIT_DEJEUNER, DEJEUNER, GOUTER, SOUPER;
@@ -107,6 +108,14 @@ public class Repas {
 
 	public Repas() {
 		super();
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 
 }

@@ -12,6 +12,6 @@ import fr.helpad.entity.Candidature;
 @Repository
 public interface CandidatureRepository extends CrudRepository<Candidature, Long> {
 	
-	@Query("SELECT c.mesCandidatures FROM Candidat c WHERE c.id = :idCandidat")
+	@Query("SELECT c  FROM Candidature c WHERE c.id = :idCandidat")
 	public List<Candidature> findAllCandidatureById(@Param("idCandidat")Long idCandidat);
 }

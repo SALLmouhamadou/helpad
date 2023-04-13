@@ -17,13 +17,13 @@
 		<thead>
 			<tr>
 				<th scope="col">Réference</th>
-				<th scope="col">crée le</th>
+				<th scope="col">Crée le</th>
 				<th scope="col">Status</th>
 				<th scope="col">Action</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="candidature :${candidature}">
+			<tr th:each="candidature :${candidatures}">
 				<th th:text="${candidature.numeroRef}"></th>
 				<td th:text="${candidature.jourDeCandidature}"></td>
 				<td></td>

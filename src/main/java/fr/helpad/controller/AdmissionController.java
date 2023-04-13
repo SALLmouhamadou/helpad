@@ -1,6 +1,5 @@
 package fr.helpad.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +25,7 @@ import fr.helpad.service.CandidatureServiceImpl;
 import fr.helpad.service.StorageService;
 
 @Controller
+
 public class AdmissionController {
 	@Autowired
 	CandidatService candidatService;
@@ -35,7 +34,7 @@ public class AdmissionController {
 	@Autowired
 	CandidatureServiceImpl candidatureServiceImpl;
 
-	@GetMapping("/admission")
+	@GetMapping("/getAdmission")
 	public String getAdmission() {
 		return "frontoffice/admission";
 	}
@@ -43,7 +42,7 @@ public class AdmissionController {
 	@GetMapping("/mesCandidatures/{id}")
 	public ModelAndView getAllCandiduturesById(@PathVariable("id") Long id, ModelAndView mav) {
 		List<Candidature> candidaturesById = candidatureServiceImpl.getCandidaturesById(id);
-		mav.addObject("candidature", candidaturesById);
+		mav.addObject("candidatures", candidaturesById);
 		mav.setViewName("frontoffice/mesCandidatures");
 		return mav;
 	}
@@ -56,7 +55,7 @@ public class AdmissionController {
 	@PostMapping("/sendAdmission")
 	public ModelAndView saveCandidature(ModelAndView mav,@ModelAttribute Candidat candidat, @ModelAttribute Candidature candidature,
 			@ModelAttribute Adresse adresse, HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("file") MultipartFile file,BindingResult errors) {
+			@RequestParam("file") MultipartFile file) {
 		
 		try{
 		String revenu = request.getParameter("revenu");

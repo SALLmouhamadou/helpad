@@ -16,7 +16,7 @@
 		<nav
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 	</div>
-	<form class="p-2" id="myForm" action="sendAdmission" method="post" enctype="multipart/form-data"
+	<form class="p-2" id="myForm" th:action="@{/sendAdmission}" method="post" enctype="multipart/form-data"
 		th:object="${candidat}">
 		<h1 align=center>Formulaire de demande d'admission</h1>
 		<h3 class="text-danger" th:text="${error}"></h3>

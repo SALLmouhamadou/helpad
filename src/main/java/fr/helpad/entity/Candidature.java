@@ -34,7 +34,6 @@ public class Candidature {
     @JoinColumn(name="id_status")
     private Status status;
     @OneToOne
-    //@JoinColumn(name="id_personne")
     private Candidat candidat;
     public Candidature() {
     }

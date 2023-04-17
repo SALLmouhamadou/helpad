@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,18 +38,34 @@ public class AdmissionController {
 		return "frontoffice/admission";
 	}
 
-	@GetMapping("/mesCandidatures/{id}")
-	public ModelAndView getAllCandiduturesById(@PathVariable("id") Long id, ModelAndView mav) {
+	@GetMapping("/dashboard/{id}")
+	public ModelAndView showDashbord(@PathVariable("id") Long id, ModelAndView mav) {
 		List<Candidature> candidaturesById = candidatureServiceImpl.getCandidaturesById(id);
+		Candidat candidat = candidatService.get(id);
 		mav.addObject("candidatures", candidaturesById);
+		mav.addObject("candidat", candidat);
 		mav.addObject("title", "Espace usager");
-		mav.setViewName("frontoffice/mesCandidatures");
+		mav.setViewName("frontoffice/espacepersonnel");
+		return mav;
+	}
+	@GetMapping("/dashboard/candidature/{id}")
+	public ModelAndView getAllCandiduturesById(@PathVariable("id") Long id, ModelAndView mav) {
+		List<Candidature> candidatures = candidatureServiceImpl.getCandidaturesById(id);
+		Candidat candidat = candidatService.get(id);
+		mav.addObject("candidatures", candidatures);
+		mav.addObject("candidat", candidat);
+		mav.addObject("title", "Mes candidatures");
+		mav.setViewName("frontoffice/candidature");
 		return mav;
 	}
 
 	@GetMapping("/confirmation")
 	public String getConfirmationAdmission() {
 		return "frontoffice/confirmationAdmission";
+	}
+	@GetMapping("/justificatifAFournir")
+	public String ShowJustificatif() {
+		return "frontoffice/justificatif";
 	}
 
 	@PostMapping("/sendAdmission")

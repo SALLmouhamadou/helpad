@@ -1,16 +1,11 @@
 package fr.helpad;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.io.IOException;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-
-import fr.helpad.entity.Adresse;
-import fr.helpad.entity.Candidat;
-import fr.helpad.entity.Candidature;
-import fr.helpad.service.CandidatService;
+import fr.helpad.service.WebGouvMedicService;
 
 @SpringBootApplication
 public class HelpadApplication {
@@ -18,6 +13,21 @@ public class HelpadApplication {
 	public static void main(String[] args) {
 		
 		ApplicationContext appContext =SpringApplication.run(HelpadApplication.class, args);
+		
+		System.out.println("L'application est initialisée, début de récupération des données.");
+
+		WebGouvMedicService webMedic = new WebGouvMedicService();
+		
+		System.out.println("Récupération des médicaments");
+		
+		try {
+			System.out.println(webMedic.setMedicaments());
+			System.out.println("Médicaments récupérés");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Echec de la récupération des médicaments.");
+		}
 		
 //		CandidatService candidat = appContext.getBean(CandidatService.class);
 //		

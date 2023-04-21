@@ -35,8 +35,13 @@
 				<label class="form-label">Action</label>
 			</div>
 		</div>
+<<<<<<< HEAD
 
 		<form action="ajout-medicament" method="post"
+=======
+		<div th:text="${message}" th:class="${alertClass}"></div>
+		<form th:action="ajout-medicament" method="post"
+>>>>>>> refs/remotes/origin/main
 			th:object="${Medicament}">
 			<div class="row g-12 my-1 text-center">
 				<div class="col-md-2">

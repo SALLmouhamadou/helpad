@@ -1,16 +1,28 @@
 package fr.helpad;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.ManyToMany;
+
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import fr.helpad.service.WebGouvMedicService;
+import org.springframework.context.annotation.Bean;
 
 import fr.helpad.entity.Adresse;
+import fr.helpad.entity.Allergene;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
+import fr.helpad.entity.Plat;
+import fr.helpad.entity.Repas;
+import fr.helpad.repository.PlatRepository;
 import fr.helpad.service.CandidatService;
+import fr.helpad.service.PlatService;
 
 @SpringBootApplication
 public class HelpadApplication {
@@ -18,6 +30,21 @@ public class HelpadApplication {
 	public static void main(String[] args) {
 		
 		ApplicationContext appContext =SpringApplication.run(HelpadApplication.class, args);
+		
+		System.out.println("L'application est initialisée, début de récupération des données.");
+
+		WebGouvMedicService webMedic = new WebGouvMedicService();
+		
+		System.out.println("Récupération des médicaments");
+		
+		try {
+			System.out.println(webMedic.setMedicaments());
+			System.out.println("Médicaments récupérés");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Echec de la récupération des médicaments.");
+		}
 		
 //		CandidatService candidat = appContext.getBean(CandidatService.class);
 //		
@@ -171,6 +198,21 @@ public class HelpadApplication {
 //		
 //		PrescriptionServiceI prBusiness = (PrescriptionService) appContext.getBean("prescrptionBusiness");
 //		pr = prBusiness.sauvegarder(pr);
+		
+		
 	}
+	@Bean
+	CommandLineRunner commandLineRunner(PlatService platService) {
+		return args->{
+			platService.sauvegarder(new Plat(null, null, "thieb"));
+			platService.sauvegarder(new Plat(null, null, "choucroute"));
+			platService.sauvegarder(new Plat(null, null, "couscous"));
+			platService.sauvegarder(new Plat(null, null, "poulet frit"));
+			platService.sauvegarder(new Plat(null, null, "souris d'agneau"));
+			
+			platService.listerTout().forEach(p->
+			System.out.println(p.getNom()));
 
+		};
+	}
 }

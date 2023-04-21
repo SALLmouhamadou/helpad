@@ -48,7 +48,7 @@
 			</div>
 		</div>
 
-		<form class="row g-8 my-2" action="modifier-stock" method="post"
+		<form class="row g-8 my-2" th:action="modifier-stock" method="post"
 			th:object="${Medicament}" th:each="medicament : ${medicaments}">
 
 			<div class="col-md-1">

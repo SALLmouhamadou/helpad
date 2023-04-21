@@ -13,8 +13,13 @@
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 		<h2>Inventaire de médicament</h2>
 		<p></p>
+<<<<<<< HEAD
 		<div th:text="${message}" th:class="${alertClass}" role="alert"></div>
 		<form action="rechercher-medicament" method="post">
+=======
+		<div th:text="${message}" th:class="${alertClass}"></div>
+		<form th:action="rechercher-medicament" method="post">
+>>>>>>> refs/remotes/origin/main
 			<div class="md-2 row g-8 my-2">
 				<div class="col-md-2">
 					<a class="btn btn-primary" type="button"

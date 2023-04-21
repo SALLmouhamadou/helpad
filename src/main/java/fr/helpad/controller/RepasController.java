@@ -5,23 +5,26 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import fr.helpad.entity.Allergene;
-import fr.helpad.entity.Plat;
 import fr.helpad.entity.Repas;
-import fr.helpad.service.AllergeneService;
-import fr.helpad.service.PlatService;
 import fr.helpad.service.RepasService;
 
 @Controller
-@RequestMapping("/repas")
 public class RepasController {
+	
+	@Autowired
+	RepasService repasService;
+	
+	@GetMapping("/repas")
+	public String repas(Model model, Repas repas) {
+		List<Repas> listRepas = repasService.listerTout();
+		model.addAttribute("listRepas", listRepas);
+		return "frontoffice/repas";
+	}
+	
 
+<<<<<<< HEAD
     @Autowired
     private RepasService repasService;
 
@@ -64,3 +67,6 @@ public class RepasController {
     
     // autres méthodes pour éditer et supprimer les repas
 }
+=======
+}
+>>>>>>> refs/remotes/origin/main

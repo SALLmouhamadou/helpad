@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 @Service
 @Transactional
@@ -15,8 +16,9 @@ public class CandidatServiceImpl implements CandidatService {
     CandidatRepository candidatRepository;
 
     @Override
-    public Candidat sauveCandidat(Candidat candidat) {
-        return candidatRepository.save(candidat);
+    public void sauveCandidat(Candidat candidat) {
+    	
+    	candidatRepository.save(candidat);
     }
 
     @Override

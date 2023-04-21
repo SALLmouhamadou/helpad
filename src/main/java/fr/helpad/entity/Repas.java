@@ -1,7 +1,6 @@
 package fr.helpad.entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -27,7 +24,13 @@ public class Repas {
 	private List<Plat> plats;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateRepas;
+<<<<<<< HEAD
 	private String nom;
+=======
+	private LocalDate date;
+	private String nom;
+
+>>>>>>> refs/remotes/origin/main
 	public enum Horaire {
 		PETIT_DEJEUNER, DEJEUNER, GOUTER, SOUPER;
 	}
@@ -59,14 +62,14 @@ public class Repas {
 	/**
 	 * @return the date
 	 */
-	public LocalDate getDate() {
+	public LocalDate getDateRepas() {
 		return dateRepas;
 	}
 
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDate dateRepas) {
 		this.dateRepas = dateRepas;
 	}
 
@@ -93,11 +96,11 @@ public class Repas {
 		return "Repas [idRepas=" + idRepas + ", horaire=" + horaire + ", plats=" + plats + ", date=" + dateRepas + "]";
 	}
 
-	public Repas(Horaire horaire, List<Plat> plats, LocalDate date) {
+	public Repas(Horaire horaire, List<Plat> plats, LocalDate dateRepas) {
 		super();
 		this.horaire = horaire;
 		this.plats = plats;
-		this.dateRepas = date;
+		this.dateRepas = dateRepas;
 	}
 
 	public Repas(Long idRepas, Horaire horaire, List<Plat> plats, LocalDate date) {
@@ -105,7 +108,7 @@ public class Repas {
 		this.idRepas = idRepas;
 		this.horaire = horaire;
 		this.plats = plats;
-		this.dateRepas = date;
+		this.dateRepas = dateRepas;
 	}
 
 	public Repas() {

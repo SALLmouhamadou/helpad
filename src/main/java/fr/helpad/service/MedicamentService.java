@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.helpad.entity.Medicament;
-import fr.helpad.repository.MédicamentRepository;
+import fr.helpad.repository.MedicamentRepository;
 
 @Service("medicamentBusiness")
 public class MedicamentService implements MedicamentServiceI {
 	@Autowired
-	MédicamentRepository repo;
+	MedicamentRepository repo;
 
 	@Override
 	public Medicament sauvegarder(Medicament entity) {
@@ -32,5 +32,10 @@ public class MedicamentService implements MedicamentServiceI {
 	@Override
 	public Medicament get(Long id) throws NoSuchElementException {
 		return repo.findById(id).get();
+	}
+
+	@Override
+	public List<Medicament> getByNom(String nom) throws NoSuchElementException {
+		return repo.getByNom(nom);
 	}
 }

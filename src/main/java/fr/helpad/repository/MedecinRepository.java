@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import fr.helpad.entity.Medecin;
 
-public interface MédecinRepository extends CrudRepository<Medecin, Long> {
+public interface MedecinRepository extends CrudRepository<Medecin, Long> {
 
 }

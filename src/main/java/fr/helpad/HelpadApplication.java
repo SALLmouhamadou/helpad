@@ -1,12 +1,9 @@
 package fr.helpad;
 
-<<<<<<< HEAD
 import java.io.IOException;
-=======
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
->>>>>>> branch 'main' of https://github.com/SALLmouhamadou/helpad.git
 
 import javax.persistence.ManyToMany;
 
@@ -14,9 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-<<<<<<< HEAD
 import fr.helpad.service.WebGouvMedicService;
-=======
 import org.springframework.context.annotation.Bean;
 
 import fr.helpad.entity.Adresse;
@@ -28,7 +23,6 @@ import fr.helpad.entity.Repas;
 import fr.helpad.repository.PlatRepository;
 import fr.helpad.service.CandidatService;
 import fr.helpad.service.PlatService;
->>>>>>> branch 'main' of https://github.com/SALLmouhamadou/helpad.git
 
 @SpringBootApplication
 public class HelpadApplication {

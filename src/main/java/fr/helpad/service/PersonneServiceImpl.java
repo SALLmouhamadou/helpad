@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import fr.helpad.repository.PersonneRepository;
 
 @Service
 @Transactional
-public class PersonneServiceImpl implements PersonneService {
+public class PersonneServiceImpl implements PersonneService,UserDetailsService {
     @Autowired
     PersonneRepository personneRepository;
     @Autowired
@@ -28,7 +29,7 @@ public class PersonneServiceImpl implements PersonneService {
     PasswordEncoder passwordEncoder;
 
     @Override
-	public Optional<Personne> findByEmail(String user) {
+	public Optional<Personne> findByUsername(String user) {
 		return personneRepository.findByEmail(user);
 	}
 
@@ -37,17 +38,17 @@ public class PersonneServiceImpl implements PersonneService {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		personneRepository.save(user);
 	}
-//	@Override
-//	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//		Personne user = findByEmail(email).
-//						orElseThrow(()-> new UsernameNotFoundException("inconnu"));
-//		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
-//		Set<Role> roles = user.getRoles();
-//		for (Role role : roles) {
-//			auths.add(new SimpleGrantedAuthority(role.getLibelle()));
-//		}
-//		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), auths);
-//	}
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		Personne user = findByUsername(email).
+						orElseThrow(()-> new UsernameNotFoundException("inconnu"));
+		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
+		Set<Role> roles = user.getRoles();
+		for (Role role : roles) {
+			auths.add(new SimpleGrantedAuthority(role.getLibelle()));
+		}
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), auths);
+	}
 
 	public PersonneRepository getPersonneRepository() {
 		return personneRepository;

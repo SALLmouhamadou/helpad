@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+	<nav class="navbar bg-primary" data-bs-theme="dark">
+		<div class="container-fluid">
+			<a class="navbar-brand text-white ml-4" th:href="@{/}">HELPAD</a>
+			<ul class="nav justify-content-end">
+				<li class="nav-item"><a class="nav-link text-white"
+					aria-current="page" th:each="candidat:${candidat}"
+					th:href="@{/dashboard/{id}(id=${candidat.idPersonne})}">Espace
+						personnel</a></li>
+				<li class="nav-item"><a class="nav-link text-white"
+					th:each="candidature:${candidatures}"
+					th:href="@{/dashboard/candidature/{id}(id=${candidature.idCandidature})}">Mes
+						candidatures </a></li>
+			</ul>
+		</div>
+	</nav>
+	<h3 class="text-center p-4">Mes démarches</h3>
+	<div
+		class="container bg-white shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+		<div>
+			<p>
+				Selon le statut des demandes ci-dessous, en cliquant sur les
+				boutons, vous pouvez :<br>- les compléter ou supprimer, - les
+				consulter et accéder au suivi,<br>- répondre aux demandes de
+				compléments sur sollicitations des services de la Région.<br>
+				Le statut Eligible indique que le dossier remplit les conditions
+				requises pour bénéficier du financement de la demande. <br>Le
+				lien direct pour accéder à la présente plateforme ultérieurement est
+				https://helpad.fr<br>
+		</div>
+		<div class="p-5">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Réference</th>
+						<th scope="col">Crée le</th>
+						<th scope="col">Status</th>
+						<th scope="col">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="candidature :${candidatures}">
+						<th th:text="${candidature.numeroRef}"></th>
+						<td th:text="${candidature.jourDeCandidature}"></td>
+						<td></td>
+						<td><a
+							th:href="@{/consulter/{id}(id=${candidature.idCandidature})}">
+								<Button class="btn btn-primary">Consulter</Button>
+						</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

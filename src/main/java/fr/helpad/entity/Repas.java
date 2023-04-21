@@ -23,12 +23,9 @@ public class Repas {
 	@ManyToMany
 	private List<Plat> plats;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-<<<<<<< HEAD
 	private LocalDate dateRepas;
-=======
 	private LocalDate date;
 	private String nom;
->>>>>>> branch 'main' of https://github.com/SALLmouhamadou/helpad
 
 	public enum Horaire {
 		PETIT_DEJEUNER, DEJEUNER, GOUTER, SOUPER;

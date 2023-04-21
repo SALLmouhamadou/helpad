@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Repas</title>
+</head>
+<body>
+	<h2>Liste des repas</h2>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Horaire</th>
+				<th>Date</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="listRepas : ${listRepas}">
+				<td th:text="${listRepas.idRepas}"></td>
+				<td th:text="${listRepas.horaire}"></td>
+				<td th:text="${listRepas.dateRepas}"></td>
+			</tr>
+		</tbody>
+	
+	
+	</table>
+</body>
+</html>

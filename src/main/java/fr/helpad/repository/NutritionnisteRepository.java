@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import fr.helpad.entity.Nutritionniste;
 @Repository
 public interface NutritionnisteRepository extends JpaRepository<Nutritionniste, Long> {
-	public Nutritionniste findByEmail(String email);
+//	public Nutritionniste findByEmail(String email);
 	
 }

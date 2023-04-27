@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h2>liste de plats</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nom</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="listPlats : ${listPlats}">
+					<td th:text="${listPlats.idPlat}"></td>
+					<td th:text="${listPlats.nom}"></td>
+				</tr>
+			</tbody>
+		
+		</table>
+</body>
+</html>

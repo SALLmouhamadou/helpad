@@ -36,6 +36,6 @@ public class MedicamentService implements MedicamentServiceI {
 
 	@Override
 	public List<Medicament> getByNom(String nom) throws NoSuchElementException {
-		return repo.getByNom(nom);
+		return repo.findByNomContaining(nom);
 	}
 }

@@ -27,12 +27,14 @@ public class Personne {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_personne")
 	private Long idPersonne;
+	@Column(name="nom", nullable = false, unique = true)
 	private String nom;
+	@Column(name="prenom", nullable = false, unique = true)
 	private String prenom;
 	private String telephone;
+	@Column(name="email", nullable = false, unique = true)
 	private String email;
 	private String password;
-	private String username;
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn(name = "ADRESSE")
 	private Adresse adresse;
@@ -49,12 +51,11 @@ public class Personne {
 		this.password = password;
 	}
 
-	public Personne(String nom, String prenom, String password, String username, Set<Role> roles) {
+	public Personne(String nom, String prenom, String password, Set<Role> roles) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.password = password;
-		this.username = username;
 		roles = new HashSet<>();
 	}
 
@@ -133,14 +134,6 @@ public class Personne {
 		this.adresse = adresse;
 	}
 	
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public Set<Role> getRoles() {
 		return roles;

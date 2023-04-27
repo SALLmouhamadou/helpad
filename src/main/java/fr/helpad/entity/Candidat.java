@@ -18,14 +18,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Candidat extends Personne {
 	private String civilite;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name = "date_Naissance")
+	@Column(name = "date_Naissance", nullable = false)
 	private LocalDate dateNaissance;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "date_entree")
 	private LocalDate dateEntree;
-	@Column(name = "numero_security_social")
+	@Column(name = "numero_security_social", nullable = false,unique = true)
 	private String numeroSecuriteSocial;
-	@Column(name = "numero_de_caf")
+	@Column(name = "numero_de_caf", nullable= true, unique=true)
 	private String numeroDeCaf;
 	private double revenu;
 	
@@ -47,8 +47,6 @@ public class Candidat extends Personne {
 		this.revenu = revenu;
 		this.mesCandidatures = mesCandidatures;
 	}
-
-
 
 
 	public String getCivilite() {

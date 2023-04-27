@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
+import fr.helpad.entity.Status;
 import fr.helpad.service.CandidatService;
 import fr.helpad.service.CandidatureServiceImpl;
 import fr.helpad.service.StorageService;
@@ -34,7 +36,7 @@ public class AdmissionController {
 	CandidatureServiceImpl candidatureServiceImpl;
 
 	@GetMapping("/getAdmission")
-	public String getAdmission() {
+	public String showAdmissionForm() {
 		return "frontoffice/admission";
 	}
 
@@ -70,15 +72,27 @@ public class AdmissionController {
 
 	@PostMapping("/sendAdmission")
 	public ModelAndView saveCandidature(ModelAndView mav,@ModelAttribute Candidat candidat, @ModelAttribute Candidature candidature,
-			@ModelAttribute Adresse adresse, HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("file") MultipartFile file) {
-		
+			@ModelAttribute Adresse adresse,@ModelAttribute Status status, HttpServletRequest request, HttpServletResponse response,
+			@RequestParam("file") MultipartFile[] file,BindingResult errors) {
+		if(errors.hasErrors()) {
+            mav.setViewName("redirect:/getAdmission");
+		}
 		try{
 		String revenu = request.getParameter("revenu");
 		double revenuAnnuelle = Double.parseDouble(revenu);
 		candidat.setRevenu(revenuAnnuelle);
 		candidat.setAdresse(adresse);
-		candidature.setFileName(storageService.store(file));
+		candidature.setStatus(status);
+		
+		candidature.setFileName1(storageService.store(file));
+		candidature.setFileName2(storageService.store(file));
+		candidature.setFileName3(storageService.store(file));
+		candidature.setFileName4(storageService.store(file));
+		candidature.setFileName5(storageService.store(file));
+		candidature.setFileName6(storageService.store(file));
+		candidature.setFileName7(storageService.store(file));
+		candidature.setFileName8(storageService.store(file));
+		candidature.setFileName9(storageService.store(file));
 		List<Candidature> candidatures = new ArrayList<Candidature>();
 		candidatures.add(candidature);
 		candidat.setMesCandidatures(candidatures);

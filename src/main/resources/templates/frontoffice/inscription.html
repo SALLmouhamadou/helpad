@@ -6,6 +6,7 @@
 <link rel="stylesheet" type="text/css"
 	href="../static/css/bootstrap.min.css"
 	th:href="@{/css/bootstrap.min.css}" />
+<script href="../static/js/inscriptionForm.js" th:src="@{/js/inscriptionForm.js}"></script>
 </head>
 <body>
 	<!-- form -->
@@ -19,29 +20,28 @@
 						class="img-fluid" alt="Sample image">
 				</div>
 				<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-					<!--<div class="row justify-content-center align-items-center h-100">-->
-
 					<div class="card-body p-4 p-md-5">
 						<h3 class="mb-4 pb-2 pb-md-0 mb-md-5">S'incrire</h3>
-						<form th:action="@{/user/add}" method="post"
+						<form th:action="@{/user/add}" method="post" name="inscriptionForm"
 							th:object="${personne}">
 
 							<div class="row">
 								<div class="col-md-6 mb-4">
 
 									<div class="form-outline">
-										<label class="form-label" for="firstName">Prénom </label> <input
+										 <span class="text-danger" id="errorfirstname"></span>
+										<label class="form-label" for="firstName">Prénom</label> <input
 											type="text" th:field="*{prenom}" id="firstName"
-											class="form-control form-control-lg" />
+											class="form-control form-control-lg" required/>
 									</div>
 
 								</div>
 								<div class="col-md-6 mb-4">
-
+									<span class="text-danger" id="errorlastname"></span>
 									<div class="form-outline">
 										<label class="form-label" for="lastName">Nom</label> <input
 											type="text" th:field="*{nom}" id="lastName"
-											class="form-control form-control-lg" />
+											class="form-control form-control-lg" required/>
 									</div>
 
 								</div>
@@ -51,18 +51,20 @@
 
 
 								<div class="col-md-6 mb-4 pb-2">
+								<span class="text-danger" id="erroremailaddress"></span>
 									<div class="form-outline">
 										<label class="form-label" for="emailAddress">Email</label> <input
 											type="email" th:field="*{email}" id="emailAddress"
-											class="form-control form-control-lg" />
+											class="form-control form-control-lg" required/>
 									</div>
 								</div>
 								<div class="col-md-6 mb-4 pb-2">
+								<span class="text-danger" id="errorpassword"></span>
 									<div class="form-outline mb-3">
-										<label class="form-label" for="form3Example4">Mot de
+										<label class="form-label" for="password">Mot de
 											passe</label> <input type="password" th:field="*{password}"
-											id="form3Example4" class="form-control form-control-lg"
-											placeholder="" />
+											id="password" class="form-control form-control-lg"
+											placeholder="" required/>
 									</div>
 									<div th:each="personne : ${personne}">
 										<input type="text" th:each="role :${personne.roles}"

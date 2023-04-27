@@ -33,6 +33,7 @@ public class CandidatServiceImpl implements CandidatService {
 
     @Override
     public void delete(Long id) {
-
+    	
     }
+    
 }

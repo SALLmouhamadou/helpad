@@ -51,7 +51,7 @@
 					<tr th:each="candidature :${candidatures}">
 						<th th:text="${candidature.numeroRef}"></th>
 						<td th:text="${candidature.jourDeCandidature}"></td>
-						<td></td>
+						<td th:text="${candidature.status.libelle}"></td>
 						<td><a
 							th:href="@{/consulter/{id}(id=${candidature.idCandidature})}">
 								<Button class="btn btn-primary">Consulter</Button>

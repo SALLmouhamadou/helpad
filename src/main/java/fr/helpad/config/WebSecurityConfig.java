@@ -20,7 +20,7 @@ public class WebSecurityConfig {
 		http
 
 			.authorizeHttpRequests(authorize -> authorize
-				.mvcMatchers("/admin/**").hasRole("ADMIN")
+				//.mvcMatchers("/admin/**").hasRole("ADMIN")
 				//.mvcMatchers("/user/**").hasRole("USER")
 				.anyRequest().permitAll()
 			)

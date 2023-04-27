@@ -16,4 +16,8 @@ public class CandidatureServiceImpl {
 	public List<Candidature> getCandidaturesById(Long id){
 		return (List<Candidature>)candidatureRepository.findAllCandidatureById(id);
 	}
+	
+	public List<Candidature> FindAllCandidatures(){
+		return (List<Candidature>) candidatureRepository.findAll();
+	}
 }

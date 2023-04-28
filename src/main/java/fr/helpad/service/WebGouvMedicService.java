@@ -1,14 +1,21 @@
 package fr.helpad.service;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +25,12 @@ import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.repository.WebGouvMedicRepository;
 
 public class WebGouvMedicService implements WebGouvMedicServiceI {
-	
-	private static final Pattern specialitesPattern = Pattern.compile("(\\d*)	((.*), (.*)|(.*))	(.*)" + 
-			"	(Autorisation .*)	(.*)	(.*)	(.*)	(.*)	(.*)	(.*)	(Oui|Non)\\n", Pattern.CASE_INSENSITIVE);
-	
+
+	private static final Pattern specialitesPattern = Pattern.compile(
+			"(\\d*)	((.*), (.*)|(.*))	(.*)"
+					+ "	(Autorisation .*)	(.*)	(.*)	(.*)	(.*)	(.*)	(.*)	(Oui|Non)\\n",
+			Pattern.CASE_INSENSITIVE);
+
 	@Autowired
 	WebGouvMedicRepository repo;
 
@@ -47,23 +56,95 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 
 	@Override
 	public boolean setMedicaments() throws MalformedURLException, IOException, ProtocolException {
-		final URL url = new URL("https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt");
+		// On établit une connexion avec le serveur de medicament.gouv.fr afin d'obtenir
+		// le fichier CIS_bdpm.txt contenant une liste
+		// de médicaments dont le commerce est ou a été autorisé en France.
+		final URL url = new URL(
+				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt");
+		System.out.println("Etablissement de la connexion à " + url.toString());
 		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+		// On obtient la taille du fichier à télécharger
 		httpConnection.setRequestMethod("HEAD");
 		long removeFileSize = httpConnection.getContentLengthLong();
-		
-		try (BufferedInputStream in = new BufferedInputStream(url.openStream());
-				  FileOutputStream fileOutputStream = new FileOutputStream("specialites.txt")) {
-				    byte dataBuffer[] = new byte[1024];
-				    int bytesRead;
-				    while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-				        fileOutputStream.write(dataBuffer, 0, bytesRead);
-				    }
-				} catch (IOException e) {
-					e.printStackTrace();
-				    return false;
+		System.out.println("Taille du fichier à récupérer : " + removeFileSize);
+
+		File medocFile = new File("specialites.txt");
+		boolean pareil = false;
+
+		if (medocFile.exists()) {
+			pareil = medocFile.length() == removeFileSize;
+		}
+
+		// On vérifie que la taille du fichier à télécharger est inférieur à 100Mb
+		if (removeFileSize < 102400000) {
+
+			if (pareil) {
+				// TODO
+				System.out.println("Les médicaments sont déjà téléchargés," +
+						" vérification de la conformité des données.");
+				return false;
+			} else {
+				// On crée une copie du fichier s'il existe, on l'utilisera en cas d'erreur.
+				File medocBackup = new File("specialites.txt.old");
+				if (medocFile.exists()) {
+					Files.copy(medocFile.toPath(), medocBackup.toPath());
+					// On supprime le contenu de fileMedoc pour télécharger le nouveau contenu.
+					medocFile.delete();
 				}
-		
+				
+				boolean webResult = false;
+
+				// On télécharge le fichier et on l'écrit à la racine de notre application dans
+				// specialites.txt.
+				BufferedInputStream in = new BufferedInputStream(url.openStream());
+				FileOutputStream fileOutputStream = new FileOutputStream("specialites.txt");
+				int bufferSize = 1024;
+				byte dataBuffer[] = new byte[bufferSize];
+				int bytesRead;
+				while ((bytesRead = in.read(dataBuffer, 0, bufferSize)) != -1) {
+					// Tant que le fichier n'est pas télécharger, on écrit dans le fichier à la
+					// suite.
+					fileOutputStream.write(dataBuffer, 0, bytesRead);
+				}
+				webResult = true;
+
+				if (webResult) {
+
+				} else {
+					if (medocFile.exists()) {
+						FileInputStream input = new FileInputStream("specialites.txt");
+						Scanner sc = new Scanner(input, "UTF-8");
+						// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
+						// taille que peut atteindre le fichier téléchargé en ligne)
+						while (sc.hasNextLine()) {
+							String line = sc.nextLine();
+							// On traite la ligne
+							Matcher speMatcher = specialitesPattern.matcher(line);
+							boolean matchFound = speMatcher.find();
+							if (matchFound) {
+								// TODO
+							} else {
+								System.out.println("La ligne suivante ne retourne pas de médicament : " + line);
+							}
+						}
+
+						// Le classe Scanner supprime les exceptions, on doit donc les récupérer.
+						if (sc.ioException() != null) {
+							// On assure que le fichier en lecture ne soit plus lock
+							if (input != null)
+								input.close();
+							if (sc != null)
+								sc.close();
+							throw sc.ioException();
+						}
+					}
+				}
+			}
+
+			// Ensure dateMiseAJour est la date de la dernière mise à jour.
+			WebGouvMedic.setDateMiseAJour(LocalDate.now());
+		}
+
 		return true;
 	}
 

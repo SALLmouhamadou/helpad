@@ -3,6 +3,7 @@ package fr.helpad.entity;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,7 @@ public class WebGouvMedic {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@Column(unique=true)
 	private String nom;
 	private String formePharmaceutique;
 	private String voieAdministration;
@@ -21,6 +23,7 @@ public class WebGouvMedic {
 	private boolean commercialise;
 	private LocalDate dateCommercialisation;
 	private String statutBdm;
+	@Column(unique=true)
 	private String numeroAutorisationEuropeenne;
 	private String societe;
 	private boolean surveillanceRenforcee;

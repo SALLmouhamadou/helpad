@@ -1,12 +1,5 @@
 package fr.helpad;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.ManyToMany;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,14 +7,7 @@ import org.springframework.context.ApplicationContext;
 import fr.helpad.service.WebGouvMedicService;
 import org.springframework.context.annotation.Bean;
 
-import fr.helpad.entity.Adresse;
-import fr.helpad.entity.Allergene;
-import fr.helpad.entity.Candidat;
-import fr.helpad.entity.Candidature;
 import fr.helpad.entity.Plat;
-import fr.helpad.entity.Repas;
-import fr.helpad.repository.PlatRepository;
-import fr.helpad.service.CandidatService;
 import fr.helpad.service.PlatService;
 
 @SpringBootApplication
@@ -37,14 +23,25 @@ public class HelpadApplication {
 		
 		System.out.println("Récupération des médicaments");
 		
+		boolean recup = false;
+		
 		try {
-			System.out.println(webMedic.setMedicaments());
-			System.out.println("Médicaments récupérés");
+			recup = webMedic.setMedicaments();
+			System.out.println(recup);
+			System.out.println((recup ? "Médicaments récupérés" : "Echec de la récupération des médicaments"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Echec de la récupération des médicaments.");
+		} finally {
+			if (recup) {
+				
+			} else {
+				
+			}
 		}
+		
+		
 		
 //		CandidatService candidat = appContext.getBean(CandidatService.class);
 //		

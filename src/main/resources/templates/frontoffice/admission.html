@@ -27,7 +27,7 @@
 				id="step-2">Adresse</span> <span class="step" id="step-3">Candidautres</span>
 			<span class="step" id="step-4">Documents</span>
 		</div>
-
+		
 		<div class="tab" id="tab-1">
 			<p>Identité</p>
 			<select name="civilite" id="civilité-select">
@@ -36,21 +36,22 @@
 				<option value="Madame">Madame</option>
 			</select>
 			<div>
+				<input type="hidden" name="idPersonne" th:value="${user.idPersonne}">
 				<label for="nom"> Nom <span class="text-danger">*</span></label> <input
-					type="text" placeholder="DUPONT" name="nom" required>
+					type="text" placeholder="DUPONT" name="nom" th:value="${user.nom}" required>
 			</div>
 			<div>
 				<label for="prenom">Prénom <span class="text-danger">*</span></label>
-				<input type="text" placeholder="Jean" name="prenom" required>
+				<input type="text" placeholder="Jean" name="prenom" th:value="${user.prenom}" required>
 			</div>
 			<div>
 				<label for="email"> Email <span class="text-danger">*</span></label>
 				<input type="email" placeholder="dupont.jean@gmail.com" name="email"
-					required>
+					 required>
 			</div>
 			<div>
 				<label for="telephone">Téléphone<span class="text-danger">*</span></label>
-				<input type="text" placeholder="0033700000000" name="telephone"
+				<input type="text" placeholder="0033700000000" name="telephone" 
 					required>
 			</div>
 			<div>
@@ -58,7 +59,7 @@
 					for="dateNaissance">Date naissance <span
 					class="text-danger">*</span></label> <input type="date"
 					placeholder="Date naissance" id="dateNaissance"
-					name="dateNaissance" required>
+					name="dateNaissance"  required>
 			</div>
 			<div class="index-btn-wrapper">
 				<div class="index-btn" onclick="run(1, 2);">Suivant</div>
@@ -135,7 +136,7 @@
 			</div>
 		</div>
 
-		<div class="tab" id="tab-4">
+		<!--  <div class="tab" id="tab-4">
 			<p>Piéce justificatifs</p>
 			<div>
 				<label for="file1">Photocopie de pièce d'identité(JPG,PNG,
@@ -179,7 +180,7 @@
 				<label for="file9">Si vous avez des pathologies, joindre un
 					justificatif (JPG,PNG, PDF|max. 2 Mo) </label> <input type="file"
 					name="file9">
-			</div> 
+			</div> -->
 			<div class="index-btn-wrapper">
 				<div class="index-btn" onclick="run(4, 3);">Précedent</div>
 				<div class="index-btn" onclick="run(4, 5);">Suivant</div>

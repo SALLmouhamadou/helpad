@@ -19,20 +19,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "PERSONNE")
+@Table(name = "PERSONNES")
 @Inheritance(strategy = InheritanceType.JOINED)
-
 public class Personne {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_personne")
 	private Long idPersonne;
-	@Column(name="nom", nullable = false, unique = true)
+	@Column(name="nom", nullable = false)
 	private String nom;
-	@Column(name="prenom", nullable = false, unique = true)
+	@Column(name="prenom", nullable = false)
 	private String prenom;
 	private String telephone;
-	@Column(name="email", nullable = false, unique = true)
+	@Column(name="email", nullable = false, unique =true, length = 50)
 	private String email;
 	private String password;
 	@ManyToOne (cascade = CascadeType.ALL)

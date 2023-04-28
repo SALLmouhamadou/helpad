@@ -44,9 +44,14 @@ public class AdmissionController {
 
 	@GetMapping("/getAdmission")
 	public ModelAndView showAdmissionForm(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
-		Optional<Personne> user = personneService.findByUsername(userDetails.getUsername());
-		mav.addObject("user", user);
+		if (userDetails !=null) {
+		Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
+		mav.addObject("user", user.get());
 		mav.setViewName("frontoffice/admission");
+		}
+		else {
+			mav.setViewName("redirect:/login");
+		}
 		return mav;
 	}
 
@@ -85,28 +90,31 @@ public class AdmissionController {
 	@PostMapping("/sendAdmission")
 	public ModelAndView saveCandidature(ModelAndView mav, @ModelAttribute Candidat candidat,
 			@ModelAttribute Candidature candidature, @ModelAttribute Adresse adresse, @ModelAttribute Status status,
-			HttpServletRequest request, HttpServletResponse response, @RequestParam("file") MultipartFile[] file,
+			HttpServletRequest request, HttpServletResponse response, 
+			//@RequestParam("file") MultipartFile[] file,
 			BindingResult errors, @AuthenticationPrincipal UserDetails userDetails) {
 		if (errors.hasErrors()) {
 			mav.setViewName("redirect:/getAdmission");
 		}
-		try {
-			Optional<Personne> user = personneService.findByUsername(userDetails.getUsername());
+		//try {
+			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
+			Candidat candidat1=  user.get();
+			candidat.setPassword(candidat1.getPassword());
 			String revenu = request.getParameter("revenu");
 			double revenuAnnuelle = Double.parseDouble(revenu);
 			candidat.setRevenu(revenuAnnuelle);
 			candidat.setAdresse(adresse);
 			candidature.setStatus(status);
-			//candidature.setCandidat(user);
-			candidature.setFileName1(storageService.store(file));
-			candidature.setFileName2(storageService.store(file));
-			candidature.setFileName3(storageService.store(file));
-			candidature.setFileName4(storageService.store(file));
-			candidature.setFileName5(storageService.store(file));
-			candidature.setFileName6(storageService.store(file));
-			candidature.setFileName7(storageService.store(file));
-			candidature.setFileName8(storageService.store(file));
-			candidature.setFileName9(storageService.store(file));
+			candidature.setCandidat(candidat);
+//			candidature.setFileName1(storageService.store(file));
+//			candidature.setFileName2(storageService.store(file));
+//			candidature.setFileName3(storageService.store(file));
+//			candidature.setFileName4(storageService.store(file));
+//			candidature.setFileName5(storageService.store(file));
+//			candidature.setFileName6(storageService.store(file));
+//			candidature.setFileName7(storageService.store(file));
+//			candidature.setFileName8(storageService.store(file));
+//			candidature.setFileName9(storageService.store(file));
 			List<Candidature> candidatures = new ArrayList<Candidature>();
 			candidatures.add(candidature);
 			candidat.setMesCandidatures(candidatures);
@@ -114,13 +122,13 @@ public class AdmissionController {
 			mav.setViewName("redirect:/confirmation");
 			return mav;
 
-		} catch (Exception e) {
-			mav.addObject("candidat", candidat);
-			mav.addObject("error", "formulaire invalide merci de verifier votre saisi");
-			mav.setViewName("frontoffice/admission");
-		}
+//		} catch (Exception e) {
+////			mav.addObject("candidat", candidat);
+////			mav.addObject("error", "formulaire invalide merci de verifier votre saisi");
+////			mav.setViewName("frontoffice/admission");
+//		}
 
-		return mav;
+		//return mav;
 	}
 
 	@GetMapping("/consulter/{id}")

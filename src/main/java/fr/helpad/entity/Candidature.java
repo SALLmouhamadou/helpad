@@ -228,8 +228,8 @@ public class Candidature {
 		return candidat;
 	}
 
-	public void setCandidat(Candidat candidat) {
-		this.candidat = candidat;
+	public void setCandidat(Candidat user) {
+		this.candidat = user;
 	}
 
 	public Status getStatus() {

@@ -62,36 +62,42 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		final URL url = new URL(
 				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt");
 		System.out.println("Etablissement de la connexion à " + url.toString());
-		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
-		// On obtient la taille du fichier à télécharger
-		httpConnection.setRequestMethod("HEAD");
-		long removeFileSize = httpConnection.getContentLengthLong();
-		System.out.println("Taille du fichier à récupérer : " + removeFileSize);
+//		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+//		// On obtient la taille du fichier à télécharger
+//		httpConnection.setRequestMethod("HEAD");
+//		//System.out.println(httpConnection.getResponseMessage());
+//		httpConnection.getInputStream();
+		long htppFileSize = 0; //httpConnection.getContentLengthLong();
+//		System.out.println("Taille du fichier à récupérer : " + htppFileSize);
 
 		File medocFile = new File("specialites.txt");
 		boolean pareil = false;
 
 		if (medocFile.exists()) {
-			pareil = medocFile.length() == removeFileSize;
+			pareil = medocFile.length() == htppFileSize;
+			System.out.println("Le fichier est-il identique ? : " + pareil);
 		}
 
 		// On vérifie que la taille du fichier à télécharger est inférieur à 100Mb
-		if (removeFileSize < 102400000) {
+		if (htppFileSize < 102400000) {
 
 			if (pareil) {
 				// TODO
-				System.out.println("Les médicaments sont déjà téléchargés," +
-						" vérification de la conformité des données.");
+				System.out.println(
+						"Les médicaments sont déjà téléchargés," + " vérification de la conformité des données.");
 				return false;
 			} else {
 				// On crée une copie du fichier s'il existe, on l'utilisera en cas d'erreur.
 				File medocBackup = new File("specialites.txt.old");
+
 				if (medocFile.exists()) {
+					if (medocBackup.exists())
+						medocBackup.delete();
 					Files.copy(medocFile.toPath(), medocBackup.toPath());
 					// On supprime le contenu de fileMedoc pour télécharger le nouveau contenu.
 					medocFile.delete();
 				}
-				
+
 				boolean webResult = false;
 
 				// On télécharge le fichier et on l'écrit à la racine de notre application dans
@@ -108,35 +114,33 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				}
 				webResult = true;
 
-				if (webResult) {
-
-				} else {
-					if (medocFile.exists()) {
-						FileInputStream input = new FileInputStream("specialites.txt");
-						Scanner sc = new Scanner(input, "UTF-8");
-						// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
-						// taille que peut atteindre le fichier téléchargé en ligne)
-						while (sc.hasNextLine()) {
-							String line = sc.nextLine();
-							// On traite la ligne
-							Matcher speMatcher = specialitesPattern.matcher(line);
-							boolean matchFound = speMatcher.find();
-							if (matchFound) {
-								// TODO
-							} else {
-								System.out.println("La ligne suivante ne retourne pas de médicament : " + line);
-							}
-						}
-
-						// Le classe Scanner supprime les exceptions, on doit donc les récupérer.
-						if (sc.ioException() != null) {
-							// On assure que le fichier en lecture ne soit plus lock
-							if (input != null)
-								input.close();
-							if (sc != null)
-								sc.close();
-							throw sc.ioException();
-						}
+				FileInputStream input = new FileInputStream((webResult ? "specialites.txt" : "specialites.txt.old"));
+				Scanner sc = new Scanner(input, "UTF-8");
+				// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
+				// taille que peut atteindre le fichier téléchargé en ligne)
+				while (sc.hasNextLine()) {
+					String line = sc.nextLine();
+					// On traite la ligne
+					Matcher speMatcher = specialitesPattern.matcher(line);
+					boolean matchFound = speMatcher.find();
+					if (matchFound) {
+						long id = Long.parseLong(speMatcher.group(1));
+						String nom = speMatcher.group(2);
+						String forme = speMatcher.group(3);
+						String voieAdministration = speMatcher.group(4);
+						String statutAdministratif = speMatcher.group(5);
+						String procedureAutorisation = speMatcher.group(6);
+						boolean etatCommercialisation = (speMatcher.group(7)=="Commercialisée"?true:false);
+						LocalDate dateAMM = LocalDate.parse(speMatcher.group(8));
+						String statutBDM = speMatcher.group(9);
+						String numeroAutorisationEurope = speMatcher.group(10);
+						String titulaire = speMatcher.group(11);
+						String surveillanceRenforcee = speMatcher.group(12);
+//						WebGouvMedic medoc = new WebGouvMedic(id, nom, forme, voieAdministration, statutAdministratif, 
+//								procedureAutorisation, etatCommercialisation, dateAMM, statutBDM, numeroAutorisationEurope, 
+//								titulaire, surveillanceRenforcee);
+					} else {
+						System.out.println("La ligne suivante ne retourne pas de médicament : " + line);
 					}
 				}
 			}

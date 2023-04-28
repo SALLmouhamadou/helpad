@@ -13,7 +13,7 @@ import javax.persistence.Id;
 public class WebGouvMedic {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id; // Code CIS
 	@Column(unique=true)
 	private String nom;
 	private String formePharmaceutique;
@@ -25,7 +25,7 @@ public class WebGouvMedic {
 	private String statutBdm;
 	@Column(unique=true)
 	private String numeroAutorisationEuropeenne;
-	private String societe;
+	private String titulaire;
 	private boolean surveillanceRenforcee;
 	private static LocalDate dateMiseAJour;
 
@@ -103,7 +103,7 @@ public class WebGouvMedic {
 	 * @return the societe
 	 */
 	public String getSociete() {
-		return societe;
+		return titulaire;
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class WebGouvMedic {
 	 * @param societe the societe to set
 	 */
 	public void setSociete(String societe) {
-		this.societe = societe;
+		this.titulaire = societe;
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class WebGouvMedic {
 		this.dateCommercialisation = dateCommercialisation;
 		this.statutBdm = statutBdm;
 		this.numeroAutorisationEuropeenne = numeroAutorisationEuropeenne;
-		this.societe = societe;
+		this.titulaire = societe;
 		this.surveillanceRenforcee = surveillanceRenforcee;
 	}
 
@@ -242,7 +242,7 @@ public class WebGouvMedic {
 		this.dateCommercialisation = dateCommercialisation;
 		this.statutBdm = statutBdm;
 		this.numeroAutorisationEuropeenne = numeroAutorisationEuropeenne;
-		this.societe = societe;
+		this.titulaire = societe;
 		this.surveillanceRenforcee = surveillanceRenforcee;
 	}
 

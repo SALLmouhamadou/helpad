@@ -250,4 +250,13 @@ public class WebGouvMedic {
 		super();
 	}
 
+	@Override
+	public String toString() {
+		return "WebGouvMedic [id=" + id + ", nom=" + nom + ", formePharmaceutique=" + formePharmaceutique
+				+ ", voieAdministration=" + voieAdministration + ", autorisation=" + autorisation + ", procedure="
+				+ procedure + ", commercialise=" + commercialise + ", dateCommercialisation=" + dateCommercialisation
+				+ ", statutBdm=" + statutBdm + ", numeroAutorisationEuropeenne=" + numeroAutorisationEuropeenne
+				+ ", titulaire=" + titulaire + ", surveillanceRenforcee=" + surveillanceRenforcee + "]";
+	}
+
 }

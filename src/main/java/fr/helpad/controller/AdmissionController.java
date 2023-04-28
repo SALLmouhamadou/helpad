@@ -96,7 +96,7 @@ public class AdmissionController {
 		if (errors.hasErrors()) {
 			mav.setViewName("redirect:/getAdmission");
 		}
-		//try {
+		try {
 			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
 			Candidat candidat1=  user.get();
 			candidat.setPassword(candidat1.getPassword());
@@ -122,13 +122,13 @@ public class AdmissionController {
 			mav.setViewName("redirect:/confirmation");
 			return mav;
 
-//		} catch (Exception e) {
-////			mav.addObject("candidat", candidat);
-////			mav.addObject("error", "formulaire invalide merci de verifier votre saisi");
-////			mav.setViewName("frontoffice/admission");
-//		}
+		} catch (Exception e) {
+			mav.addObject("candidat", candidat);
+			mav.addObject("error", "formulaire invalide merci de verifier votre saisi");
+			mav.setViewName("frontoffice/admission");
+	}
 
-		//return mav;
+		return mav;
 	}
 
 	@GetMapping("/consulter/{id}")

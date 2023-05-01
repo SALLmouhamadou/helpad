@@ -1,6 +1,9 @@
+var date_naissance_input = document.getElementById("dateNaissance");
+date_naissance_input.addEventListener("blur", admissionForm)
 function admissionForm() {
 			// Validation de la date de naissance
 			var date_naissance_input = document.getElementById("dateNaissance");
+			console.log(date_naissance_input)
 			var date_naissance_error = document.getElementById("dateNaissanceError");
 			var date_naissance = new Date(date_naissance_input.value);
 			if (isNaN(date_naissance.getTime())) {

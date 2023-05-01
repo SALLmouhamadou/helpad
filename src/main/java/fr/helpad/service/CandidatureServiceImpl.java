@@ -1,6 +1,7 @@
 package fr.helpad.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,8 @@ public class CandidatureServiceImpl {
 	@Autowired
 	CandidatureRepository candidatureRepository;
 	
-	public List<Candidature> getCandidaturesById(Long id){
-		return (List<Candidature>)candidatureRepository.findAllCandidatureById(id);
+	public Optional<Candidature> getCandidaturesById(Long id){
+		return candidatureRepository.findById(id);
 	}
 	
 	public List<Candidature> FindAllCandidatures(){

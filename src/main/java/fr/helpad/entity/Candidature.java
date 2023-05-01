@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -30,7 +31,7 @@ public class Candidature {
     private String conditionGeneral;
     @Column(name="declaration_exactitude_des_informations")
     private String declarationExactitudeDesInformations;
-    private String numeroRef;
+    private String numeroRef = generateNumeroReference();
     private String fileName1;
     private String fileName2;
     private String fileName3;
@@ -43,12 +44,12 @@ public class Candidature {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="id_status")
     private Status status;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_personne")
     private Candidat candidat;
+    
     public Candidature() {
     }
-
     public Candidature( String pathologie, String informationComplementaire, LocalDate jourDeCandidature) {
         this.pathologie = pathologie;
         this.informationComplementaire = informationComplementaire;
@@ -90,7 +91,7 @@ public class Candidature {
 	      String chiffresAleatoires = String.format("%04d", rand.nextInt(10000));
 
 	      // Combinez les parties pour former le numéro de référence
-	      String numeroReference = "help" + mois + annee + chiffresAleatoires;
+	      String numeroRef = "help" + mois + annee + chiffresAleatoires;
 
 	      return numeroRef;
 	   }
@@ -150,7 +151,7 @@ public class Candidature {
 	}
 
 	public void setNumeroRef(String numeroRef) {
-		this.numeroRef = numeroRef;
+		this.numeroRef = generateNumeroReference();
 	}
 
 	public String getFileName1() {

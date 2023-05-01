@@ -10,8 +10,6 @@
 	th:href="@{/css/style.css}" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script href="../static/js/admissionForm.js"
-	th:src="@{/js/admissionForm.js}"></script>
 </head>
 <body>
 	<div class="container">
@@ -205,7 +203,7 @@
 					</div>
 				</div>
 				<div class="index-btn" onclick="run(5, 4);">Précedent</div>
-				<button class="index-btn" type="submit" name="submit"
+				<button class="index-btn"  type="submit" name="submit"
 					style="background: blue;">Valider</button>
 			</div>
 		</div>
@@ -234,5 +232,7 @@
 			$("input").css("background", "#fff");
 		}
 	</script>
+	<script href="../static/js/admissionForm.js"
+	th:src="@{/js/admissionForm.js}"></script>
 </body>
 </html>

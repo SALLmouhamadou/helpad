@@ -1,6 +1,7 @@
 package fr.helpad.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -30,7 +31,7 @@ public class Candidat extends Personne {
 	private double revenu;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<Candidature> mesCandidatures;
+	private List<Candidature> mesCandidatures = new ArrayList<>();
 
 	public Candidat() {
 	}

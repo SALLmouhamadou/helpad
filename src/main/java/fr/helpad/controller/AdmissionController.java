@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -44,34 +45,38 @@ public class AdmissionController {
 
 	@GetMapping("/getAdmission")
 	public ModelAndView showAdmissionForm(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
-		if (userDetails !=null) {
-		Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
-		mav.addObject("user", user.get());
-		mav.setViewName("frontoffice/admission");
-		}
-		else {
+		if (userDetails != null) {
+			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
+			mav.addObject("user", user.get());
+			mav.setViewName("frontoffice/admission");
+		} else {
 			mav.setViewName("redirect:/login");
 		}
 		return mav;
 	}
-
+	
 	@GetMapping("/dashboard/{id}")
-	public ModelAndView showDashbord(@PathVariable("id") Long id, ModelAndView mav) {
-		List<Candidature> candidaturesById = candidatureServiceImpl.getCandidaturesById(id);
-		Candidat candidat = candidatService.get(id);
-		mav.addObject("candidatures", candidaturesById);
-		mav.addObject("candidat", candidat);
-		mav.addObject("title", "Espace usager");
-		mav.setViewName("frontoffice/espacepersonnel");
+	public ModelAndView showDashbord(@PathVariable("id") Long id, ModelAndView mav, BindingResult error) {
+		if (error.hasErrors()) {
+//			Candidat candidat = candidatService.get(id);
+//			mav.addObject("candidat", candidat);
+//			mav.addObject("candidatures", candidat.getMesCandidatures());
+//			mav.addObject("title", "Pas Autoriser");
+//			mav.setViewName("redirect:/error");
+		} else {
+			Candidat candidat = candidatService.get(id);
+			mav.addObject("candidat", candidat);
+			mav.addObject("candidatures", candidat.getMesCandidatures());
+			mav.addObject("title", "Espace usager");
+			mav.setViewName("frontoffice/espacepersonnel");
+		}
 		return mav;
 	}
 
 	@GetMapping("/dashboard/candidature/{id}")
 	public ModelAndView getAllCandiduturesById(@PathVariable("id") Long id, ModelAndView mav) {
-		List<Candidature> candidatures = candidatureServiceImpl.getCandidaturesById(id);
-		Candidat candidat = candidatService.get(id);
-		mav.addObject("candidatures", candidatures);
-		mav.addObject("candidat", candidat);
+		Optional<Candidature> candidatures = candidatureServiceImpl.getCandidaturesById(id);
+		mav.addObject("candidature", candidatures.get());
 		mav.addObject("title", "Mes candidatures");
 		mav.setViewName("frontoffice/candidature");
 		return mav;
@@ -90,15 +95,15 @@ public class AdmissionController {
 	@PostMapping("/sendAdmission")
 	public ModelAndView saveCandidature(ModelAndView mav, @ModelAttribute Candidat candidat,
 			@ModelAttribute Candidature candidature, @ModelAttribute Adresse adresse, @ModelAttribute Status status,
-			HttpServletRequest request, HttpServletResponse response, 
-			//@RequestParam("file") MultipartFile[] file,
+			HttpServletRequest request, HttpServletResponse response,
+			// @RequestParam("file") MultipartFile[] file,
 			BindingResult errors, @AuthenticationPrincipal UserDetails userDetails) {
 		if (errors.hasErrors()) {
 			mav.setViewName("redirect:/getAdmission");
 		}
 		try {
 			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
-			Candidat candidat1=  user.get();
+			Candidat candidat1 = user.get();
 			candidat.setPassword(candidat1.getPassword());
 			String revenu = request.getParameter("revenu");
 			double revenuAnnuelle = Double.parseDouble(revenu);
@@ -126,14 +131,18 @@ public class AdmissionController {
 			mav.addObject("candidat", candidat);
 			mav.addObject("error", "formulaire invalide merci de verifier votre saisi");
 			mav.setViewName("frontoffice/admission");
-	}
+		}
 
 		return mav;
 	}
 
 	@GetMapping("/consulter/{id}")
 	public ModelAndView getDetailCandidature(@PathVariable("id") Long id, ModelAndView mav) {
-		Candidat candidat = candidatService.get(id);
+		Optional<Candidature> candidatures = candidatureServiceImpl.getCandidaturesById(id);
+		System.out.println(candidatures.get().getCandidat());
+		Long idCandidat = candidatures.get().getCandidat().getIdPersonne();
+		System.out.println(idCandidat);
+		Candidat candidat = candidatService.get(idCandidat);
 		mav.addObject("candidat", candidat);
 		mav.addObject("title", "Recapitilatif");
 		mav.setViewName("frontoffice/recapitilatif");

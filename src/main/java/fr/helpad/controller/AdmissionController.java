@@ -96,7 +96,16 @@ public class AdmissionController {
 	public ModelAndView saveCandidature(ModelAndView mav, @ModelAttribute Candidat candidat,
 			@ModelAttribute Candidature candidature, @ModelAttribute Adresse adresse, @ModelAttribute Status status,
 			HttpServletRequest request, HttpServletResponse response,
-			// @RequestParam("file") MultipartFile[] file,
+			@RequestParam("file1") MultipartFile[] file1,
+			@RequestParam("file2") MultipartFile[] file2,
+			@RequestParam("file3") MultipartFile[] file3,
+			@RequestParam("file4") MultipartFile[] file4,
+			@RequestParam("file5") MultipartFile[] file5,
+			@RequestParam("file6") MultipartFile[] file6,
+			@RequestParam("file7") MultipartFile[] file7,
+			@RequestParam("file8") MultipartFile[] file8,
+			@RequestParam("file9") MultipartFile[] file9,
+			
 			BindingResult errors, @AuthenticationPrincipal UserDetails userDetails) {
 		if (errors.hasErrors()) {
 			mav.setViewName("redirect:/getAdmission");
@@ -111,15 +120,15 @@ public class AdmissionController {
 			candidat.setAdresse(adresse);
 			candidature.setStatus(status);
 			candidature.setCandidat(candidat);
-//			candidature.setFileName1(storageService.store(file));
-//			candidature.setFileName2(storageService.store(file));
-//			candidature.setFileName3(storageService.store(file));
-//			candidature.setFileName4(storageService.store(file));
-//			candidature.setFileName5(storageService.store(file));
-//			candidature.setFileName6(storageService.store(file));
-//			candidature.setFileName7(storageService.store(file));
-//			candidature.setFileName8(storageService.store(file));
-//			candidature.setFileName9(storageService.store(file));
+			candidature.setFileName1(storageService.store(file1));
+			candidature.setFileName2(storageService.store(file2));
+			candidature.setFileName3(storageService.store(file3));
+			candidature.setFileName4(storageService.store(file4));
+			candidature.setFileName5(storageService.store(file5));
+			candidature.setFileName6(storageService.store(file6));
+			candidature.setFileName7(storageService.store(file7));
+			candidature.setFileName8(storageService.store(file8));
+			candidature.setFileName9(storageService.store(file9));
 			List<Candidature> candidatures = new ArrayList<Candidature>();
 			candidatures.add(candidature);
 			candidat.setMesCandidatures(candidatures);

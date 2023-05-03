@@ -16,18 +16,22 @@ public class WebGouvMedic {
 	private Long id; // Code CIS
 	@Column(unique=true)
 	private String nom;
+	@Column(name="FORME_PHARMACEUTIQUE")
 	private String formePharmaceutique;
+	@Column(name="VOIE_ADMINISTRATION")
 	private String voieAdministration;
 	private String autorisation;
 	private String procedure;
 	private boolean commercialise;
+	@Column(name="DATE_COMMERCIALISATION")
 	private LocalDate dateCommercialisation;
+	@Column(name="STATUT_BDM")
 	private String statutBdm;
-	@Column(unique=true)
+	@Column(unique=true, name="NUMERO_AUTORISATION_EUROPEENNE")
 	private String numeroAutorisationEuropeenne;
 	private String titulaire;
+	@Column(name="SURVEILLANCE_RENFORCEE")
 	private boolean surveillanceRenforcee;
-	private static LocalDate dateMiseAJour;
 
 	/**
 	 * @return the id
@@ -114,13 +118,6 @@ public class WebGouvMedic {
 	}
 
 	/**
-	 * @return the dateMiseAJour
-	 */
-	public static LocalDate getDateMiseAJour() {
-		return dateMiseAJour;
-	}
-
-	/**
 	 * @param id the id to set
 	 */
 	public void setId(Long id) {
@@ -202,13 +199,6 @@ public class WebGouvMedic {
 	 */
 	public void setSurveillanceRenforcee(boolean surveillanceRenforcee) {
 		this.surveillanceRenforcee = surveillanceRenforcee;
-	}
-
-	/**
-	 * @param dateMiseAJour the dateMiseAJour to set
-	 */
-	public static void setDateMiseAJour(LocalDate dateMiseAJour) {
-		WebGouvMedic.dateMiseAJour = dateMiseAJour;
 	}
 
 	public WebGouvMedic(Long id, String nom, String formePharmaceutique, String voieAdministration, String autorisation,

@@ -23,25 +23,16 @@ public class HelpadApplication {
 		
 		System.out.println("Récupération des médicaments");
 		
-		boolean recup = false;
+		String recup = "";
 		
 		try {
 			recup = webMedic.setMedicaments();
 			System.out.println(recup);
-			System.out.println((recup ? "Médicaments récupérés" : "Echec de la récupération des médicaments"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println("Echec de la récupération des médicaments.");
-		} finally {
-			if (recup) {
-				
-			} else {
-				
-			}
 		}
-		
-		
 		
 //		CandidatService candidat = appContext.getBean(CandidatService.class);
 //		

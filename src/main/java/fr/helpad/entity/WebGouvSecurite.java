@@ -1,5 +1,6 @@
 package fr.helpad.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -7,7 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class WebGouvSecurite {
+public class WebGouvSecurite implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	@ManyToOne
 	private WebGouvMedic medicament;

@@ -33,6 +33,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.stereotype.Service;
 import org.unbescape.html.HtmlEscape;
 import org.unbescape.html.HtmlEscapeType;
 
@@ -42,13 +43,14 @@ import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.repository.WebGouvMedicRepository;
 
 @Transactional
+@Service
 public class WebGouvMedicService implements WebGouvMedicServiceI {
 
 	@Autowired
 	WebGouvMedicRepository repo;
 
 	@Override
-	public WebGouvMedic sauvegarder(WebGouvMedic entity) {
+	public WebGouvMedic sauvegarder(WebGouvMedic entity) throws NullPointerException {
 		return repo.save(entity);
 	}
 
@@ -120,31 +122,17 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				String titulaire = speMatcher[10].strip();
 				boolean surveillanceRenforcee = (speMatcher[11].strip() == "Non" ? false : true);
 
-//				System.out.println(line);
-//				System.out.println("id: " + id);
-//				System.out.println("nom: " + nom);
-//				System.out.println("forme: " + forme);
-//				System.out.println("voie: " + voieAdministration);
-//				System.out.println("statut: " + statutAdministratif);
-//				System.out.println("procedure: " + procedureAutorisation);
-//				System.out.println("etat: " + etatCommercialisation);
-//				System.out.println("date: " + dateAMM.toString());
-//				System.out.println("statutBDM: " + statutBDM);
-//				System.out.println("numeroAutorisation: " + numeroAutorisationEurope);
-//				System.out.println("titulaire: " + titulaire);
-//				System.out.println("surveillance: " + surveillanceRenforcee);
-
 				WebGouvMedic medoc = new WebGouvMedic(id, nom, forme, voieAdministration, statutAdministratif,
 						procedureAutorisation, etatCommercialisation, dateAMM, statutBDM, numeroAutorisationEurope,
 						titulaire, surveillanceRenforcee);
-
-				// System.out.println(medoc.toString());
+				//medoc = sauvegarder(medoc);
 				medocs.add(medoc);
 			} else {
 				System.out.println("Match length : " + speMatcher.length + " | text : " + line);
 			}
 		}
 		System.out.println("Enregistrement de " + medocs.size() + " médicaments dans la BDD.");
+		medocs = saveAll(medocs);
 		return medocs;
 		// saveAll(medocs);
 		// System.out.println("Médicaments enregistrés dans la BDD");
@@ -201,6 +189,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				return "La base de donnée des médicaments ne peut être mise à jour qu'une fois toutes les 6 heures.";
 			}
 		}
+		
+		System.out.println(repo.toString());
 		// On s'assure que le dossier medicaments est crée
 		File medicDirectory = new File("medicaments");
 		if (!medicDirectory.exists())
@@ -232,7 +222,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		List<File> generiqueFiles = backup("medicaments/generiques.txt");
 		List<File> conditionFiles = backup("medicaments/conditions.txt");
 		List<File> informationFiles = backup("medicaments/informations.txt");
-		List<WebGouvMedic> medocs;
+		List<WebGouvMedic> medocs = null;
 
 		boolean isNew = false;
 
@@ -244,6 +234,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				medocs = traiterSpecialite(medocFiles.get(0));
 			} else {
 				WebGouvMAJDate.setDateMiseAJour(LocalDate.now());
+				medocs = traiterSpecialite(medocFiles.get(0));
 				return "Les médicaments étaient à jour, aucune modification n'a été apportée.";
 			}
 		} catch (SecurityException e) {
@@ -317,6 +308,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				// On traite le backup
 			}
 			isSucces = false;
+			saveAll(medocs);
 		}
 
 		// Ensure dateMiseAJour est la date de la dernière mise à jour.

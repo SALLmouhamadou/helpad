@@ -8,25 +8,28 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OrderBy;
 
 @Entity
 public class WebGouvMedic {
 	@Id
 	private Long id; // Code CIS
-	@Column(unique = true)
+	@OrderBy
 	private String nom;
 	@Column(name = "FORME_PHARMACEUTIQUE")
 	private String formePharmaceutique;
 	@Column(name = "VOIE_ADMINISTRATION")
 	private String voieAdministration;
 	private String autorisation;
-	private String procedure;
+	// procedure est un type dans mySQL, génère des erreurs.
+	@Column(name = "PROCEDURE_ADMINISTRATIVE")
+	private String procedureAdministrative;
 	private boolean commercialise;
 	@Column(name = "DATE_COMMERCIALISATION")
 	private LocalDate dateCommercialisation;
 	@Column(name = "STATUT_BDM")
 	private String statutBdm;
-	@Column(unique = true, name = "NUMERO_AUTORISATION_EUROPEENNE")
+	@Column(name = "NUMERO_AUTORISATION_EUROPEENNE")
 	private String numeroAutorisationEuropeenne;
 	private String titulaire;
 	@Column(name = "SURVEILLANCE_RENFORCEE")
@@ -52,9 +55,9 @@ public class WebGouvMedic {
 	private String referenceDosage;
 	@Column(name = "NUMERO_LIAISON_SUBSTANCES")
 	private String numeroLiaisonSubstances;
-	@Column(name="CONDITION_PRESCRIPTION_DELIVRANCE")
+	@Column(name = "CONDITION_PRESCRIPTION_DELIVRANCE")
 	private String conditionPrescriptionDelivrance;
-	
+
 	public String getTitulaire() {
 		return titulaire;
 	}
@@ -142,7 +145,7 @@ public class WebGouvMedic {
 	 * @return the procedure
 	 */
 	public String getProcedure() {
-		return procedure;
+		return procedureAdministrative;
 	}
 
 	/**
@@ -226,7 +229,7 @@ public class WebGouvMedic {
 	 * @param procedure the procedure to set
 	 */
 	public void setProcedure(String procedure) {
-		this.procedure = procedure;
+		this.procedureAdministrative = procedure;
 	}
 
 	/**
@@ -280,30 +283,25 @@ public class WebGouvMedic {
 		this.formePharmaceutique = formePharmaceutique;
 		this.voieAdministration = voieAdministration;
 		this.autorisation = autorisation;
-		this.procedure = procedure;
+		this.procedureAdministrative = procedure;
 		this.commercialise = commercialise;
 		this.dateCommercialisation = dateCommercialisation;
 		this.statutBdm = statutBdm;
 		this.numeroAutorisationEuropeenne = numeroAutorisationEuropeenne;
 		this.titulaire = societe;
 		this.surveillanceRenforcee = surveillanceRenforcee;
-	}
-
-	public WebGouvMedic(String nom, String formePharmaceutique, String voieAdministration, String autorisation,
-			String procedure, boolean commercialise, LocalDate dateCommercialisation, String statutBdm,
-			String numeroAutorisationEuropeenne, String societe, boolean surveillanceRenforcee) {
-		super();
-		this.nom = nom;
-		this.formePharmaceutique = formePharmaceutique;
-		this.voieAdministration = voieAdministration;
-		this.autorisation = autorisation;
-		this.procedure = procedure;
-		this.commercialise = commercialise;
-		this.dateCommercialisation = dateCommercialisation;
-		this.statutBdm = statutBdm;
-		this.numeroAutorisationEuropeenne = numeroAutorisationEuropeenne;
-		this.titulaire = societe;
-		this.surveillanceRenforcee = surveillanceRenforcee;
+		libellePresentation = "";
+		etatCommercialisation = "";
+		tauxRemboursement = "";
+		prix = 1;
+		indicationDroitRemboursement = "";
+		elementPharmaceutique = "";
+		codeSubstance = "";
+		dosageSubstance = "";
+		natureComposant = "";
+		referenceDosage = "";
+		numeroLiaisonSubstances = "";
+		conditionPrescriptionDelivrance = "";
 	}
 
 	public WebGouvMedic() {
@@ -313,10 +311,17 @@ public class WebGouvMedic {
 	@Override
 	public String toString() {
 		return "WebGouvMedic [id=" + id + ", nom=" + nom + ", formePharmaceutique=" + formePharmaceutique
-				+ ", voieAdministration=" + voieAdministration + ", autorisation=" + autorisation + ", procedure="
-				+ procedure + ", commercialise=" + commercialise + ", dateCommercialisation=" + dateCommercialisation
-				+ ", statutBdm=" + statutBdm + ", numeroAutorisationEuropeenne=" + numeroAutorisationEuropeenne
-				+ ", titulaire=" + titulaire + ", surveillanceRenforcee=" + surveillanceRenforcee + "]";
+				+ ", voieAdministration=" + voieAdministration + ", autorisation=" + autorisation + "\n"
+				+ ", procedureAdministrative=" + procedureAdministrative + ", commercialise=" + commercialise
+				+ ", dateCommercialisation=" + dateCommercialisation + ", statutBdm=" + statutBdm + "\n"
+				+ ", numeroAutorisationEuropeenne=" + numeroAutorisationEuropeenne + ", titulaire=" + titulaire
+				+ ", surveillanceRenforcee=" + surveillanceRenforcee + ", libellePresentation=" + libellePresentation + "\n"
+				+ ", etatCommercialisation=" + etatCommercialisation + ", tauxRemboursement=" + tauxRemboursement
+				+ ", prix=" + prix + ", indicationDroitRemboursement=" + indicationDroitRemboursement + "\n"
+				+ ", elementPharmaceutique=" + elementPharmaceutique + ", codeSubstance=" + codeSubstance
+				+ ", dosageSubstance=" + dosageSubstance + ", natureComposant=" + natureComposant + ", referenceDosage="
+				+ referenceDosage + "\n" + ", numeroLiaisonSubstances=" + numeroLiaisonSubstances
+				+ ", conditionPrescriptionDelivrance=" + conditionPrescriptionDelivrance + "]";
 	}
 
 }

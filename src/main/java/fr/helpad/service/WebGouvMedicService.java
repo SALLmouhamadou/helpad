@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.IllegalFormatConversionException;
@@ -71,7 +72,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		repo.deleteById(id);
 	}
 
-	private void traiterFichier(String path, List<WebGouvMedic> medocs) throws IOException, NullPointerException {
+	private List<WebGouvMedic> traiterFichier(String path, List<WebGouvMedic> medocs) throws IOException, NullPointerException {
 		FileInputStream input = new FileInputStream(path);
 		// Lire le fichier avec l'encodage ANSI (Cp1252)
 		Scanner sc = new Scanner(input, "Cp1252");
@@ -82,9 +83,11 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 			if (line == "" || line == "\n")
 				continue;
 		}
+		return medocs;
 	}
 
-	private List<WebGouvMedic> traiterSpecialite(File path) throws IOException, NullPointerException, FileNotFoundException {
+	private List<WebGouvMedic> traiterSpecialite(File path)
+			throws IOException, NullPointerException, FileNotFoundException {
 		FileInputStream input = new FileInputStream(path);
 		// Lire le fichier avec l'encodage ANSI (Cp1252)
 		Scanner sc = new Scanner(input, "Cp1252");
@@ -170,7 +173,9 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		return files;
 	}
 
-	private void getFileFromWeb(URL url, List<File> paths) throws IOException, FileNotFoundException, SecurityException {
+	// Télécharge des fichiers binaires externes vers un path.
+	private boolean getFileFromWeb(URL url, List<File> paths)
+			throws IOException, FileNotFoundException, SecurityException {
 		System.out.println("Récupération du fichier à l'adresse : " + url.toString());
 		BufferedInputStream in = new BufferedInputStream(url.openStream());
 		FileOutputStream fileOutputStream = new FileOutputStream(paths.get(0));
@@ -184,10 +189,18 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		}
 		fileOutputStream.close();
 		System.out.println("Fichier récupéré et écrit à l'emplacement : " + paths.get(0));
+		return true;
 	}
 
 	@Override
 	public String setMedicaments() throws MalformedURLException, IOException, ProtocolException {
+		// On limite le nombre de requêtes vers le site du gouvernement pour ne pas être considété comme attaque DDOS;
+		if (WebGouvMAJDate.getDateMiseAJour() != null) {
+			// On vérifie si la BDD a été mise à jour aujourd'hui
+			if (WebGouvMAJDate.getDateMiseAJour().isBefore(LocalDate.now().minus(6, ChronoUnit.HOURS))) {
+				return "La base de donnée des médicaments ne peut être mise à jour qu'une fois toutes les 6 heures.";
+			}
+		}
 		// On s'assure que le dossier medicaments est crée
 		File medicDirectory = new File("medicaments");
 		if (!medicDirectory.exists())
@@ -220,7 +233,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		List<File> conditionFiles = backup("medicaments/conditions.txt");
 		List<File> informationFiles = backup("medicaments/informations.txt");
 		List<WebGouvMedic> medocs;
-		
+
 		boolean isNew = false;
 
 		try {
@@ -229,6 +242,9 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 			if (medocFiles.get(0).length() != medocFiles.get(1).length()) {
 				isNew = true;
 				medocs = traiterSpecialite(medocFiles.get(0));
+			} else {
+				WebGouvMAJDate.setDateMiseAJour(LocalDate.now());
+				return "Les médicaments étaient à jour, aucune modification n'a été apportée.";
 			}
 		} catch (SecurityException e) {
 			e.printStackTrace();
@@ -238,12 +254,12 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		if (isNew) {
 			boolean isSucces = false;
+			
 			try {
-				getFileFromWeb(presentationUrl, presentationFiles);
-				isSucces = true;
+				isSucces = getFileFromWeb(presentationUrl, presentationFiles);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
@@ -253,26 +269,54 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				// On traite le backup
 			}
 			isSucces = false;
+			
 			try {
-				getFileFromWeb(compositionUrl, compositionFiles);
+				isSucces = getFileFromWeb(compositionUrl, compositionFiles);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+			if (isSucces) {
+				// On traite l'original
+			} else {
+				// On traite le backup
+			}
+			isSucces = false;
+			
 			try {
-				getFileFromWeb(generiqueUrl, generiqueFiles);
+				isSucces = getFileFromWeb(generiqueUrl, generiqueFiles);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+			if (isSucces) {
+				// On traite l'original
+			} else {
+				// On traite le backup
+			}
+			isSucces = false;
+			
 			try {
-				getFileFromWeb(conditionUrl, conditionFiles);
+				isSucces = getFileFromWeb(conditionUrl, conditionFiles);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+			if (isSucces) {
+				// On traite l'original
+			} else {
+				// On traite le backup
+			}
+			isSucces = false;
+			
 			try {
-				getFileFromWeb(informationUrl, informationFiles);
+				isSucces = getFileFromWeb(informationUrl, informationFiles);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
+			if (isSucces) {
+				// On traite l'original
+			} else {
+				// On traite le backup
+			}
+			isSucces = false;
 		}
 
 		// Ensure dateMiseAJour est la date de la dernière mise à jour.

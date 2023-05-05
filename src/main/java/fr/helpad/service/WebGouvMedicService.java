@@ -16,6 +16,8 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.IllegalFormatConversionException;
 import java.util.IllegalFormatException;
 import java.util.LinkedList;
@@ -34,6 +36,7 @@ import org.unbescape.html.HtmlEscape;
 import org.unbescape.html.HtmlEscapeType;
 
 import fr.helpad.entity.Medicament;
+import fr.helpad.entity.WebGouvMAJDate;
 import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.repository.WebGouvMedicRepository;
 
@@ -68,7 +71,20 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		repo.deleteById(id);
 	}
 
-	private void traiterFichier(String path) throws IOException, NullPointerException {
+	private void traiterFichier(String path, List<WebGouvMedic> medocs) throws IOException, NullPointerException {
+		FileInputStream input = new FileInputStream(path);
+		// Lire le fichier avec l'encodage ANSI (Cp1252)
+		Scanner sc = new Scanner(input, "Cp1252");
+		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
+		// taille que peut atteindre le fichier téléchargé en ligne)
+		while (sc.hasNextLine()) {
+			String line = sc.nextLine();
+			if (line == "" || line == "\n")
+				continue;
+		}
+	}
+
+	private List<WebGouvMedic> traiterSpecialite(File path) throws IOException, NullPointerException, FileNotFoundException {
 		FileInputStream input = new FileInputStream(path);
 		// Lire le fichier avec l'encodage ANSI (Cp1252)
 		Scanner sc = new Scanner(input, "Cp1252");
@@ -78,7 +94,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			if (line == "" || line == "\n")
-				break;
+				continue;
 			// On traite la ligne
 			String[] speMatcher = line.split("\\t");
 			boolean matchFound = speMatcher.length == 12;
@@ -119,85 +135,148 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 						procedureAutorisation, etatCommercialisation, dateAMM, statutBDM, numeroAutorisationEurope,
 						titulaire, surveillanceRenforcee);
 
-				//System.out.println(medoc.toString());
+				// System.out.println(medoc.toString());
 				medocs.add(medoc);
-				sauvegarder(medoc);
 			} else {
 				System.out.println("Match length : " + speMatcher.length + " | text : " + line);
 			}
 		}
 		System.out.println("Enregistrement de " + medocs.size() + " médicaments dans la BDD.");
+		return medocs;
 		// saveAll(medocs);
-		System.out.println("Médicaments enregistrés dans la BDD");
+		// System.out.println("Médicaments enregistrés dans la BDD");
+	}
+
+	// Fait une backup du fichier original et le détruit.
+	private List<File> backup(String path) throws IOException {
+		File originalFile = new File(path);
+		File backupFile = new File(path + ".old");
+		if (originalFile.exists()) {
+			if (backupFile.exists()) {
+				// On vérifie que la taille du fichier bakup est inférieur ou égale au fichier
+				// pour éviter des I/O inutiles et de perdre des données.
+				if (backupFile.length() <= originalFile.length()) {
+					backupFile.delete();
+					// Files.copy(originalFile.toPath(), backupFile.toPath());
+				}
+			}
+			// On renomme le fichier original pour télécharger le nouveau contenu à son
+			// emplacement.
+			originalFile.renameTo(backupFile);
+		}
+		List<File> files = new ArrayList<>();
+		files.add(originalFile);
+		files.add(backupFile);
+		return files;
+	}
+
+	private void getFileFromWeb(URL url, List<File> paths) throws IOException, FileNotFoundException, SecurityException {
+		System.out.println("Récupération du fichier à l'adresse : " + url.toString());
+		BufferedInputStream in = new BufferedInputStream(url.openStream());
+		FileOutputStream fileOutputStream = new FileOutputStream(paths.get(0));
+		int bufferSize = 1024;
+		byte dataBuffer[] = new byte[bufferSize];
+		int bytesRead;
+		while ((bytesRead = in.read(dataBuffer, 0, bufferSize)) != -1) {
+			// Tant que le fichier n'est pas télécharger, on écrit dans le fichier à la
+			// suite.
+			fileOutputStream.write(dataBuffer, 0, bytesRead);
+		}
+		fileOutputStream.close();
+		System.out.println("Fichier récupéré et écrit à l'emplacement : " + paths.get(0));
 	}
 
 	@Override
 	public String setMedicaments() throws MalformedURLException, IOException, ProtocolException {
-		// On établit une connexion avec le serveur de medicament.gouv.fr afin d'obtenir
-		// le fichier CIS_bdpm.txt contenant une liste
-		// de médicaments dont le commerce est ou a été autorisé en France.
-		final URL url = new URL(
-				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt");
-		System.out.println("Récupération du fichier à l'adresse : " + url.toString());
-
+		// On s'assure que le dossier medicaments est crée
 		File medicDirectory = new File("medicaments");
 		if (!medicDirectory.exists())
 			medicDirectory.mkdir();
+		// On établit une connexion avec le serveur de medicament.gouv.fr afin d'obtenir
+		// le fichier CIS_bdpm.txt contenant une liste
+		// de médicaments dont le commerce est ou a été autorisé en France.
+		// REF :
+		// https://base-donnees-publique.medicaments.gouv.fr/docs/Contenu_et_format_des_fichiers_telechargeables_dans_la_BDM_v1.pdf
+		final URL refUrl = new URL(
+				"https://base-donnees-publique.medicaments.gouv.fr/docs/Contenu_et_format_des_fichiers_telechargeables_dans_la_BDM_v1.pdf");
+		final URL specialiteUrl = new URL(
+				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt");
+		final URL presentationUrl = new URL(
+				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CIP_bdpm.txt");
+		final URL compositionUrl = new URL(
+				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt");
+		final URL generiqueUrl = new URL(
+				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_GENER_bdpm.txt");
+		final URL conditionUrl = new URL(
+				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_CPD_bdpm.txt");
+		final URL informationUrl = new URL(
+				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_InfoImportantes.txt");
 
-		File medocFile = new File("medicaments/specialites.txt");
+		// Liste des emplacements des fichiers originaux et de backup
+		List<File> medocFiles = backup("medicaments/specialites.txt");
+		List<File> presentationFiles = backup("medicaments/presentations.txt");
+		List<File> compositionFiles = backup("medicaments/compositions.txt");
+		List<File> generiqueFiles = backup("medicaments/generiques.txt");
+		List<File> conditionFiles = backup("medicaments/conditions.txt");
+		List<File> informationFiles = backup("medicaments/informations.txt");
+		List<WebGouvMedic> medocs;
+		
+		boolean isNew = false;
 
-		// On crée une copie du fichier s'il existe, on l'utilisera en cas d'erreur.
-		File medocBackup = new File("medicaments/specialites.txt.old");
-
-		if (medocFile.exists()) {
-			if (medocBackup.exists()) {
-				// On vérifie que le fichier ne soit pas identique pour éviter des I/O inutiles.
-				if (medocBackup.length() != medocFile.length()) {
-					medocBackup.delete();
-					Files.copy(medocFile.toPath(), medocBackup.toPath());
-				}
-			}
-			// On supprime le contenu de fileMedoc pour télécharger le nouveau contenu.
-			medocFile.delete();
-		}
-
-		boolean webResult = false;
-
-		// On télécharge le fichier et on l'écrit à la racine de notre application dans
-		// specialites.txt.
 		try {
-			BufferedInputStream in = new BufferedInputStream(url.openStream());
-			FileOutputStream fileOutputStream = new FileOutputStream("medicaments/specialites.txt");
-			int bufferSize = 1024;
-			byte dataBuffer[] = new byte[bufferSize];
-			int bytesRead;
-			while ((bytesRead = in.read(dataBuffer, 0, bufferSize)) != -1) {
-				// Tant que le fichier n'est pas télécharger, on écrit dans le fichier à la
-				// suite.
-				fileOutputStream.write(dataBuffer, 0, bytesRead);
-				webResult = true;
+			getFileFromWeb(specialiteUrl, medocFiles);
+			// Si le fichier est différent du backup alors on le traite.
+			if (medocFiles.get(0).length() != medocFiles.get(1).length()) {
+				isNew = true;
+				medocs = traiterSpecialite(medocFiles.get(0));
 			}
+		} catch (SecurityException e) {
+			e.printStackTrace();
+			return "Erreur de droit d'accès aux fichiers";
 		} catch (FileNotFoundException e) {
-			traiterFichier("medicaments/specialites.txt.old");
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			traiterFichier("medicaments/specialites.txt.old");
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		if (webResult) {
-			if (medocFile.length() != medocBackup.length())
-				traiterFichier("medicaments/specialites.txt");
-			else
-				traiterFichier("medicaments/specialites.txt");
-			// return "Fichiers de taille identique : " + medocFile.length() + "b == " +
-			// medocBackup.length() + "b";
+		
+		if (isNew) {
+			boolean isSucces = false;
+			try {
+				getFileFromWeb(presentationUrl, presentationFiles);
+				isSucces = true;
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			if (isSucces) {
+				// On traite l'original
+			} else {
+				// On traite le backup
+			}
+			isSucces = false;
+			try {
+				getFileFromWeb(compositionUrl, compositionFiles);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			try {
+				getFileFromWeb(generiqueUrl, generiqueFiles);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			try {
+				getFileFromWeb(conditionUrl, conditionFiles);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			try {
+				getFileFromWeb(informationUrl, informationFiles);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
 		}
 
 		// Ensure dateMiseAJour est la date de la dernière mise à jour.
-		// WebGouvMedic.setDateMiseAJour(LocalDate.now());
+		WebGouvMAJDate.setDateMiseAJour(LocalDate.now());
 
 		return "Medicaments récupérés";
 	}

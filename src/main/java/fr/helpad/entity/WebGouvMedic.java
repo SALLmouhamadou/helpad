@@ -12,26 +12,96 @@ import javax.persistence.Id;
 @Entity
 public class WebGouvMedic {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id; // Code CIS
-	@Column(unique=true)
+	@Column(unique = true)
 	private String nom;
-	@Column(name="FORME_PHARMACEUTIQUE")
+	@Column(name = "FORME_PHARMACEUTIQUE")
 	private String formePharmaceutique;
-	@Column(name="VOIE_ADMINISTRATION")
+	@Column(name = "VOIE_ADMINISTRATION")
 	private String voieAdministration;
 	private String autorisation;
 	private String procedure;
 	private boolean commercialise;
-	@Column(name="DATE_COMMERCIALISATION")
+	@Column(name = "DATE_COMMERCIALISATION")
 	private LocalDate dateCommercialisation;
-	@Column(name="STATUT_BDM")
+	@Column(name = "STATUT_BDM")
 	private String statutBdm;
-	@Column(unique=true, name="NUMERO_AUTORISATION_EUROPEENNE")
+	@Column(unique = true, name = "NUMERO_AUTORISATION_EUROPEENNE")
 	private String numeroAutorisationEuropeenne;
 	private String titulaire;
-	@Column(name="SURVEILLANCE_RENFORCEE")
+	@Column(name = "SURVEILLANCE_RENFORCEE")
 	private boolean surveillanceRenforcee;
+	@Column(name = "LIBELLE_PRESENTATION")
+	private String libellePresentation;
+	@Column(name = "ETAT_COMMERCIALISATION")
+	private String etatCommercialisation;
+	@Column(name = "TAUX_REMBOURSEMENT")
+	private String tauxRemboursement;
+	private float prix;
+	@Column(name = "INDICATION_DROIT_REMBOURSEMENT")
+	private String indicationDroitRemboursement;
+	@Column(name = "ELEMENT_PHARMACEUTIQUE")
+	private String elementPharmaceutique;
+	@Column(name = "CODE_SUBSTANCE")
+	private String codeSubstance;
+	@Column(name = "DOSAGE_SUBSTANCE")
+	private String dosageSubstance;
+	@Column(name = "NATURE_COMPOSANT")
+	private String natureComposant;
+	@Column(name = "REFERENCE_DOSAGE")
+	private String referenceDosage;
+	@Column(name = "NUMERO_LIAISON_SUBSTANCES")
+	private String numeroLiaisonSubstances;
+	@Column(name="CONDITION_PRESCRIPTION_DELIVRANCE")
+	private String conditionPrescriptionDelivrance;
+	
+	public String getTitulaire() {
+		return titulaire;
+	}
+
+	public void setTitulaire(String titulaire) {
+		this.titulaire = titulaire;
+	}
+
+	public String getLibellePresentation() {
+		return libellePresentation;
+	}
+
+	public void setLibellePresentation(String libellePresentation) {
+		this.libellePresentation = libellePresentation;
+	}
+
+	public String getEtatCommercialisation() {
+		return etatCommercialisation;
+	}
+
+	public void setEtatCommercialisation(String etatCommercialisation) {
+		this.etatCommercialisation = etatCommercialisation;
+	}
+
+	public String getTauxRemboursement() {
+		return tauxRemboursement;
+	}
+
+	public void setTauxRemboursement(String tauxRemboursement) {
+		this.tauxRemboursement = tauxRemboursement;
+	}
+
+	public float getPrix() {
+		return prix;
+	}
+
+	public void setPrix(float prix) {
+		this.prix = prix;
+	}
+
+	public String getIndicationDroitRemboursement() {
+		return indicationDroitRemboursement;
+	}
+
+	public void setIndicationDroitRemboursement(String indicationDroitRemboursement) {
+		this.indicationDroitRemboursement = indicationDroitRemboursement;
+	}
 
 	/**
 	 * @return the id

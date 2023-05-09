@@ -3,20 +3,29 @@ package fr.helpad.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity()
 public class WebGouvGenerique {
 	@Id
 	private Long id;
-	@Column(name = "LIBELLE_GENERIQUE")
+	@Column(name = "LIBELLE_GENERIQUE", length = 999)
 	private String libelleGenerique;
 	@Column(name = "TYPE_GENERIQUE")
 	private String typeGenerique;
 	@Column(name = "NUMERO_TRI")
 	private String numeroTri;
-	@OneToOne
-	private WebGouvMedic medicament;
+	@Column(name = "IDENTIFIANT_GROUPE_GENERIQUE")
+	private String identifiantGroupeGenerique;
+
+	public String getIdentifiantGroupeGenerique() {
+		return identifiantGroupeGenerique;
+	}
+
+	public void setIdentifiantGroupeGenerique(String identifiantGroupeGenerique) {
+		this.identifiantGroupeGenerique = identifiantGroupeGenerique;
+	}
 
 	public Long getId() {
 		return id;
@@ -51,13 +60,13 @@ public class WebGouvGenerique {
 	}
 
 	public WebGouvGenerique(Long id, String libelleGenerique, String typeGenerique, String numeroTri,
-			WebGouvMedic medicament) {
+			String identifiantGroupeGenerique) {
 		super();
 		this.id = id;
 		this.libelleGenerique = libelleGenerique;
 		this.typeGenerique = typeGenerique;
 		this.numeroTri = numeroTri;
-		this.medicament = medicament;
+		this.identifiantGroupeGenerique = identifiantGroupeGenerique;
 	}
 
 	public WebGouvGenerique() {

@@ -40,13 +40,15 @@ public class WebGouvMedic {
 	private String etatCommercialisation;
 	@Column(name = "TAUX_REMBOURSEMENT")
 	private String tauxRemboursement;
-	private float prix;
+	private String prix;
 	@Column(name = "INDICATION_DROIT_REMBOURSEMENT")
 	private String indicationDroitRemboursement;
 	@Column(name = "ELEMENT_PHARMACEUTIQUE")
 	private String elementPharmaceutique;
 	@Column(name = "CODE_SUBSTANCE")
 	private String codeSubstance;
+	@Column(name = "NOM_SUBSTANCE")
+	private String nomSubstance;
 	@Column(name = "DOSAGE_SUBSTANCE")
 	private String dosageSubstance;
 	@Column(name = "NATURE_COMPOSANT")
@@ -57,6 +59,78 @@ public class WebGouvMedic {
 	private String numeroLiaisonSubstances;
 	@Column(name = "CONDITION_PRESCRIPTION_DELIVRANCE")
 	private String conditionPrescriptionDelivrance;
+
+	public String getProcedureAdministrative() {
+		return procedureAdministrative;
+	}
+
+	public void setProcedureAdministrative(String procedureAdministrative) {
+		this.procedureAdministrative = procedureAdministrative;
+	}
+
+	public String getElementPharmaceutique() {
+		return elementPharmaceutique;
+	}
+
+	public void setElementPharmaceutique(String elementPharmaceutique) {
+		this.elementPharmaceutique = elementPharmaceutique;
+	}
+
+	public String getCodeSubstance() {
+		return codeSubstance;
+	}
+
+	public void setCodeSubstance(String codeSubstance) {
+		this.codeSubstance = codeSubstance;
+	}
+
+	public String getNomSubstance() {
+		return nomSubstance;
+	}
+
+	public void setNomSubstance(String nomSubstance) {
+		this.nomSubstance = nomSubstance;
+	}
+
+	public String getDosageSubstance() {
+		return dosageSubstance;
+	}
+
+	public void setDosageSubstance(String dosageSubstance) {
+		this.dosageSubstance = dosageSubstance;
+	}
+
+	public String getNatureComposant() {
+		return natureComposant;
+	}
+
+	public void setNatureComposant(String natureComposant) {
+		this.natureComposant = natureComposant;
+	}
+
+	public String getReferenceDosage() {
+		return referenceDosage;
+	}
+
+	public void setReferenceDosage(String referenceDosage) {
+		this.referenceDosage = referenceDosage;
+	}
+
+	public String getNumeroLiaisonSubstances() {
+		return numeroLiaisonSubstances;
+	}
+
+	public void setNumeroLiaisonSubstances(String numeroLiaisonSubstances) {
+		this.numeroLiaisonSubstances = numeroLiaisonSubstances;
+	}
+
+	public String getConditionPrescriptionDelivrance() {
+		return conditionPrescriptionDelivrance;
+	}
+
+	public void setConditionPrescriptionDelivrance(String conditionPrescriptionDelivrance) {
+		this.conditionPrescriptionDelivrance = conditionPrescriptionDelivrance;
+	}
 
 	public String getTitulaire() {
 		return titulaire;
@@ -90,11 +164,11 @@ public class WebGouvMedic {
 		this.tauxRemboursement = tauxRemboursement;
 	}
 
-	public float getPrix() {
+	public String getPrix() {
 		return prix;
 	}
 
-	public void setPrix(float prix) {
+	public void setPrix(String prix) {
 		this.prix = prix;
 	}
 
@@ -293,7 +367,7 @@ public class WebGouvMedic {
 		libellePresentation = "";
 		etatCommercialisation = "";
 		tauxRemboursement = "";
-		prix = 1;
+		prix = "";
 		indicationDroitRemboursement = "";
 		elementPharmaceutique = "";
 		codeSubstance = "";
@@ -315,8 +389,8 @@ public class WebGouvMedic {
 				+ ", procedureAdministrative=" + procedureAdministrative + ", commercialise=" + commercialise
 				+ ", dateCommercialisation=" + dateCommercialisation + ", statutBdm=" + statutBdm + "\n"
 				+ ", numeroAutorisationEuropeenne=" + numeroAutorisationEuropeenne + ", titulaire=" + titulaire
-				+ ", surveillanceRenforcee=" + surveillanceRenforcee + ", libellePresentation=" + libellePresentation + "\n"
-				+ ", etatCommercialisation=" + etatCommercialisation + ", tauxRemboursement=" + tauxRemboursement
+				+ ", surveillanceRenforcee=" + surveillanceRenforcee + ", libellePresentation=" + libellePresentation
+				+ "\n" + ", etatCommercialisation=" + etatCommercialisation + ", tauxRemboursement=" + tauxRemboursement
 				+ ", prix=" + prix + ", indicationDroitRemboursement=" + indicationDroitRemboursement + "\n"
 				+ ", elementPharmaceutique=" + elementPharmaceutique + ", codeSubstance=" + codeSubstance
 				+ ", dosageSubstance=" + dosageSubstance + ", natureComposant=" + natureComposant + ", referenceDosage="

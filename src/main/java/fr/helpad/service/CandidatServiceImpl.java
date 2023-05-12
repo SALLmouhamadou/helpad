@@ -28,7 +28,7 @@ public class CandidatServiceImpl implements CandidatService {
 
 
     @Override
-    public List<Candidat> findAll() {
+    public List<Candidat> findAllCandidats() {
         return (List<Candidat>) candidatRepository.findAll() ;
     }
 

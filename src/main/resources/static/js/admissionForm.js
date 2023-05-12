@@ -1,5 +1,7 @@
 var date_naissance_input = document.getElementById("dateNaissance");
-date_naissance_input.addEventListener("blur", admissionForm)
+date_naissance_input.addEventListener("blur", admissionForm);
+var date_entree_input = document.getElementById("dateEntree");
+date_entree_input.addEventListener("blur", admissionForm);
 function admissionForm() {
 			// Validation de la date de naissance
 			var date_naissance_input = document.getElementById("dateNaissance");

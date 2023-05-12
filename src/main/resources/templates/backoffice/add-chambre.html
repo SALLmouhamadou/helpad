@@ -8,19 +8,40 @@
 	th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
-
-	<form th:action="@{/admin/addChambre}" method="post" th:object="${chambre}">
-	<div>
-		<label for="noChambre">N° de chambre <span class="text-danger">*</span></label>
-		<input type="number" id="noChambre" th:field=*{noChambre} required>
-	</div>
-	<div>
-		<label></label>
-		
-	</div>
-	<div>
-		<label>Quelle étage se trouve la chambre <span class="text-danger">*</span></label><br>
-		<select  id="noEtage">
+	
+	<div th:text="${message}" th:class="${alertClass}"></div>
+	<form th:action="@{/add/newChambre}" method="post">
+		<div>
+			<label for="noChambre">N° de chambre <span
+				class="text-danger">*</span></label><br> <input type="number"
+				id="noChambre" name="noChambre" required>
+		</div>
+		<div>
+			<label for="metreCarre"></label> <input type="text" id="metreCarre"
+				name="metreCarre" required>
+		</div>
+		<div>
+			<label for="chambreDouble">La chambre est-elle disponible ? <span
+				class="text-danger">*</span></label><br> <select
+				name="chambreDouble" id="chambreDouble">
+				<option value="">Type de Chambre</option>
+				<option value="Chambre double">chambre double</option>
+				<option value="Chambre normal">Chambre normal</option>
+			</select>
+		</div>
+		<div>
+			<label for="disponibilite">La chambre est-elle disponible ? <span
+				class="text-danger">*</span>
+			</label><br> <select name="disponibilite" id="disponibilite">
+				<option value="">Disponibilite</option>
+				<option value="true">Oui</option>
+				<option value="false">Non</option>
+			</select>
+		</div>
+		<div>
+			<label>Quelle étage se trouve la chambre <span
+				class="text-danger">*</span></label><br> <select
+				name="noEtage" id="noEtage">
 				<option value="">Etage</option>
 				<option value="0">0</option>
 				<option value="1">01</option>
@@ -28,23 +49,20 @@
 				<option value="3">03</option>
 				<option value="4">04</option>
 			</select>
-	</div>
-	<div>
-		<label for="disponibilite">La chambre est-elle disponible ? <span class="text-danger">*</span></label><br>
-		<select th:field="*{disponibilite}" id="disponibilite">
-				<option value="">Disponibilite</option>
-				<option value="true">Oui</option>
-				<option value="false">Non</option>
-		</select>
-				
-	</div>
-	<div>
-		<label></label>
-		<input>
-	</div>
-	<div>
-		<button class="btn btn-primary" type="submit">Ajouter une nouvelle Chambre</button>
-	</div>
+		</div>
+		<div>
+			<label for="type">Quelle la type d'étage <span
+				class="text-danger">*</span></label><br> <select
+				name="type" id="type">
+				<option value="">Type étage</option>
+				<option value="etage normal">etage normal</option>
+				<option value="etage securiser">etage sécurisée</option>
+			</select>
+		</div>
+		<div class="p-2">
+			<button class="btn btn-primary " type="submit">Ajouter une
+				nouvelle Chambre</button>
+		</div>
 	</form>
 </body>
 </html>

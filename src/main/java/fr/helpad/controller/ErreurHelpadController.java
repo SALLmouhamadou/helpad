@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ErreurHelpadController implements ErrorController {
 
-	@GetMapping("/error")
+	//@GetMapping("/error")
 	public String handleError(HttpServletRequest request) {
 		String errorPage = "error";
 

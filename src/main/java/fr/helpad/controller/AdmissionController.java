@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
@@ -55,30 +56,31 @@ public class AdmissionController {
 		return mav;
 	}
 	
-	@GetMapping("/dashboard/{id}")
-	public ModelAndView showDashbord(@PathVariable("id") Long id, ModelAndView mav, BindingResult error) {
-		if (error.hasErrors()) {
-//			Candidat candidat = candidatService.get(id);
-//			mav.addObject("candidat", candidat);
-//			mav.addObject("candidatures", candidat.getMesCandidatures());
-//			mav.addObject("title", "Pas Autoriser");
-//			mav.setViewName("redirect:/error");
-		} else {
-			Candidat candidat = candidatService.get(id);
-			mav.addObject("candidat", candidat);
-			mav.addObject("candidatures", candidat.getMesCandidatures());
+	@GetMapping("/dashboard")
+	public ModelAndView showDashbord(ModelAndView mav,@AuthenticationPrincipal UserDetails userDetails ) {
+		if (userDetails !=null) {		
+			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
+			mav.addObject("candidat", candidat.get());
 			mav.addObject("title", "Espace usager");
 			mav.setViewName("frontoffice/espacepersonnel");
+		}else {
+			mav.setViewName("redirect:/login");
 		}
 		return mav;
 	}
 
-	@GetMapping("/dashboard/candidature/{id}")
-	public ModelAndView getAllCandiduturesById(@PathVariable("id") Long id, ModelAndView mav) {
-		Optional<Candidature> candidatures = candidatureServiceImpl.getCandidaturesById(id);
-		mav.addObject("candidature", candidatures.get());
+	@GetMapping("/dashboard/candidature")
+	public ModelAndView getAllCandiduturesById( ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
+		if(userDetails !=null) {
+			Optional<Candidat> candidat= candidatService.findByUsername(userDetails.getUsername());
+			mav.addObject("candidat", candidat.get());
+		//mav.addObject("candidature", candidatures.get());
 		mav.addObject("title", "Mes candidatures");
 		mav.setViewName("frontoffice/candidature");
+		}
+		else {
+		mav.setViewName("redirect:/login");
+		}
 		return mav;
 	}
 
@@ -145,16 +147,31 @@ public class AdmissionController {
 		return mav;
 	}
 
-	@GetMapping("/consulter/{id}")
-	public ModelAndView getDetailCandidature(@PathVariable("id") Long id, ModelAndView mav) {
-		Optional<Candidature> candidatures = candidatureServiceImpl.getCandidaturesById(id);
-		System.out.println(candidatures.get().getCandidat());
-		Long idCandidat = candidatures.get().getCandidat().getIdPersonne();
-		System.out.println(idCandidat);
-		Candidat candidat = candidatService.get(idCandidat);
-		mav.addObject("candidat", candidat);
+	@SuppressWarnings("unused")
+	@GetMapping("/consulter")
+	public ModelAndView getDetailCandidature( ModelAndView mav,@AuthenticationPrincipal UserDetails userDetails) {
+		if(userDetails !=null) {
+		Optional<Candidat> candidatD= candidatService.findByUsername(userDetails.getUsername());
+		mav.addObject("candidat", candidatD.get());
+//		mav.addObject("files", storageService.loadAll()).map(
+//				path -> MvcUriComponentsBuilder.fromMethodName(AdmissionController.class,
+//						"serveFile", path.getFileName().toString()).build().toUri().toString()).collect(Collectors.toList()));
 		mav.addObject("title", "Recapitilatif");
 		mav.setViewName("frontoffice/recapitilatif");
+		}else {
+			mav.setViewName("redirect:/login");
+		}
+		return mav;
+
+	}
+	
+	@GetMapping("/admin/getAllCandidatures")
+	public ModelAndView showAdmissionCandidature(ModelAndView mav) {
+		List<Candidat> candidats = candidatService.findAllCandidats();
+		List<Candidature> candidatures = candidatureServiceImpl.findAllCandidatures();
+		mav.addObject("candidats", candidatures);
+		mav.addObject("title", "Gérer les candidatures");
+		mav.setViewName("backoffice/admissioncandidat");
 		return mav;
 	}
 }

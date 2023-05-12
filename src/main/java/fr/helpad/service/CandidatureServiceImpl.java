@@ -18,7 +18,7 @@ public class CandidatureServiceImpl {
 		return candidatureRepository.findById(id);
 	}
 	
-	public List<Candidature> FindAllCandidatures(){
+	public List<Candidature> findAllCandidatures(){
 		return (List<Candidature>) candidatureRepository.findAll();
 	}
 }

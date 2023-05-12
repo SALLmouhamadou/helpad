@@ -23,6 +23,12 @@
 		</nav>
 	</div>
 	<div class="container">
+		<div class="ps-5 pt-5" >
+			<form>
+				<input type="text" name="numeroRef" placeholder="Numéro de reférence">
+				<button class="btn btn-primary" type="submit">Cherchez</button>
+			</form>
+		</div>
 		<div class="p-5">
 			<table class="table">
 				<thead>
@@ -34,14 +40,25 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="candidature:${candidatures}">
+					<tr th:each="candidature:${candidats}">
 						<th th:text="${candidature.numeroRef}"></th>
 						<td th:text="${candidature.jourDeCandidature}"></td>
 						<td th:text="${candidature.status.libelle}"></td>
-						<td><a
-							th:href="@{/consulter/{id}(id=${candidature.idCandidature})}">
+						<td>
+							<!--  <select>--> <a th:href="@{/consulter}">
 								<Button class="btn btn-primary">Consulter</Button>
-						</a></td>
+						</a> <!-- <option><a href="#">
+										<button>Supprimer</button>
+									</a>
+								</option>
+								<option>
+									<a href="#">
+										<button>Modifier</button>
+									</a>
+								</option>
+
+						</select> -->
+						</td>
 					</tr>
 				</tbody>
 			</table>

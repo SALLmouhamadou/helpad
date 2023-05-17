@@ -53,14 +53,16 @@
 					required>
 			</div>
 			<div>
-				<span id="dateNaissanceError" class="text-danger"></span> <label
+				 <label
 					for="dateNaissance">Date naissance <span
-					class="text-danger">*</span></label> <input type="date"
+					class="text-danger">*</span></label> <br>
+					<span id="dateNaissanceError" class="text-danger"></span> 
+					<input type="date"
 					placeholder="Date naissance" id="dateNaissance"
 					name="dateNaissance"  required>
 			</div>
 			<div class="index-btn-wrapper">
-				<div class="index-btn" onclick="run(1, 2);">Suivant</div>
+				<button class="index-btn" id="btnDateNaissance" onclick="run(1, 2);">Suivant</button>
 			</div>
 		</div>
 
@@ -84,7 +86,7 @@
 				</div>
 				<div>
 					<label for="pays"> Pays <span class="text-danger">*</span></label>
-					<input type="text" placeholder="Pays" name="France" required>
+					<input type="text" placeholder="Pays" name="pays" required>
 				</div>
 				<div class="index-btn-wrapper">
 					<div class="index-btn" onclick="run(2, 1);">Précedent</div>
@@ -95,9 +97,11 @@
 		<div class="tab" id="tab-3">
 
 			<div>
-				<span id="dateEntreeError" class="text-danger"></span> <label
+				<label
 					for="dateEntree"> Date entrée souhaite <span
-					class="text-danger">*</span></label> <input type="date"
+					class="text-danger">*</span></label><br>
+					<span id="dateEntreeError" class="text-danger"></span> 
+					<input type="date"
 					placeholder="Date entrée souhaitée" id="dateEntree"
 					name="dateEntree" required>
 			</div>
@@ -130,7 +134,7 @@
 			</div>
 			<div class="index-btn-wrapper">
 				<div class="index-btn" onclick="run(3, 2);">Précedent</div>
-				<div class="index-btn" onclick="run(3, 4);">Suivant</div>
+				<button class="index-btn" id="btnDateEntree" onclick="run(3, 4);">Suivant</button>
 			</div>
 		</div>
 
@@ -160,12 +164,12 @@
 					mois(JPG,PNG, PDF|max. 2 Mo) </label> <input type="file" name="file5">
 			</div>
 			<div>
-				<label for="file6">Justificatif de situation familiale
+				<label class="text-primary" for="file6">Justificatif de situation familiale
 					(JPG,PNG, PDF|max. 2 Mo) <span class="text-danger">*</span>
 				</label> <input type="file" name="file6" required>
 			</div>
 			<div>
-				<label class="text-primary" for="file7">Avsi d'imopsition (JPG,PNG, PDF|max. 2
+				<label class="text-primary" for="file7">Avsi d'imposition (JPG,PNG, PDF|max. 2
 					Mo) <span class="text-danger">*</span>
 				</label> <input type="file" name="file7" required>
 			</div>

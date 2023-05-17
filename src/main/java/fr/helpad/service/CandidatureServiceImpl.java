@@ -21,4 +21,9 @@ public class CandidatureServiceImpl {
 	public List<Candidature> findAllCandidatures(){
 		return (List<Candidature>) candidatureRepository.findAll();
 	}
-}
+	
+	public Candidature findCandidature(String numeroRef){
+		Candidature candidature = candidatureRepository.findByNumeroRef(numeroRef);
+		return candidature;
+	}
+ }

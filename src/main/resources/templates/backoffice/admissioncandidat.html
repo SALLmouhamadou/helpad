@@ -23,8 +23,11 @@
 		</nav>
 	</div>
 	<div class="container">
+		<div>
+			<span  th:text="${errormessage}" th:class="${alertClass}"></span>
+		</div>
 		<div class="ps-5 pt-5" >
-			<form>
+			<form th:acttion="@{/candidature/search}" method="get">
 				<input type="text" name="numeroRef" placeholder="Numéro de reférence">
 				<button class="btn btn-primary" type="submit">Cherchez</button>
 			</form>
@@ -34,6 +37,8 @@
 				<thead>
 					<tr>
 						<th scope="col">Réference</th>
+						<th scope="col">Prénom</th>
+						<th scope="col">Nom</th>
 						<th scope="col">Crée le</th>
 						<th scope="col">Status</th>
 						<th scope="col">Action</th>
@@ -42,10 +47,12 @@
 				<tbody>
 					<tr th:each="candidature:${candidats}">
 						<th th:text="${candidature.numeroRef}"></th>
+						<th th:text="${candidature.candidat.prenom}"></th>
+						<th th:text="${candidature.candidat.nom}"></th>
 						<td th:text="${candidature.jourDeCandidature}"></td>
 						<td th:text="${candidature.status.libelle}"></td>
 						<td>
-							<!--  <select>--> <a th:href="@{/consulter}">
+							<!--  <select>--> <a th:href="@{/admin/consulter/candidature/{id}(id=${candidature.candidat.idPersonne})}">
 								<Button class="btn btn-primary">Consulter</Button>
 						</a> <!-- <option><a href="#">
 										<button>Supprimer</button>

@@ -167,11 +167,32 @@ public class AdmissionController {
 	
 	@GetMapping("/admin/getAllCandidatures")
 	public ModelAndView showAdmissionCandidature(ModelAndView mav) {
-		List<Candidat> candidats = candidatService.findAllCandidats();
 		List<Candidature> candidatures = candidatureServiceImpl.findAllCandidatures();
 		mav.addObject("candidats", candidatures);
 		mav.addObject("title", "Gérer les candidatures");
 		mav.setViewName("backoffice/admissioncandidat");
 		return mav;
 	}
+	
+	@GetMapping("/candidature/search")
+	public ModelAndView getCandidatByNumeroRefference(ModelAndView mav,@RequestParam("numeroRef") String numeroRef) {
+		Candidature findCandidature = candidatureServiceImpl.findCandidature(numeroRef);
+		if(findCandidature !=null) {
+		mav.addObject("candidature", findCandidature);
+		mav.setViewName("backoffice/gestioncandidature");
+		}else {
+//			mav.addObject("errormessage", "Cette numéro de réference n'existe pas");
+//			mav.addObject("alertClass", "alert alert-danger alert-danger fade show");
+//			mav.setViewName("backoffice/admissioncandidat");
+		}
+		return mav;
+	}
+	@GetMapping("admin/consulter/candidature/{id}")
+	public ModelAndView getCandidatDetails(ModelAndView mav,@PathVariable("id") Long id) {
+		Candidat candidat = candidatService.get(id);
+		mav.addObject("candidat", candidat);
+		mav.setViewName("backoffice/gestioncandidature");
+		return mav;
+	}
+	
 }

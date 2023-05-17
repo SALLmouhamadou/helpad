@@ -11,13 +11,17 @@
 	<div class="container">
 		<img th:src="@{/image/logo-helpad.jpg}">
 		<h3 class="text-primary pt-3">DEMANDE D'ADMISSION</h3>
-		<a class="text-black"th:href="@{/dashboard}">Mon Compte</a>
+		<a class="text-black" th:href="@{/dashboard}">Mon Compte</a>
 	</div>
-	
+
 	<div class="container pt-2">
 		<div class="border border-primary">
 			<h2 class="bg-primary text-white">Récapitilatif de ma demande</h2>
-			<p class="float-end fw-bold pe-3">Votre numéro de réference : <span th:each="candidature:${candidat.mesCandidatures}" th:text="${candidature.numeroRef}"></span></p>
+			<p class="float-end fw-bold pe-3">
+				Votre numéro de réference : <span
+					th:each="candidature:${candidat.mesCandidatures}"
+					th:text="${candidature.numeroRef}"></span>
+			</p>
 			<div class="pt-4" th:each="candidat : ${candidat}">
 				<p class="ps-3 fw-bold">
 					Genre : <input class="border border-primary rounded" type=text
@@ -45,27 +49,72 @@
 				</p>
 			</div>
 			<div>
-				<h4 class="bg-primary text-white ps-3">Adresse de la personne qui fait la demande</h4>
-				<p class="ps-3 fw-bold">N° de voie : <input class="border border-primary rounded" type="text" th:value="${candidat.adresse.numero}" disabled="disabled"></p>
-				<p class="ps-3 fw-bold">Nom de la voie : <input class="border border-primary rounded" type="text" th:value="${candidat.adresse.rue}" disabled="disabled"></p>
-				<p class="ps-3 fw-bold">Code Postal : <input class="border border-primary rounded" type="text" th:value="${candidat.adresse.codePostal}" disabled="disabled"></p>
-				<p class="ps-3 fw-bold">Nom de la ville / commune : <input class="border border-primary rounded" type="text" th:value="${candidat.adresse.ville}" disabled="disabled"></p>
-				<p class="ps-3 fw-bold">Pays : <input class="border border-primary rounded" type="text" th:value="${candidat.adresse.pays}" disabled="disabled"></p>
+				<h4 class="bg-primary text-white ps-3">Adresse de la personne
+					qui fait la demande</h4>
+				<p class="ps-3 fw-bold">
+					N° de voie : <input class="border border-primary rounded"
+						type="text" th:value="${candidat.adresse.numero}"
+						disabled="disabled">
+				</p>
+				<p class="ps-3 fw-bold">
+					Nom de la voie : <input class="border border-primary rounded"
+						type="text" th:value="${candidat.adresse.rue}" disabled="disabled">
+				</p>
+				<p class="ps-3 fw-bold">
+					Code Postal : <input class="border border-primary rounded"
+						type="text" th:value="${candidat.adresse.codePostal}"
+						disabled="disabled">
+				</p>
+				<p class="ps-3 fw-bold">
+					Nom de la ville / commune : <input
+						class="border border-primary rounded" type="text"
+						th:value="${candidat.adresse.ville}" disabled="disabled">
+				</p>
+				<p class="ps-3 fw-bold">
+					Pays : <input class="border border-primary rounded" type="text"
+						th:value="${candidat.adresse.pays}" disabled="disabled">
+				</p>
 			</div>
 			<div th:each="candidature : ${candidat.mesCandidatures}">
-				<h4 class="bg-primary text-white ps-3">Information du candidature</h4>
-				<p class="ps-3 fw-bold">Avez vous des pathologies? : <input class="border border-primary rounded" type="text" th:value="${candidature.pathologie}"></p>
-				<p class="ps-3 fw-bold">Date de candidature : <input class="border border-primary rounded" type="text" th:value="${candidature.jourDeCandidature}"></p>
-				<p class="ps-3 fw-bold">Des informations complémentaires : <input class="border border-primary rounded" type="text" th:value="${candidature.informationComplementaire}"></p>
-				<p class="ps-3 fw-bold">Vous avez déclarez sur l'honneur exactitude des informations renseignées : <input class="border border-primary rounded" type="text" th:value="${candidature.declarationExactitudeDesInformations}"></p>
-				<p class="ps-3 fw-bold">Vous acceptez les conditons générales d'utilisation des données : <input class="border border-primary rounded" type="text" th:value="${candidature.conditionGeneral}"></p>
+				<h4 class="bg-primary text-white ps-3">Information du
+					candidature</h4>
+				<p class="ps-3 fw-bold">
+					Date d'entrée souhaite : <input
+						class="border border-primary rounded" type="text"
+						th:value="${candidature.candidat.dateEntree}">
+				</p>
+				<p class="ps-3 fw-bold">
+					Avez vous des pathologies? : <input
+						class="border border-primary rounded" type="text"
+						th:value="${candidature.pathologie}">
+				</p>
+				<p class="ps-3 fw-bold">
+					Date de candidature : <input class="border border-primary rounded"
+						type="text" th:value="${candidature.jourDeCandidature}">
+				</p>
+				<p class="ps-3 fw-bold">
+					Des informations complémentaires : <input
+						class="border border-primary rounded" type="text"
+						th:value="${candidature.informationComplementaire}">
+				</p>
+				<p class="ps-3 fw-bold">
+					Vous avez déclarez sur l'honneur exactitude des informations
+					renseignées : <input class="border border-primary rounded"
+						type="text"
+						th:value="${candidature.declarationExactitudeDesInformations}">
+				</p>
+				<p class="ps-3 fw-bold">
+					Vous acceptez les conditons générales d'utilisation des données : <input
+						class="border border-primary rounded" type="text"
+						th:value="${candidature.conditionGeneral}">
+				</p>
 			</div>
-			<h4 class="bg-primary text-white ps-3"> Les pièces justificatifs</h4>
-			<div th:each="file :${files}">
+			<h4 class="bg-primary text-white ps-3">Les pièces justificatifs</h4>
+			<!-- <div th:each="file :${files}">
 				<ul>
 					<li><a th:href="${file}" th:text="${file}"></a></li>
 				</ul>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </body>

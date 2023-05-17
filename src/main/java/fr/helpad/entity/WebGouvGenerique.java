@@ -10,8 +10,8 @@ import javax.persistence.OneToOne;
 public class WebGouvGenerique {
 	@Id
 	private Long id;
-	@Column(name = "LIBELLE_GENERIQUE", length = 999)
-	private String libelleGenerique;
+	@Column(length = 999)
+	private String nom;
 	@Column(name = "TYPE_GENERIQUE")
 	private String typeGenerique;
 	@Column(name = "NUMERO_TRI")
@@ -36,11 +36,11 @@ public class WebGouvGenerique {
 	}
 
 	public String getLibelleGenerique() {
-		return libelleGenerique;
+		return nom;
 	}
 
 	public void setLibelleGenerique(String libelleGenerique) {
-		this.libelleGenerique = libelleGenerique;
+		this.nom = libelleGenerique;
 	}
 
 	public String getTypeGenerique() {
@@ -63,7 +63,7 @@ public class WebGouvGenerique {
 			String identifiantGroupeGenerique) {
 		super();
 		this.id = id;
-		this.libelleGenerique = libelleGenerique;
+		this.nom = libelleGenerique;
 		this.typeGenerique = typeGenerique;
 		this.numeroTri = numeroTri;
 		this.identifiantGroupeGenerique = identifiantGroupeGenerique;

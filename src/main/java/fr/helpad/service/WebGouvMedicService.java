@@ -14,9 +14,11 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.IllegalFormatConversionException;
@@ -73,6 +75,14 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 	public List<WebGouvMedic> listerTout() {
 		return (List<WebGouvMedic>) repo.findAll();
 	}
+	
+	public Class getClassById(Long id) throws NoSuchElementException {
+		if (repo.findById(id).isPresent())
+			return WebGouvMedic.class;
+		if (repoGenerique.findById(id).isPresent())
+			return WebGouvGenerique.class;
+		return null;
+	}
 
 	@Override
 	public WebGouvMedic get(Long id) throws NoSuchElementException {
@@ -103,7 +113,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 			String line = sc.nextLine();
 			if (line == "" || line == "\n")
 				continue;
-			String[] speMatcher = line.split("\\t");
+			String[] speMatcher = line.split("\\t", -1);
 			boolean matchFound = speMatcher.length == 4;
 			if (!matchFound) {
 				System.out.println("[Information] Erreur de match " + speMatcher.length + " : " + line);
@@ -161,7 +171,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 			String line = sc.nextLine();
 			if (line == "" || line == "\n")
 				continue;
-			String[] speMatcher = line.split("\\t");
+			String[] speMatcher = line.split("\\t", -1);
 			boolean matchFound = speMatcher.length == 2;
 			if (!matchFound) {
 				System.out.println("[Condition] Erreur de match " + speMatcher.length + " : " + line);
@@ -198,8 +208,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 			String line = sc.nextLine();
 			if (line == "" || line == "\n")
 				continue;
-			String[] speMatcher = line.split("\\t");
-			boolean matchFound = speMatcher.length == 5;
+			String[] speMatcher = line.split("\\t", -1);
+			boolean matchFound = speMatcher.length == 6;
 			if (!matchFound) {
 				System.out.println("[Generique] Erreur de match " + speMatcher.length + " : " + line);
 			} else {
@@ -212,10 +222,10 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				}
 				String generiqueId = speMatcher[0].strip();
 				String libelleGroupeGenerique = speMatcher[1].strip();
-				String typeGenerique = (speMatcher[3].strip() == "0" ? "princeps" : "")
-						+ (speMatcher[3].strip() == "1" ? "générique" : "")
-						+ (speMatcher[3].strip() == "2" ? "générique par complémentarité posologique" : "")
-						+ (speMatcher[3].strip() == "4" ? "générique substituable" : "");
+				String typeGenerique = (speMatcher[3].strip().charAt(0) == '0' ? "princeps" : "")
+						+ (speMatcher[3].strip().charAt(0) == '1' ? "générique" : "")
+						+ (speMatcher[3].strip().charAt(0) == '2' ? "générique par complémentarité posologique" : "")
+						+ (speMatcher[3].strip().charAt(0) == '4' ? "générique substituable" : "");
 				String numeroElement = speMatcher[4].strip();
 
 				Optional<WebGouvMedic> optMedic = repo.findById(id);
@@ -247,8 +257,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 			String line = sc.nextLine();
 			if (line == "" || line == "\n")
 				continue;
-			String[] speMatcher = line.split("\\t");
-			boolean matchFound = speMatcher.length == 8;
+			String[] speMatcher = line.split("\\t", -1);
+			boolean matchFound = speMatcher.length == 9;
 			if (!matchFound) {
 				System.out.println("[Composition] Erreur de match " + speMatcher.length + " : " + line);
 			} else {
@@ -295,8 +305,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				String line = sc.nextLine();
 				if (line == "" || line == "\n")
 					continue;
-				String[] speMatcher = line.split("\\t");
-				boolean matchFound = speMatcher.length >= 10;
+				String[] speMatcher = line.split("\\t", -1);
+				boolean matchFound = speMatcher.length == 13;
 				long id = 0;
 				String libellePresentation = "";
 				String etatCommercialisation = "";
@@ -366,6 +376,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 	private void traiterSpecialite(File path)
 			throws IOException, NullPointerException, FileNotFoundException, NumberFormatException {
 		FileInputStream input = new FileInputStream(path);
+		System.out.println(LocalDateTime.now().toString() + " Début de traitement des spécialités.");
 		// Lire le fichier avec l'encodage ANSI (Cp1252)
 		Scanner sc = new Scanner(input, "Cp1252");
 		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
@@ -376,7 +387,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 			if (line == "" || line == "\n")
 				continue;
 			// On traite la ligne
-			String[] speMatcher = line.split("\\t");
+			String[] speMatcher = line.split("\\t", -1);
 			boolean matchFound = speMatcher.length == 12;
 			if (!matchFound) {
 				System.out.println("[Spécialité] Erreur de match " + speMatcher.length + " : " + line);
@@ -412,7 +423,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				medocs.add(medoc);
 			}
 		}
-		System.out.println("[Specialites] Enregistrement de " + medocs.size() + " médicaments dans la BDD.");
+		System.out.println(LocalDateTime.now().toString() + " [Specialites] Enregistrement de " + medocs.size() + " médicaments dans la BDD.");
 		saveAll(medocs);
 		sc.close();
 		input.close();
@@ -445,7 +456,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 	// Télécharge des fichiers binaires externes vers un path.
 	private boolean getFileFromWeb(URL url, List<File> paths)
 			throws IOException, FileNotFoundException, SecurityException {
-		System.out.println("Récupération du fichier à l'adresse : " + url.toString());
+		System.out.println(LocalDateTime.now().toString() + " Récupération du fichier à l'adresse : " + url.toString());
 		BufferedInputStream in = new BufferedInputStream(url.openStream());
 		FileOutputStream fileOutputStream = new FileOutputStream(paths.get(0));
 		int bufferSize = 1024;
@@ -457,12 +468,13 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 			fileOutputStream.write(dataBuffer, 0, bytesRead);
 		}
 		fileOutputStream.close();
-		System.out.println("Fichier récupéré et écrit à l'emplacement : " + paths.get(0));
+		System.out.println(LocalDateTime.now().toString() + " Fichier récupéré et écrit à l'emplacement : " + paths.get(0));
 		return true;
 	}
 
 	@Override
 	public String setMedicaments() throws MalformedURLException, IOException, ProtocolException {
+		LocalDateTime execTimer = LocalDateTime.now();
 		// On limite le nombre de requêtes vers le site du gouvernement pour ne pas être
 		// considété comme attaque DDOS;
 		if (WebGouvMAJDate.getDateMiseAJour() != null) {
@@ -480,8 +492,6 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		// de médicaments dont le commerce est ou a été autorisé en France.
 		// REF :
 		// https://base-donnees-publique.medicaments.gouv.fr/docs/Contenu_et_format_des_fichiers_telechargeables_dans_la_BDM_v1.pdf
-		final URL refUrl = new URL(
-				"https://base-donnees-publique.medicaments.gouv.fr/docs/Contenu_et_format_des_fichiers_telechargeables_dans_la_BDM_v1.pdf");
 		final URL specialiteUrl = new URL(
 				"https://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_bdpm.txt");
 		final URL presentationUrl = new URL(
@@ -591,7 +601,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 
 		// Ensure dateMiseAJour est la date de la dernière mise à jour.
 		WebGouvMAJDate.setDateMiseAJour(LocalDate.now());
-
+		System.out.println("Temps d'exécution de setMedicament() : " + execTimer.until(LocalDateTime.now(), ChronoUnit.MILLIS) + "ms");
 		return "Medicaments récupérés";
 	}
 

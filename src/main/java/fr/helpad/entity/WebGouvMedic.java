@@ -3,28 +3,182 @@ package fr.helpad.entity;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OrderBy;
 
 @Entity
 public class WebGouvMedic {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id; // Code CIS
+	@OrderBy
 	private String nom;
+	@Column(name = "FORME_PHARMACEUTIQUE")
 	private String formePharmaceutique;
+	@Column(name = "VOIE_ADMINISTRATION")
 	private String voieAdministration;
 	private String autorisation;
-	private String procedure;
+	// procedure est un type dans mySQL, génère des erreurs.
+	@Column(name = "PROCEDURE_ADMINISTRATIVE")
+	private String procedureAdministrative;
 	private boolean commercialise;
+	@Column(name = "DATE_COMMERCIALISATION")
 	private LocalDate dateCommercialisation;
+	@Column(name = "STATUT_BDM")
 	private String statutBdm;
+	@Column(name = "NUMERO_AUTORISATION_EUROPEENNE")
 	private String numeroAutorisationEuropeenne;
-	private String societe;
+	private String titulaire;
+	@Column(name = "SURVEILLANCE_RENFORCEE")
 	private boolean surveillanceRenforcee;
-	private static LocalDate dateMiseAJour;
+	@Column(name = "LIBELLE_PRESENTATION")
+	private String libellePresentation;
+	@Column(name = "ETAT_COMMERCIALISATION")
+	private String etatCommercialisation;
+	@Column(name = "TAUX_REMBOURSEMENT")
+	private String tauxRemboursement;
+	private String prix;
+	@Column(name = "INDICATION_DROIT_REMBOURSEMENT")
+	private String indicationDroitRemboursement;
+	@Column(name = "ELEMENT_PHARMACEUTIQUE")
+	private String elementPharmaceutique;
+	@Column(name = "CODE_SUBSTANCE")
+	private String codeSubstance;
+	@Column(name = "NOM_SUBSTANCE")
+	private String nomSubstance;
+	@Column(name = "DOSAGE_SUBSTANCE")
+	private String dosageSubstance;
+	@Column(name = "NATURE_COMPOSANT")
+	private String natureComposant;
+	@Column(name = "REFERENCE_DOSAGE")
+	private String referenceDosage;
+	@Column(name = "NUMERO_LIAISON_SUBSTANCES")
+	private String numeroLiaisonSubstances;
+	@Column(name = "CONDITION_PRESCRIPTION_DELIVRANCE")
+	private String conditionPrescriptionDelivrance;
+
+	public String getProcedureAdministrative() {
+		return procedureAdministrative;
+	}
+
+	public void setProcedureAdministrative(String procedureAdministrative) {
+		this.procedureAdministrative = procedureAdministrative;
+	}
+
+	public String getElementPharmaceutique() {
+		return elementPharmaceutique;
+	}
+
+	public void setElementPharmaceutique(String elementPharmaceutique) {
+		this.elementPharmaceutique = elementPharmaceutique;
+	}
+
+	public String getCodeSubstance() {
+		return codeSubstance;
+	}
+
+	public void setCodeSubstance(String codeSubstance) {
+		this.codeSubstance = codeSubstance;
+	}
+
+	public String getNomSubstance() {
+		return nomSubstance;
+	}
+
+	public void setNomSubstance(String nomSubstance) {
+		this.nomSubstance = nomSubstance;
+	}
+
+	public String getDosageSubstance() {
+		return dosageSubstance;
+	}
+
+	public void setDosageSubstance(String dosageSubstance) {
+		this.dosageSubstance = dosageSubstance;
+	}
+
+	public String getNatureComposant() {
+		return natureComposant;
+	}
+
+	public void setNatureComposant(String natureComposant) {
+		this.natureComposant = natureComposant;
+	}
+
+	public String getReferenceDosage() {
+		return referenceDosage;
+	}
+
+	public void setReferenceDosage(String referenceDosage) {
+		this.referenceDosage = referenceDosage;
+	}
+
+	public String getNumeroLiaisonSubstances() {
+		return numeroLiaisonSubstances;
+	}
+
+	public void setNumeroLiaisonSubstances(String numeroLiaisonSubstances) {
+		this.numeroLiaisonSubstances = numeroLiaisonSubstances;
+	}
+
+	public String getConditionPrescriptionDelivrance() {
+		return conditionPrescriptionDelivrance;
+	}
+
+	public void setConditionPrescriptionDelivrance(String conditionPrescriptionDelivrance) {
+		this.conditionPrescriptionDelivrance = conditionPrescriptionDelivrance;
+	}
+
+	public String getTitulaire() {
+		return titulaire;
+	}
+
+	public void setTitulaire(String titulaire) {
+		this.titulaire = titulaire;
+	}
+
+	public String getLibellePresentation() {
+		return libellePresentation;
+	}
+
+	public void setLibellePresentation(String libellePresentation) {
+		this.libellePresentation = libellePresentation;
+	}
+
+	public String getEtatCommercialisation() {
+		return etatCommercialisation;
+	}
+
+	public void setEtatCommercialisation(String etatCommercialisation) {
+		this.etatCommercialisation = etatCommercialisation;
+	}
+
+	public String getTauxRemboursement() {
+		return tauxRemboursement;
+	}
+
+	public void setTauxRemboursement(String tauxRemboursement) {
+		this.tauxRemboursement = tauxRemboursement;
+	}
+
+	public String getPrix() {
+		return prix;
+	}
+
+	public void setPrix(String prix) {
+		this.prix = prix;
+	}
+
+	public String getIndicationDroitRemboursement() {
+		return indicationDroitRemboursement;
+	}
+
+	public void setIndicationDroitRemboursement(String indicationDroitRemboursement) {
+		this.indicationDroitRemboursement = indicationDroitRemboursement;
+	}
 
 	/**
 	 * @return the id
@@ -65,7 +219,7 @@ public class WebGouvMedic {
 	 * @return the procedure
 	 */
 	public String getProcedure() {
-		return procedure;
+		return procedureAdministrative;
 	}
 
 	/**
@@ -100,7 +254,7 @@ public class WebGouvMedic {
 	 * @return the societe
 	 */
 	public String getSociete() {
-		return societe;
+		return titulaire;
 	}
 
 	/**
@@ -108,13 +262,6 @@ public class WebGouvMedic {
 	 */
 	public boolean isSurveillanceRenforcee() {
 		return surveillanceRenforcee;
-	}
-
-	/**
-	 * @return the dateMiseAJour
-	 */
-	public static LocalDate getDateMiseAJour() {
-		return dateMiseAJour;
 	}
 
 	/**
@@ -156,7 +303,7 @@ public class WebGouvMedic {
 	 * @param procedure the procedure to set
 	 */
 	public void setProcedure(String procedure) {
-		this.procedure = procedure;
+		this.procedureAdministrative = procedure;
 	}
 
 	/**
@@ -191,7 +338,7 @@ public class WebGouvMedic {
 	 * @param societe the societe to set
 	 */
 	public void setSociete(String societe) {
-		this.societe = societe;
+		this.titulaire = societe;
 	}
 
 	/**
@@ -199,13 +346,6 @@ public class WebGouvMedic {
 	 */
 	public void setSurveillanceRenforcee(boolean surveillanceRenforcee) {
 		this.surveillanceRenforcee = surveillanceRenforcee;
-	}
-
-	/**
-	 * @param dateMiseAJour the dateMiseAJour to set
-	 */
-	public static void setDateMiseAJour(LocalDate dateMiseAJour) {
-		WebGouvMedic.dateMiseAJour = dateMiseAJour;
 	}
 
 	public WebGouvMedic(Long id, String nom, String formePharmaceutique, String voieAdministration, String autorisation,
@@ -217,34 +357,45 @@ public class WebGouvMedic {
 		this.formePharmaceutique = formePharmaceutique;
 		this.voieAdministration = voieAdministration;
 		this.autorisation = autorisation;
-		this.procedure = procedure;
+		this.procedureAdministrative = procedure;
 		this.commercialise = commercialise;
 		this.dateCommercialisation = dateCommercialisation;
 		this.statutBdm = statutBdm;
 		this.numeroAutorisationEuropeenne = numeroAutorisationEuropeenne;
-		this.societe = societe;
+		this.titulaire = societe;
 		this.surveillanceRenforcee = surveillanceRenforcee;
-	}
-
-	public WebGouvMedic(String nom, String formePharmaceutique, String voieAdministration, String autorisation,
-			String procedure, boolean commercialise, LocalDate dateCommercialisation, String statutBdm,
-			String numeroAutorisationEuropeenne, String societe, boolean surveillanceRenforcee) {
-		super();
-		this.nom = nom;
-		this.formePharmaceutique = formePharmaceutique;
-		this.voieAdministration = voieAdministration;
-		this.autorisation = autorisation;
-		this.procedure = procedure;
-		this.commercialise = commercialise;
-		this.dateCommercialisation = dateCommercialisation;
-		this.statutBdm = statutBdm;
-		this.numeroAutorisationEuropeenne = numeroAutorisationEuropeenne;
-		this.societe = societe;
-		this.surveillanceRenforcee = surveillanceRenforcee;
+		libellePresentation = "";
+		etatCommercialisation = "";
+		tauxRemboursement = "";
+		prix = "";
+		indicationDroitRemboursement = "";
+		elementPharmaceutique = "";
+		codeSubstance = "";
+		dosageSubstance = "";
+		natureComposant = "";
+		referenceDosage = "";
+		numeroLiaisonSubstances = "";
+		conditionPrescriptionDelivrance = "";
 	}
 
 	public WebGouvMedic() {
 		super();
+	}
+
+	@Override
+	public String toString() {
+		return "WebGouvMedic [id=" + id + ", nom=" + nom + ", formePharmaceutique=" + formePharmaceutique
+				+ ", voieAdministration=" + voieAdministration + ", autorisation=" + autorisation + "\n"
+				+ ", procedureAdministrative=" + procedureAdministrative + ", commercialise=" + commercialise
+				+ ", dateCommercialisation=" + dateCommercialisation + ", statutBdm=" + statutBdm + "\n"
+				+ ", numeroAutorisationEuropeenne=" + numeroAutorisationEuropeenne + ", titulaire=" + titulaire
+				+ ", surveillanceRenforcee=" + surveillanceRenforcee + ", libellePresentation=" + libellePresentation
+				+ "\n" + ", etatCommercialisation=" + etatCommercialisation + ", tauxRemboursement=" + tauxRemboursement
+				+ ", prix=" + prix + ", indicationDroitRemboursement=" + indicationDroitRemboursement + "\n"
+				+ ", elementPharmaceutique=" + elementPharmaceutique + ", codeSubstance=" + codeSubstance
+				+ ", dosageSubstance=" + dosageSubstance + ", natureComposant=" + natureComposant + ", referenceDosage="
+				+ referenceDosage + "\n" + ", numeroLiaisonSubstances=" + numeroLiaisonSubstances
+				+ ", conditionPrescriptionDelivrance=" + conditionPrescriptionDelivrance + "]";
 	}
 
 }

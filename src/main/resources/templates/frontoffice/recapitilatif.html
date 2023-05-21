@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div class="container">
-		<img th:src="@{/image/logo-helpad.jpg}">
+		<img th:src="@{/image/logo-heplad.jpg}" style="width:100px; height:100px;">
 		<h3 class="text-primary pt-3">DEMANDE D'ADMISSION</h3>
 		<a class="text-black" th:href="@{/dashboard}">Mon Compte</a>
 	</div>
@@ -108,13 +108,22 @@
 						class="border border-primary rounded" type="text"
 						th:value="${candidature.conditionGeneral}">
 				</p>
-			</div>
+			
 			<h4 class="bg-primary text-white ps-3">Les pièces justificatifs</h4>
-			<!-- <div th:each="file :${files}">
-				<ul>
-					<li><a th:href="${file}" th:text="${file}"></a></li>
+			 <div>
+				<ul class="list-group">
+					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName1}}" th:text="${candidature.fileName1}"></a></li>
+					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName2}}" th:text="${candidature.fileName2}"></a></li>
+					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName3}}" th:if="${candidature.fileName3}"></a></li>
+					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName4}}" th:if="${candidature.fileName4}"></a></li>
+					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName5}}" th:text="${candidature.fileName5}"></a></li>
+					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName6}}" th:text="${candidature.fileName6}"></a></li>
+					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName7}}" th:text="${candidature.fileName7}"></a></li>
+					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName8}}" th:text="${candidature.fileName8}"></a></li>
+					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName9}}" th:text="${candidature.fileName9}"></a></li>
 				</ul>
-			</div> -->
+			</div> 
+			</div>
 		</div>
 	</div>
 </body>

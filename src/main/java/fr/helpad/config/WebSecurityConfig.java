@@ -18,7 +18,6 @@ public class WebSecurityConfig {
 	@Bean
 	SecurityFilterChain web(HttpSecurity http) throws Exception {
 		http
-
 			.authorizeHttpRequests(authorize -> authorize
 				//.mvcMatchers("/admin/**").hasRole("ADMIN")
 				//.mvcMatchers("/user/**").hasRole("USER")

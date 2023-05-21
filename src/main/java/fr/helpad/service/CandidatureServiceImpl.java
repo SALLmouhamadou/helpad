@@ -14,8 +14,8 @@ public class CandidatureServiceImpl {
 	@Autowired
 	CandidatureRepository candidatureRepository;
 	
-	public Optional<Candidature> getCandidaturesById(Long id){
-		return candidatureRepository.findById(id);
+	public Candidature getCandidaturesById(Long id){
+		return candidatureRepository.getById(id);
 	}
 	
 	public List<Candidature> findAllCandidatures(){
@@ -25,5 +25,9 @@ public class CandidatureServiceImpl {
 	public Candidature findCandidature(String numeroRef){
 		Candidature candidature = candidatureRepository.findByNumeroRef(numeroRef);
 		return candidature;
+	}
+
+	public void saveCandidature(Candidature candidature) {
+		candidatureRepository.save(candidature);
 	}
  }

@@ -26,7 +26,7 @@ public class FileSystemStorageService implements StorageService {
 
 	@Autowired
 	public FileSystemStorageService() {
-		this.rootLocation = Paths.get("./stockages/");
+		this.rootLocation = Paths.get("../static/Stockage/");
 	}
 
 	@Override

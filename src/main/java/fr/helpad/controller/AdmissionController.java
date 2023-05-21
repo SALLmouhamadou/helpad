@@ -8,32 +8,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import fr.helpad.dto.CandidatureStatusDTO;
 import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
-import fr.helpad.entity.Personne;
 import fr.helpad.entity.Status;
 import fr.helpad.service.CandidatService;
 import fr.helpad.service.CandidatureServiceImpl;
 import fr.helpad.service.PersonneService;
+import fr.helpad.service.StatusService;
 import fr.helpad.service.StorageService;
 
-@Controller
 
+@Controller
 public class AdmissionController {
 	@Autowired
 	PersonneService personneService;
@@ -43,6 +47,9 @@ public class AdmissionController {
 	StorageService storageService;
 	@Autowired
 	CandidatureServiceImpl candidatureServiceImpl;
+	@Autowired
+	StatusService statusService;
+
 
 	@GetMapping("/getAdmission")
 	public ModelAndView showAdmissionForm(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
@@ -96,7 +103,7 @@ public class AdmissionController {
 
 	@PostMapping("/sendAdmission")
 	public ModelAndView saveCandidature(ModelAndView mav, @ModelAttribute Candidat candidat,
-			@ModelAttribute Candidature candidature, @ModelAttribute Adresse adresse, @ModelAttribute Status status,
+			@ModelAttribute Candidature candidature, @ModelAttribute Adresse adresse, String libelle,
 			HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("file1") MultipartFile[] file1,
 			@RequestParam("file2") MultipartFile[] file2,
@@ -120,6 +127,7 @@ public class AdmissionController {
 			double revenuAnnuelle = Double.parseDouble(revenu);
 			candidat.setRevenu(revenuAnnuelle);
 			candidat.setAdresse(adresse);
+			Status status =statusService.findStatusByLibelle(libelle);
 			candidature.setStatus(status);
 			candidature.setCandidat(candidat);
 			candidature.setFileName1(storageService.store(file1));
@@ -147,15 +155,11 @@ public class AdmissionController {
 		return mav;
 	}
 
-	@SuppressWarnings("unused")
 	@GetMapping("/consulter")
 	public ModelAndView getDetailCandidature( ModelAndView mav,@AuthenticationPrincipal UserDetails userDetails) {
 		if(userDetails !=null) {
 		Optional<Candidat> candidatD= candidatService.findByUsername(userDetails.getUsername());
 		mav.addObject("candidat", candidatD.get());
-//		mav.addObject("files", storageService.loadAll()).map(
-//				path -> MvcUriComponentsBuilder.fromMethodName(AdmissionController.class,
-//						"serveFile", path.getFileName().toString()).build().toUri().toString()).collect(Collectors.toList()));
 		mav.addObject("title", "Recapitilatif");
 		mav.setViewName("frontoffice/recapitilatif");
 		}else {
@@ -166,27 +170,20 @@ public class AdmissionController {
 	}
 	
 	@GetMapping("/admin/getAllCandidatures")
-	public ModelAndView showAdmissionCandidature(ModelAndView mav) {
-		List<Candidature> candidatures = candidatureServiceImpl.findAllCandidatures();
-		mav.addObject("candidats", candidatures);
+	public ModelAndView showAdmissionCandidature(ModelAndView mav, String numeroRef) {
+		if(numeroRef !=null) {
+			Candidature findCandidature = candidatureServiceImpl.findCandidature(numeroRef);
+			mav.addObject("candidats", findCandidature);
+			mav.setViewName("backoffice/admissioncandidat");
+		}else {
+		mav.addObject("candidats", candidatureServiceImpl.findAllCandidatures());
 		mav.addObject("title", "Gérer les candidatures");
 		mav.setViewName("backoffice/admissioncandidat");
-		return mav;
-	}
-	
-	@GetMapping("/candidature/search")
-	public ModelAndView getCandidatByNumeroRefference(ModelAndView mav,@RequestParam("numeroRef") String numeroRef) {
-		Candidature findCandidature = candidatureServiceImpl.findCandidature(numeroRef);
-		if(findCandidature !=null) {
-		mav.addObject("candidature", findCandidature);
-		mav.setViewName("backoffice/gestioncandidature");
-		}else {
-//			mav.addObject("errormessage", "Cette numéro de réference n'existe pas");
-//			mav.addObject("alertClass", "alert alert-danger alert-danger fade show");
-//			mav.setViewName("backoffice/admissioncandidat");
 		}
 		return mav;
 	}
+	
+	
 	@GetMapping("admin/consulter/candidature/{id}")
 	public ModelAndView getCandidatDetails(ModelAndView mav,@PathVariable("id") Long id) {
 		Candidat candidat = candidatService.get(id);
@@ -194,5 +191,31 @@ public class AdmissionController {
 		mav.setViewName("backoffice/gestioncandidature");
 		return mav;
 	}
+	
+	//@RequestMapping(value="admin/update/candidature" , method = RequestMethod.POST, consumes  = MediaType.APPLICATION_JSON_VALUE )
+	//@ResponseBody @RequestBody CandidatureStatusDTO can
+	//String libelle =can.getStatus();
+	//Long id = can.getId();
+	
+	@PostMapping("/update/candidature")
+	public ModelAndView updateCandidature(ModelAndView mav,@RequestParam("id") Long id,@RequestParam("libelle") String libelle) {
+		 
+		Candidature candidature = candidatureServiceImpl.getCandidaturesById(id);
+		Status status = statusService.findStatusByLibelle(libelle);
+		if(candidature !=null && status !=null) {
+		candidature.setStatus(status);
+		candidatureServiceImpl.saveCandidature(candidature);
+		mav.addObject("messageOK", "La candidature a été modifié avec success");
+		mav.addObject("alertClass", "alert alert-sucess alert-dismissible fade show");
+		mav.setViewName("redirect:/admin/getAllCandidatures");
+		}
+		else {
+			mav.addObject("messageErreur", "Un erreur est survenue");
+			mav.addObject("alertClass", "alert alert-danger alert-dismissible fade show");
+			mav.setViewName("backoffice/admissioncandidat");
+		}
+		return mav;
+	}
+		
 	
 }

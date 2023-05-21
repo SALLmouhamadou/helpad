@@ -9,8 +9,9 @@
 </head>
 <body>
 	<div class="container">
-		<img th:src="@{/image/logo-helpad.jpg}">
-		<h3 class="text-primary pt-3">DEMANDE D'ADMISSION</h3>
+		<img th:src="@{/image/logo-heplad.jpg}"
+			style="width: 100px; height: 100px;">
+		<h3 class="text-primary ">DEMANDE D'ADMISSION</h3>
 		<a class="text-black" th:href="@{/dashboard}">Mon Compte</a>
 	</div>
 
@@ -112,28 +113,44 @@
 					</p>
 				</div>
 				<h4 class="bg-primary text-white ps-3">Les pièces justificatifs</h4>
-				<!-- <div th:each="file :${files}">
-				<ul>
-					<li><a th:href="${file}" th:text="${file}"></a></li>
-				</ul>
-			</div> -->
+				<div th:each="candidature:${candidat.mesCandidatures}">
+					<ul class="list-group">
+						<li class="list-group-item"><a target="_black"
+							th:href="@{'/Stockage/' +${candidature.fileName1}}"
+							th:text="${candidature.fileName1}"></a></li>
+						<li class="list-group-item"><a target="_black"
+							th:href="@{'/Stockage/' +${candidature.fileName2}}"
+							th:text="${candidature.fileName2}"></a></li>
+						<li class="list-group-item"><a target="_black"
+							th:href="@{'/Stockage/' +${candidature.fileName3}}"
+							th:if="${candidature.fileName3}"></a></li>
+						<li class="list-group-item"><a target="_black"
+							th:href="@{'/Stockage/' +${candidature.fileName4}}"
+							th:if="${candidature.fileName4}"></a></li>
+						<li class="list-group-item"><a target="_black"
+							th:href="@{'/Stockage/' +${candidature.fileName5}}"
+							th:text="${candidature.fileName5}"></a></li>
+						<li class="list-group-item"><a target="_black"
+							th:href="@{'/Stockage/' +${candidature.fileName6}}"
+							th:text="${candidature.fileName6}"></a></li>
+						<li class="list-group-item"><a target="_black"
+							th:href="@{'/Stockage/' +${candidature.fileName7}}"
+							th:text="${candidature.fileName7}"></a></li>
+						<li class="list-group-item"><a target="_black"
+							th:href="@{'/Stockage/' +${candidature.fileName8}}"
+							th:text="${candidature.fileName8}"></a></li>
+						<li class="list-group-item"><a target="_black"
+							th:href="@{'/Stockage/' +${candidature.fileName9}}"
+							th:text="${candidature.fileName9}"></a></li>
+					</ul>
+				</div>
 				<h4 class="bg-primary text-white ps-3">Status de la candidature</h4>
 				<div th:each="c:${candidat.mesCandidatures}">
 					<p class="ps-3 fw-bold">
 						Status actuel : <span th:text="${c.status.libelle}"></span>
 					</p>
-					<select class="form-select form-select-lg mb-3"
-						aria-label=".form-select-lg example" name="libelle">
-						<option value="En cours de traitement">En cours de
-							traitement</option>
-						<option value="En instruction">En instruction</option>
-						<option value="Refusé">Refusé</option>
-						<option value="Admis">Admis</option>
-					</select>
-
 				</div>
 			</div>
-			<button class="btn btn-primary mt-4 float-end" type="submit">Mettre à jour</button>
 		</form>
 	</div>
 </body>

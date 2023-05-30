@@ -3,6 +3,8 @@ package fr.helpad;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,28 +20,34 @@ import fr.helpad.service.PlatService;
 
 @SpringBootApplication
 public class HelpadApplication {
-	
+
 	public static void main(String[] args) {
 
 		ApplicationContext appContext = SpringApplication.run(HelpadApplication.class, args);
 
 		System.out.println("Initialisation complétée.");
-		
+
 		WebGouvMedicServiceI webMedic = appContext.getBean(WebGouvMedicService.class);
-		
+
+		CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+			try {
+				return webMedic.setMedicaments();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return "Erreur lors de l'exécution de la procédure d'enregistrement des médicaments.";
+		});
 		try {
-			System.out.println(webMedic.setMedicaments());
-		} catch (MalformedURLException e) {
+			System.out.println(future.get());
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Bean

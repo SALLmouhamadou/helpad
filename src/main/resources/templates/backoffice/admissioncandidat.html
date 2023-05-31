@@ -20,22 +20,18 @@
 					<ul
 						class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
 						id="menu">
-						<li class="nav-item"><a href="#"
-							class="nav-link align-middle px-0"> <i class="fs-4 bi-house"></i>
-								<span class="ms-1 d-none d-sm-inline">Home</span>
-						</a></li>
-						<li><a href="#submenu1" data-bs-toggle="collapse"
+						<li><a th:href="@{/admin}" data-bs-toggle="collapse"
 							class="nav-link px-0 align-middle"> <i
 								class="fs-4 bi-speedometer2"></i> <span
-								class="ms-1 d-none d-sm-inline">Dashboard</span>
+								class="ms-1 d-none d-sm-inline">Tableau de bord</span>
 						</a>
 							<ul class="collapse show nav flex-column ms-1" id="submenu1"
 								data-bs-parent="#menu">
-								<li class="w-100"><a href="#" class="nav-link px-0"> <span
-										class="d-none d-sm-inline">Item</span> 1
+								<li class="w-100"><a th:href="@{/admin/getAllCandidatures}" class="nav-link px-0"> <span
+										class="d-none d-sm-inline">Gestion candidatures</span> 
 								</a></li>
-								<li><a href="#" class="nav-link px-0"> <span
-										class="d-none d-sm-inline">Item</span> 2
+								<li><a th:href="@{/inventaire}" class="nav-link px-0"> <span
+										class="d-none d-sm-inline">Infirmier</span>
 								</a></li>
 							</ul></li>
 						<li><a href="#" class="nav-link px-0 align-middle"> <i
@@ -47,7 +43,7 @@
 								class="ms-1 d-none d-sm-inline">Bootstrap</span></a>
 							<ul class="collapse nav flex-column ms-1" id="submenu2"
 								data-bs-parent="#menu">
-								<li class="w-100"><a href="#" class="nav-link px-0"> <span
+								<li class="w-100"><a  class="nav-link px-0"> <span
 										class="d-none d-sm-inline">Item</span> 1
 								</a></li>
 								<li><a href="#" class="nav-link px-0"> <span
@@ -99,8 +95,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col py-3">
-				<div class="container">
+			<div class="col">
+				<div>
 					<div>
 						<span th:text="${errormessage}" th:class="${alertClass}"></span>
 					</div>
@@ -116,8 +112,6 @@
 							th:text="${messageErreur}" th:class="${alertClass}"></span>
 					</div>
 					<div class="p-5">
-						<form th:action="@{/update/candidature}" method="post">
-							<!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
 							<table class="table">
 								<thead>
 									<tr>
@@ -131,6 +125,7 @@
 								</thead>
 								<tbody>
 									<tr th:each="candidature:${candidats}">
+									<form th:action="@{/update/candidature}" method="post">
 										<th th:text="${candidature.numeroRef}"></th>
 										<th th:text="${candidature.candidat.prenom}"></th>
 										<th th:text="${candidature.candidat.nom}"></th>
@@ -139,7 +134,6 @@
 											th:value="${candidature.idCandidature}"> <select
 											class="form-select form-select-lg mb-3 status"
 											aria-label=".form-select-lg example" name="libelle">
-												<option value=""></option>
 												<option value="En cours de traitement">En cours de
 													traitement</option>
 												<option value="En instruction">En instruction</option>
@@ -149,17 +143,20 @@
 										<td><a class="btn btn-primary"
 											th:href="@{/admin/consulter/candidature/{id}(id=${candidature.candidat.idPersonne})}">
 												Consulter </a> <input type="submit" value="Modifier"
-											class="btn btn-success"> <a class="btn btn-danger"
-											href="#"> Supprimer </a></td>
+											class="btn btn-success"> 
+											<a class="btn btn-danger"
+											href> Supprimer </a></td>
+									</form>
 									</tr>
 								</tbody>
 							</table>
-						</form>
+						
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
 	<!--  C'est pour recupérer le csrf token generer par le serveur  
 										<meta th:name="_csrf" th:content="${_csrf.token}"/>
 										<meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>

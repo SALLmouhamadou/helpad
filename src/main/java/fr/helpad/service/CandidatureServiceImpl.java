@@ -30,4 +30,7 @@ public class CandidatureServiceImpl {
 	public void saveCandidature(Candidature candidature) {
 		candidatureRepository.save(candidature);
 	}
+	public void removeCandidatureById(Long id) {
+		candidatureRepository.deleteById(id);
+	}
  }

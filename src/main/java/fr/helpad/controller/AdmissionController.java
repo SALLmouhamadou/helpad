@@ -36,7 +36,6 @@ import fr.helpad.service.PersonneService;
 import fr.helpad.service.StatusService;
 import fr.helpad.service.StorageService;
 
-
 @Controller
 public class AdmissionController {
 	@Autowired
@@ -50,7 +49,6 @@ public class AdmissionController {
 	@Autowired
 	StatusService statusService;
 
-
 	@GetMapping("/getAdmission")
 	public ModelAndView showAdmissionForm(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
@@ -62,31 +60,30 @@ public class AdmissionController {
 		}
 		return mav;
 	}
-	
+
 	@GetMapping("/dashboard")
-	public ModelAndView showDashbord(ModelAndView mav,@AuthenticationPrincipal UserDetails userDetails ) {
-		if (userDetails !=null) {		
+	public ModelAndView showDashbord(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
+		if (userDetails != null) {
 			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
 			mav.addObject("candidat", candidat.get());
 			mav.addObject("title", "Espace usager");
 			mav.setViewName("frontoffice/espacepersonnel");
-		}else {
+		} else {
 			mav.setViewName("redirect:/login");
 		}
 		return mav;
 	}
 
 	@GetMapping("/dashboard/candidature")
-	public ModelAndView getAllCandiduturesById( ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
-		if(userDetails !=null) {
-			Optional<Candidat> candidat= candidatService.findByUsername(userDetails.getUsername());
+	public ModelAndView getAllCandiduturesById(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
+		if (userDetails != null) {
+			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
 			mav.addObject("candidat", candidat.get());
-		//mav.addObject("candidature", candidatures.get());
-		mav.addObject("title", "Mes candidatures");
-		mav.setViewName("frontoffice/candidature");
-		}
-		else {
-		mav.setViewName("redirect:/login");
+			// mav.addObject("candidature", candidatures.get());
+			mav.addObject("title", "Mes candidatures");
+			mav.setViewName("frontoffice/candidature");
+		} else {
+			mav.setViewName("redirect:/login");
 		}
 		return mav;
 	}
@@ -104,17 +101,12 @@ public class AdmissionController {
 	@PostMapping("/sendAdmission")
 	public ModelAndView saveCandidature(ModelAndView mav, @ModelAttribute Candidat candidat,
 			@ModelAttribute Candidature candidature, @ModelAttribute Adresse adresse, String libelle,
-			HttpServletRequest request, HttpServletResponse response,
-			@RequestParam("file1") MultipartFile[] file1,
-			@RequestParam("file2") MultipartFile[] file2,
-			@RequestParam("file3") MultipartFile[] file3,
-			@RequestParam("file4") MultipartFile[] file4,
-			@RequestParam("file5") MultipartFile[] file5,
-			@RequestParam("file6") MultipartFile[] file6,
-			@RequestParam("file7") MultipartFile[] file7,
-			@RequestParam("file8") MultipartFile[] file8,
-			@RequestParam("file9") MultipartFile[] file9,
-			
+			HttpServletRequest request, HttpServletResponse response, @RequestParam("file1") MultipartFile[] file1,
+			@RequestParam("file2") MultipartFile[] file2, @RequestParam("file3") MultipartFile[] file3,
+			@RequestParam("file4") MultipartFile[] file4, @RequestParam("file5") MultipartFile[] file5,
+			@RequestParam("file6") MultipartFile[] file6, @RequestParam("file7") MultipartFile[] file7,
+			@RequestParam("file8") MultipartFile[] file8, @RequestParam("file9") MultipartFile[] file9,
+
 			BindingResult errors, @AuthenticationPrincipal UserDetails userDetails) {
 		if (errors.hasErrors()) {
 			mav.setViewName("redirect:/getAdmission");
@@ -127,7 +119,7 @@ public class AdmissionController {
 			double revenuAnnuelle = Double.parseDouble(revenu);
 			candidat.setRevenu(revenuAnnuelle);
 			candidat.setAdresse(adresse);
-			Status status =statusService.findStatusByLibelle(libelle);
+			Status status = statusService.findStatusByLibelle(libelle);
 			candidature.setStatus(status);
 			candidature.setCandidat(candidat);
 			candidature.setFileName1(storageService.store(file1));
@@ -156,66 +148,79 @@ public class AdmissionController {
 	}
 
 	@GetMapping("/consulter")
-	public ModelAndView getDetailCandidature( ModelAndView mav,@AuthenticationPrincipal UserDetails userDetails) {
-		if(userDetails !=null) {
-		Optional<Candidat> candidatD= candidatService.findByUsername(userDetails.getUsername());
-		mav.addObject("candidat", candidatD.get());
-		mav.addObject("title", "Recapitilatif");
-		mav.setViewName("frontoffice/recapitilatif");
-		}else {
+	public ModelAndView getDetailCandidature(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
+		if (userDetails != null) {
+			Optional<Candidat> candidatD = candidatService.findByUsername(userDetails.getUsername());
+			mav.addObject("candidat", candidatD.get());
+			mav.addObject("title", "Recapitilatif");
+			mav.setViewName("frontoffice/recapitilatif");
+		} else {
 			mav.setViewName("redirect:/login");
 		}
 		return mav;
 
 	}
-	
+
 	@GetMapping("/admin/getAllCandidatures")
 	public ModelAndView showAdmissionCandidature(ModelAndView mav, String numeroRef) {
-		if(numeroRef !=null) {
+		if (numeroRef != null) {
 			Candidature findCandidature = candidatureServiceImpl.findCandidature(numeroRef);
 			mav.addObject("candidats", findCandidature);
 			mav.setViewName("backoffice/admissioncandidat");
-		}else {
-		mav.addObject("candidats", candidatureServiceImpl.findAllCandidatures());
-		mav.addObject("title", "Gérer les candidatures");
-		mav.setViewName("backoffice/admissioncandidat");
+		} else {
+			mav.addObject("candidats", candidatureServiceImpl.findAllCandidatures());
+			mav.addObject("title", "Gérer les candidatures");
+			mav.setViewName("backoffice/admissioncandidat");
 		}
 		return mav;
 	}
-	
-	
+
 	@GetMapping("admin/consulter/candidature/{id}")
-	public ModelAndView getCandidatDetails(ModelAndView mav,@PathVariable("id") Long id) {
+	public ModelAndView getCandidatDetails(ModelAndView mav, @PathVariable("id") Long id) {
 		Candidat candidat = candidatService.get(id);
 		mav.addObject("candidat", candidat);
 		mav.setViewName("backoffice/gestioncandidature");
 		return mav;
 	}
-	
-	//@RequestMapping(value="admin/update/candidature" , method = RequestMethod.POST, consumes  = MediaType.APPLICATION_JSON_VALUE )
-	//@ResponseBody @RequestBody CandidatureStatusDTO can
-	//String libelle =can.getStatus();
-	//Long id = can.getId();
-	
+
+	// @RequestMapping(value="admin/update/candidature" , method =
+	// RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE )
+	// @ResponseBody @RequestBody CandidatureStatusDTO can
+	// String libelle =can.getStatus();
+	// Long id = can.getId();
+
 	@PostMapping("/update/candidature")
-	public ModelAndView updateCandidature(ModelAndView mav,@RequestParam("id") Long id,@RequestParam("libelle") String libelle) {
-		 
+	public ModelAndView updateCandidature(ModelAndView mav,  Long id,
+			 String libelle) {
 		Candidature candidature = candidatureServiceImpl.getCandidaturesById(id);
 		Status status = statusService.findStatusByLibelle(libelle);
-		if(candidature !=null && status !=null) {
-		candidature.setStatus(status);
-		candidatureServiceImpl.saveCandidature(candidature);
-		mav.addObject("messageOK", "La candidature a été modifié avec success");
-		mav.addObject("alertClass", "alert alert-sucess alert-dismissible fade show");
-		mav.setViewName("redirect:/admin/getAllCandidatures");
-		}
-		else {
-			mav.addObject("messageErreur", "Un erreur est survenue");
+		if (candidature != null && status != null) {
+			candidature.setStatus(status);
+			candidatureServiceImpl.saveCandidature(candidature);
+			mav.addObject("messageOK", "La candidature a été bien modifié avec success");
+			mav.addObject("alertClass", "alert alert-sucess alert-dismissible fade show");
+			mav.setViewName("redirect:/admin/getAllCandidatures");
+		} else {
+			mav.addObject("messageErreur", "Un erreur est survenue au moment de la modification");
 			mav.addObject("alertClass", "alert alert-danger alert-dismissible fade show");
-			mav.setViewName("backoffice/admissioncandidat");
+			mav.setViewName("redirect:/admin/getAllCandidatures");
 		}
 		return mav;
 	}
-		
-	
+
+	@GetMapping("/delete/candidature/{id}")
+	public ModelAndView deleteCandidature(@PathVariable("id") Long id, ModelAndView mav) {
+		Candidature candidature = candidatureServiceImpl.getCandidaturesById(id);
+		if (candidature != null) {
+
+			mav.addObject("messageOK", "La candidature a été bien supprimer avec success");
+			mav.addObject("alertClass", "alert alert-sucess alert-dismissible fade show");
+			mav.setViewName("redirect:/admin/getAllCandidatures");
+		} else {
+			mav.addObject("messageOK", "Une erreur est survenue au moment de la suppression");
+			mav.addObject("alertClass", "alert alert-danger alert-dismissible fade show");
+			mav.setViewName("redirect:/admin/getAllCandidatures");
+		}
+		return mav;
+	}
 }

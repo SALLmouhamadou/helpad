@@ -9,5 +9,5 @@ import fr.helpad.entity.Status;
 
 @Repository
 public interface StatusRepository extends JpaRepository<Status, Long>{
-	Status findByLibelle(String libelle);
+	public Status findByLibelle(String libelle);
 }

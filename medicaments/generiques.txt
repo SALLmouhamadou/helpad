@@ -10213,8 +10213,8 @@
 1852	FOSPHENYTOINE SODIQUE 75 mg/ml - PRODILANTIN 75 mg/ml, solution à diluer pour perfusion/solution injectable	63604067	1	2	
 1853	IBUPROFENE 400 mg - NUROFENCAPS 400 mg, capsule molle	61471853	0	1	
 1853	IBUPROFENE 400 mg - NUROFENCAPS 400 mg, capsule molle	60076821	1	2	
-1854	AXITINIB 1 mg - 	INLYTA 1 mg, comprimé pelliculé	64922489	0	1	
-1854	AXITINIB 1 mg - 	INLYTA 1 mg, comprimé pelliculé	62808088	1	2	
+1854	AXITINIB 1 mg - INLYTA 1 mg, comprimé pelliculé	64922489	0	1	
+1854	AXITINIB 1 mg - INLYTA 1 mg, comprimé pelliculé	62808088	1	2	
 1855	AXITINIB 3 mg - INLYTA 3 mg, comprimé pelliculé	69083347	0	1	
 1855	AXITINIB 3 mg - INLYTA 3 mg, comprimé pelliculé	66008421	1	2	
 1856	AXITINIB 5 mg - INLYTA 5 mg, comprimé pelliculé	67939209	0	1	

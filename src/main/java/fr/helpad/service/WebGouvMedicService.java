@@ -5,49 +5,33 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.IllegalFormatConversionException;
-import java.util.IllegalFormatException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.unbescape.html.HtmlEscapeType;
 
-import fr.helpad.entity.Medicament;
-import fr.helpad.entity.WebGouvGenerique;
 import fr.helpad.entity.WebGouvMAJDate;
 import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.entity.WebGouvSecurite;
-import fr.helpad.repository.WebGouvGeneriqueRepository;
 import fr.helpad.repository.WebGouvMedicRepository;
 import fr.helpad.repository.WebGouvSecuriteRepository;
 
@@ -57,8 +41,6 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 
 	@Autowired
 	WebGouvMedicRepository repo;
-	@Autowired
-	WebGouvGeneriqueRepository repoGenerique;
 	@Autowired
 	WebGouvSecuriteRepository repoSecu;
 
@@ -75,14 +57,6 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 	@Override
 	public List<WebGouvMedic> listerTout() {
 		return (List<WebGouvMedic>) repo.findAll();
-	}
-
-	public Class getClassById(Long id) throws NoSuchElementException {
-		if (repo.findById(id).isPresent())
-			return WebGouvMedic.class;
-		if (repoGenerique.findById(id).isPresent())
-			return WebGouvGenerique.class;
-		return null;
 	}
 
 	@Override
@@ -104,6 +78,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 	}
 
 	private void traiterInformation(File path) throws IOException, NullPointerException, NumberFormatException {
+		System.out.println(LocalDateTime.now().toString() + " Début traitement informations.");
 		FileInputStream input = new FileInputStream(path);
 		// Lire le fichier avec l'encodage ANSI (Cp1252)
 		Scanner sc = new Scanner(input, "Cp1252");
@@ -137,28 +112,26 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				}
 				String infoLienInformationSecu = speMatcher[3].strip();
 
-				Optional<WebGouvMedic> optMedic = repo.findById(id);
-
 				try {
-					WebGouvMedic medoc = optMedic.get();
 					WebGouvSecurite secu = new WebGouvSecurite();
-					secu.setDebutInfoSecurite(dateFinInformation);
+					secu.setDebutInfoSecurite(dateDebutInformation);
 					secu.setFinInfoSecurite(dateFinInformation);
 					secu.setInformationSecurite(infoLienInformationSecu);
-					secu.setMedicament(medoc);
+					secu.setCodeCis(id);
 					secus.add(secu);
 				} catch (NoSuchElementException ex) {
-					// System.out.println("[WebGouvSecurite] Le médicament avec l'ID : " + id + "
-					// est introuvable.");
+					 System.out.println("[WebGouvSecurite] Le médicament avec l'ID : " + id +
+					 " est introuvable.");
 					continue;
 				}
 			}
 		}
-		System.out.println(
-				"[Securite] Enregistrement de " + secus.size() + " fiches de sécurité de médicaments dans la BDD.");
+		System.out.println(LocalDateTime.now().toString() + 
+				" [Securite] Enregistrement de " + secus.size() + " fiches de sécurité de médicaments dans la BDD.");
 		repoSecu.saveAll(secus);
 		sc.close();
 		input.close();
+		System.out.println(LocalDateTime.now().toString() + " [Sécurité] Fin traitement informations.");
 	}
 
 	private void traiterCondition(File path) throws IOException, NullPointerException, NumberFormatException {
@@ -168,6 +141,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
 		// taille que peut atteindre le fichier téléchargé en ligne)
 		List<WebGouvMedic> medocs = new LinkedList<>();
+		medocs = (List<WebGouvMedic>) repo.findAll();
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			if (line == "" || line == "\n")
@@ -181,19 +155,20 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				long id = Long.parseLong(speMatcher[0].strip());
 				String conditionPrescription = speMatcher[1].strip();
 
-				Optional<WebGouvMedic> optMedic = repo.findById(id);
+				List<WebGouvMedic> optMedic = medocs.stream().filter(a -> a.getId() == id).collect(Collectors.toList());
 
 				try {
-					WebGouvMedic medoc = optMedic.get();
+					WebGouvMedic medoc = optMedic.get(0);
 					medoc.setConditionPrescriptionDelivrance(conditionPrescription);
-					medocs.add(medoc);
+					repo.save(medoc);
+					//medocs.add(medoc);
 				} catch (NoSuchElementException ex) {
 					System.out.println("[WebGouvCondition] Le médicament avec l'ID : " + id + " est introuvable.");
 				}
 			}
 		}
-		System.out.println("[Condition] Modification de " + medocs.size() + " médicaments dans la BDD.");
-		repo.saveAll(medocs);
+		//repo.saveAll(medocs);
+		System.out.println(LocalDateTime.now().toString() + " [Condition] " + medocs.size() + " médicaments ont été modifiés dans la BDD.");
 		sc.close();
 		input.close();
 	}
@@ -204,7 +179,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		Scanner sc = new Scanner(input, "Cp1252");
 		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
 		// taille que peut atteindre le fichier téléchargé en ligne)
-		List<WebGouvGenerique> generiques = new LinkedList<>();
+		List<WebGouvMedic> medocs = new LinkedList<>();
+		medocs = (List<WebGouvMedic>) repo.findAll();
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			if (line == "" || line == "\n")
@@ -229,20 +205,19 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 						+ (speMatcher[3].strip().charAt(0) == '4' ? "générique substituable" : "");
 				String numeroElement = speMatcher[4].strip();
 
-				Optional<WebGouvMedic> optMedic = repo.findById(id);
-
-				WebGouvGenerique generique = new WebGouvGenerique();
+				WebGouvMedic generique = new WebGouvMedic();
 				generique.setId(id);
 				generique.setIdentifiantGroupeGenerique(generiqueId);
 				generique.setLibelleGenerique(libelleGroupeGenerique);
 				generique.setNumeroTri(numeroElement);
 				generique.setTypeGenerique(typeGenerique);
-				generiques.add(generique);
+				//repo.save(generique);
+				medocs.add(generique);
 			}
 		}
 
-		System.out.println("[Generique] Modification de " + generiques.size() + " médicaments génériques dans la BDD.");
-		repoGenerique.saveAll(generiques);
+		System.out.println(LocalDateTime.now().toString() + " [Generique] Modification de " + medocs.size() + " médicaments génériques dans la BDD.");
+		repo.saveAll(medocs);
 		sc.close();
 		input.close();
 	}
@@ -253,7 +228,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		Scanner sc = new Scanner(input, "Cp1252");
 		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
 		// taille que peut atteindre le fichier téléchargé en ligne)
-		List<WebGouvMedic> medocs = new LinkedList<>();
+		ArrayList<WebGouvMedic> medocs = new ArrayList<>();
+		medocs = (ArrayList<WebGouvMedic>) repo.findAll();
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			if (line == "" || line == "\n")
@@ -272,10 +248,10 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				String natureComposant = (speMatcher[6].strip() == "SA" ? "principe actif" : " fraction thérapeutique");
 				String numeroSubstance = speMatcher[7].strip();
 
-				Optional<WebGouvMedic> optMedic = repo.findById(id);
+				List<WebGouvMedic> optMedic = medocs.stream().filter(a -> a.getId() == id).collect(Collectors.toList());
 
 				try {
-					WebGouvMedic medoc = optMedic.get();
+					WebGouvMedic medoc = optMedic.get(0);
 					medoc.setElementPharmaceutique(elementPharmaceutique);
 					medoc.setCodeSubstance(codeSubstance);
 					medoc.setNomSubstance(nomSubstance);
@@ -283,14 +259,15 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 					medoc.setReferenceDosage(referenceDosage);
 					medoc.setNatureComposant(natureComposant);
 					medoc.setNumeroLiaisonSubstances(numeroSubstance);
+					//repo.save(medoc);
 					medocs.add(medoc);
 				} catch (NoSuchElementException ex) {
 					System.out.println("[WebGouvComposition] Le médicament avec l'ID : " + id + " est introuvable.");
 				}
 			}
 		}
-		System.out.println("[Composition] Modification de " + medocs.size() + " médicaments dans la BDD.");
 		repo.saveAll(medocs);
+		System.out.println(LocalDateTime.now().toString() + " [Composition] " + medocs.size() + " médicaments ont été modifiés dans la BDD.");
 		sc.close();
 		input.close();
 	}
@@ -301,47 +278,37 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				Scanner sc = new Scanner(input, "Cp1252")) {
 			// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
 			// taille que peut atteindre le fichier téléchargé en ligne)
-			List<WebGouvMedic> medocs = new LinkedList<>();
+			List<WebGouvMedic> medocs = new ArrayList<>();
+			medocs = (ArrayList<WebGouvMedic>) repo.findAll();
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
 				if (line == "" || line == "\n")
 					continue;
 				String[] speMatcher = line.split("\\t", -1);
 				boolean matchFound = speMatcher.length == 13;
-				long id = 0;
-				String libellePresentation = "";
-				String etatCommercialisation = "";
+				long idMedic = Long.parseLong(speMatcher[0].strip());
+				String libellePresentation = speMatcher[2].strip();;
+				String etatCommercialisation = speMatcher[4].strip();
 				LocalDate dateDeclarationCommercialisation = LocalDate.MIN;
+				try {
+					dateDeclarationCommercialisation = LocalDate.parse(speMatcher[5].strip(),
+							DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+				} catch (DateTimeParseException ex) {
+					System.out.println("Date incorrecte : " + speMatcher[5]);
+				}
 				String tauxRemboursement = "";
 				String prix = "";
 				String droitRemboursement = "";
 
 				if (!matchFound) {
 					if (speMatcher.length == 8) {
-						id = Long.parseLong(speMatcher[0].strip());
-						libellePresentation = speMatcher[2].strip();
-						etatCommercialisation = speMatcher[4].strip();
-						try {
-							dateDeclarationCommercialisation = LocalDate.parse(speMatcher[5].strip(),
-									DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-						} catch (DateTimeParseException ex) {
-							System.out.println("Date incorrecte : " + speMatcher[5]);
-						}
+						
 					} else {
 						System.out.println("[Présentation] Erreur de match " + speMatcher.length + " : " + line);
 						for (String s : speMatcher)
 							System.out.println(s);
 					}
 				} else {
-					id = Long.parseLong(speMatcher[0].strip());
-					libellePresentation = speMatcher[2].strip();
-					etatCommercialisation = speMatcher[4].strip();
-					try {
-						dateDeclarationCommercialisation = LocalDate.parse(speMatcher[5].strip(),
-								DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-					} catch (DateTimeParseException ex) {
-						System.out.println("Date incorrecte : " + speMatcher[5]);
-					}
 					tauxRemboursement = speMatcher[8].strip();
 					prix = speMatcher[9].strip();
 					droitRemboursement = speMatcher[10].strip();
@@ -349,22 +316,25 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 //					System.out.println("prix : " + prix + " tx rmb : " + tauxRemboursement + " libelle Presentation : "
 //							+ libellePresentation);
 				}
+				List<WebGouvMedic> optMedic = medocs.stream().filter(a -> a.getId() == idMedic).collect(Collectors.toList());
 				try {
-					Optional<WebGouvMedic> optMedic = repo.findById(id);
-					WebGouvMedic medoc = optMedic.get();
+					if (optMedic.size() == 0)
+						continue;
+					WebGouvMedic medoc = optMedic.get(0);
 					medoc.setLibellePresentation(libellePresentation);
 					medoc.setDateCommercialisation(dateDeclarationCommercialisation);
 					medoc.setEtatCommercialisation(etatCommercialisation);
 					medoc.setTauxRemboursement(tauxRemboursement);
 					medoc.setPrix(prix);
 					medoc.setIndicationDroitRemboursement(droitRemboursement);
+					//repo.save(medoc);
 					medocs.add(medoc);
 				} catch (NoSuchElementException ex) {
-					System.out.println("[WebGouvPresentation] Le médicament avec l'ID : " + id + " est introuvable.");
+					//System.out.println("[WebGouvPresentation] Le médicament avec l'ID : " + id + " est introuvable.");
 				}
 			}
-			System.out.println("[Presentation] Modification de " + medocs.size() + " médicaments dans la BDD.");
 			repo.saveAll(medocs);
+			System.out.println(LocalDateTime.now().toString() + " [Presentation] " + medocs.size() + " médicaments ont été modifiés dans la BDD.");
 			sc.close();
 			input.close();
 		} catch (NumberFormatException e) {
@@ -427,75 +397,6 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		saveAll(medocs);
 		sc.close();
 		input.close();
-	}
-	
-	private boolean traiterFichier(File file) throws FileNotFoundException {
-		FileInputStream input = new FileInputStream(file);
-		System.out.println(LocalDateTime.now().toString() + " Début de traitement des spécialités.");
-		// Lire le fichier avec l'encodage ANSI (Cp1252)
-		Scanner sc = new Scanner(input, "Cp1252");
-		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
-		// taille que peut atteindre le fichier téléchargé en ligne)
-		List<WebGouvMedic> medocs = new LinkedList<WebGouvMedic>();
-		while (sc.hasNextLine()) {
-			String line = sc.nextLine();
-			if (line == "" || line == "\n")
-				continue;
-			// On traite la ligne
-			String[] speMatcher = line.split("\\t", -1);
-			if (speMatcher.length == 12) {
-				Long id;
-				try {
-					id = Long.parseLong(speMatcher[0].strip());
-				} catch (NumberFormatException ex) {
-					System.out.println("[Specialite] L'ID : " + speMatcher[0] + " n'est pas parsable.");
-					continue;
-				}
-				String nom = speMatcher[1].strip();
-				String forme = speMatcher[2].strip();
-				String voieAdministration = speMatcher[3].strip();
-				String statutAdministratif = speMatcher[4].strip();
-				String procedureAutorisation = speMatcher[5].strip();
-				boolean etatCommercialisation = (speMatcher[6].strip() == "Commercialisée" ? true : false);
-				LocalDate dateAMM = LocalDate.MIN;
-				try {
-					dateAMM = LocalDate.parse(speMatcher[7].strip(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-				} catch (DateTimeParseException ex) {
-					System.out.println("Date incorrecte : " + speMatcher[7]);
-				}
-				String statutBDM = speMatcher[8].strip();
-				String numeroAutorisationEurope = speMatcher[9].strip();
-				String titulaire = speMatcher[10].strip();
-				boolean surveillanceRenforcee = (speMatcher[11].strip() == "Non" ? false : true);
-
-				WebGouvMedic medoc = new WebGouvMedic(id, nom, forme, voieAdministration, statutAdministratif,
-						procedureAutorisation, etatCommercialisation, dateAMM, statutBDM, numeroAutorisationEurope,
-						titulaire, surveillanceRenforcee);
-				// medoc = sauvegarder(medoc);
-				medocs.add(medoc);
-			} else if (speMatcher.length == 13) {
-				long id = 0;
-				String libellePresentation = "";
-				String etatCommercialisation = "";
-				LocalDate dateDeclarationCommercialisation = LocalDate.MIN;
-				String tauxRemboursement = "";
-				String prix = "";
-				String droitRemboursement = "";
-				id = Long.parseLong(speMatcher[0].strip());
-				libellePresentation = speMatcher[2].strip();
-				etatCommercialisation = speMatcher[4].strip();
-				try {
-					dateDeclarationCommercialisation = LocalDate.parse(speMatcher[5].strip(),
-							DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-				} catch (DateTimeParseException ex) {
-					System.out.println("Date incorrecte : " + speMatcher[5]);
-				}
-				tauxRemboursement = speMatcher[8].strip();
-				prix = speMatcher[9].strip();
-				droitRemboursement = speMatcher[10].strip();
-			}
-		}
-		return true;
 	}
 
 	// Fait une backup du fichier original et le détruit.
@@ -583,7 +484,6 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		List<File> conditionFiles = backup("medicaments/conditions.txt");
 		List<File> informationFiles = backup("medicaments/informations.txt");
 
-//		CompletableFuture<Boolean> futureInformation = 
 		CompletableFuture.supplyAsync(() -> {
 			try {
 				return getFileFromWeb(informationUrl, informationFiles);
@@ -592,6 +492,9 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				e.printStackTrace();
 				return false;
 			}
+		}).exceptionally(ex -> {
+			System.out.println("Oups! Exception dans getInformations - " + ex.getMessage());
+			return false;
 		}).thenRunAsync(() -> {
 			try {
 				traiterInformation(informationFiles.get(0));
@@ -599,133 +502,133 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		}).exceptionally(ex -> {
+			System.out.println("Oops! Exception dans le traitement d'informations - " + ex.getMessage());
+			return null;
 		});
 
-		boolean isNew = false;
-
-		try {
-			getFileFromWeb(specialiteUrl, medocFiles);
-			// Si le fichier est différent du backup ou que la BDD est vide alors on traite
-			// le fichier.
+		CompletableFuture<Void> futureSpecialiteGet = CompletableFuture.supplyAsync(() -> {
+			try {
+				return getFileFromWeb(specialiteUrl, medocFiles);
+			} catch (SecurityException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		}).exceptionally(ex -> {
+			System.out.println("Oups! Exception dans getSpecialites - " + ex.getMessage());
+			try {
+				traiterSpecialite(medocFiles.get(1));
+			} catch (NumberFormatException | NullPointerException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return false;
+		}).thenRunAsync(() -> {
 			if (medocFiles.get(0).length() != medocFiles.get(1).length() || count() == 0) {
-				isNew = true;
-				traiterSpecialite(medocFiles.get(0));
+				
+				CompletableFuture<Boolean> futureGenerique = CompletableFuture.supplyAsync(() -> {
+					try {
+						return getFileFromWeb(generiqueUrl, generiqueFiles);
+					} catch (SecurityException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return false;
+					}
+				}).exceptionally(ex -> {
+					System.out.println("Oups! Exception dans getPresentations - " + ex.getMessage());
+					return false;
+				});
+
+				ArrayList<CompletableFuture<Boolean>> futures = new ArrayList<>();
+				
+				futures.add(futureGenerique);
+
+				CompletableFuture<Boolean> futurePresentation = CompletableFuture.supplyAsync(() -> {
+					try {
+						return getFileFromWeb(presentationUrl, presentationFiles);
+					} catch (SecurityException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return false;
+					}
+				}).exceptionally(ex -> {
+					System.out.println("Oups! Exception dans getPresentations - " + ex.getMessage());
+					return false;
+				});
+
+				futures.add(futurePresentation);
+
+				CompletableFuture<Boolean> futureComposition = CompletableFuture.supplyAsync(() -> {
+					try {
+						return getFileFromWeb(compositionUrl, compositionFiles);
+					} catch (SecurityException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return false;
+					}
+				}).exceptionally(ex -> {
+					System.out.println("Oups! Exception dans getPresentations - " + ex.getMessage());
+					return false;
+				});
+
+				futures.add(futureComposition);
+
+				CompletableFuture<Boolean> futureCondition = CompletableFuture.supplyAsync(() -> {
+					try {
+						return getFileFromWeb(conditionUrl, conditionFiles);
+					} catch (SecurityException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return false;
+					}
+				}).exceptionally(ex -> {
+					System.out.println("Oups! Exception dans getPresentations - " + ex.getMessage());
+					return false;
+				});
+
+				futures.add(futureCondition);
+				
+				CompletableFuture<Void> futureSpecialiteSet = CompletableFuture.runAsync(() -> {
+					try {
+						traiterSpecialite(medocFiles.get(0));
+					} catch (NumberFormatException | NullPointerException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}).exceptionally(ex -> {
+					System.out.println("Oups! Exception dans setSpecialites - " + ex.getMessage());
+					return null;
+				}).thenRunAsync(() -> {
+					CompletableFuture<Void> allFutures = CompletableFuture
+							.allOf(futures.toArray(new CompletableFuture[futures.size()]));
+
+					allFutures.thenRunAsync(() -> {
+						try {
+							traiterGenerique(generiqueFiles.get(0));
+							traiterPresentation(presentationFiles.get(0));
+							traiterComposition(compositionFiles.get(0));
+							traiterCondition(conditionFiles.get(0));
+							System.out.println(LocalDateTime.now().toString() + " Tous les documents ont été enregistrés dans la base de donnée.");
+						} catch (NumberFormatException | NullPointerException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}).exceptionally(ex -> {
+						System.out.println("Oops! Exception dans le traitement des présentations - " + ex.getMessage());
+						return null;
+					});
+				});
+				
 			} else {
 				WebGouvMAJDate.setDateMiseAJour(LocalDate.now());
-				return "Les médicaments étaient à jour, aucune modification n'a été apportée.";
+				System.out.println("Aucune modification détectée pour les médicaments.");
 			}
-		} catch (SecurityException e) {
-			e.printStackTrace();
-			return "Erreur de droit d'accès aux fichiers";
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if (isNew) {
-			boolean isSucces = false;
-			CompletableFuture<Boolean> futurePresentation = CompletableFuture.supplyAsync(() -> {
-				try {
-					return getFileFromWeb(presentationUrl, presentationFiles);
-				} catch (SecurityException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return false;
-				}
-			});
-			CompletableFuture<Boolean> futureComposition = CompletableFuture.supplyAsync(() -> {
-				try {
-					return getFileFromWeb(compositionUrl, compositionFiles);
-				} catch (SecurityException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return false;
-				}
-			});
-			CompletableFuture<Boolean> futureGenerique = CompletableFuture.supplyAsync(() -> {
-				try {
-					return getFileFromWeb(generiqueUrl, generiqueFiles);
-				} catch (SecurityException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return false;
-				}
-			});
-			CompletableFuture<Boolean> futureCondition = CompletableFuture.supplyAsync(() -> {
-				try {
-					return getFileFromWeb(conditionUrl, conditionFiles);
-				} catch (SecurityException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return false;
-				}
-			});
-
-//			try {
-//				isSucces = getFileFromWeb(presentationUrl, presentationFiles);
-//			} catch (Exception e) {
-//				System.out.println(e.getMessage());
-//			}
-//			if (isSucces) {
-//				traiterPresentation(presentationFiles.get(0));
-//			} else {
-//				traiterPresentation(presentationFiles.get(1));
-//			}
-//			isSucces = false;
-//
-//			try {
-//				isSucces = getFileFromWeb(compositionUrl, compositionFiles);
-//			} catch (Exception e) {
-//				System.out.println(e.getMessage());
-//			}
-//			if (isSucces) {
-//				traiterComposition(compositionFiles.get(0));
-//			} else {
-//				traiterComposition(compositionFiles.get(1));
-//			}
-//			isSucces = false;
-//
-//			try {
-//				isSucces = getFileFromWeb(generiqueUrl, generiqueFiles);
-//			} catch (Exception e) {
-//				System.out.println(e.getMessage());
-//			}
-//			if (isSucces) {
-//				traiterGenerique(generiqueFiles.get(0));
-//			} else {
-//				traiterGenerique(generiqueFiles.get(1));
-//			}
-//			isSucces = false;
-//
-//			try {
-//				isSucces = getFileFromWeb(conditionUrl, conditionFiles);
-//			} catch (Exception e) {
-//				System.out.println(e.getMessage());
-//			}
-//			if (isSucces) {
-//				traiterCondition(conditionFiles.get(0));
-//			} else {
-//				traiterCondition(conditionFiles.get(1));
-//			}
-//			isSucces = false;
-//
-//			try {
-//				isSucces = getFileFromWeb(informationUrl, informationFiles);
-//			} catch (Exception e) {
-//				System.out.println(e.getMessage());
-//			}
-//			if (isSucces) {
-//				traiterInformation(informationFiles.get(0));
-//			} else {
-//				traiterInformation(informationFiles.get(1));
-//			}
-//			isSucces = false;
-		}
+		});
 
 		// Ensure dateMiseAJour est la date de la dernière mise à jour.
 		WebGouvMAJDate.setDateMiseAJour(LocalDate.now());
-		System.out.println("Temps d'exécution de setMedicament() : "
+		System.out.println(LocalDateTime.now().toString() + " Temps d'exécution de setMedicament() : "
 				+ execTimer.until(LocalDateTime.now(), ChronoUnit.MILLIS) + "ms");
 		return "Medicaments récupérés";
 	}

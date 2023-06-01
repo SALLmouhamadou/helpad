@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OrderBy;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 public class WebGouvMedic {
 	@Id
@@ -59,6 +61,71 @@ public class WebGouvMedic {
 	private String numeroLiaisonSubstances;
 	@Column(name = "CONDITION_PRESCRIPTION_DELIVRANCE")
 	private String conditionPrescriptionDelivrance;
+
+	private String typeGenerique;
+	@Column(name = "NUMERO_TRI")
+	private String numeroTri;
+	@Column(name = "IDENTIFIANT_GROUPE_GENERIQUE")
+	private String identifiantGroupeGenerique;
+	@Column(name = "LIBELLE_GENERIQUE")
+	@Length(max = 100000)
+	private String libelleGenerique;
+
+	/**
+	 * @return the libelleGenerique
+	 */
+	public String getLibelleGenerique() {
+		return libelleGenerique;
+	}
+
+	/**
+	 * @param libelleGenerique the libelleGenerique to set
+	 */
+	public void setLibelleGenerique(String libelleGenerique) {
+		this.libelleGenerique = libelleGenerique;
+	}
+
+	/**
+	 * @return the typeGenerique
+	 */
+	public String getTypeGenerique() {
+		return typeGenerique;
+	}
+
+	/**
+	 * @return the numeroTri
+	 */
+	public String getNumeroTri() {
+		return numeroTri;
+	}
+
+	/**
+	 * @return the identifiantGroupeGenerique
+	 */
+	public String getIdentifiantGroupeGenerique() {
+		return identifiantGroupeGenerique;
+	}
+
+	/**
+	 * @param typeGenerique the typeGenerique to set
+	 */
+	public void setTypeGenerique(String typeGenerique) {
+		this.typeGenerique = typeGenerique;
+	}
+
+	/**
+	 * @param numeroTri the numeroTri to set
+	 */
+	public void setNumeroTri(String numeroTri) {
+		this.numeroTri = numeroTri;
+	}
+
+	/**
+	 * @param identifiantGroupeGenerique the identifiantGroupeGenerique to set
+	 */
+	public void setIdentifiantGroupeGenerique(String identifiantGroupeGenerique) {
+		this.identifiantGroupeGenerique = identifiantGroupeGenerique;
+	}
 
 	public String getProcedureAdministrative() {
 		return procedureAdministrative;
@@ -349,33 +416,63 @@ public class WebGouvMedic {
 	}
 
 	public WebGouvMedic(Long id, String nom, String formePharmaceutique, String voieAdministration, String autorisation,
-			String procedure, boolean commercialise, LocalDate dateCommercialisation, String statutBdm,
-			String numeroAutorisationEuropeenne, String societe, boolean surveillanceRenforcee) {
+			String procedureAdministrative, boolean commercialise, LocalDate dateCommercialisation, String statutBdm,
+			String numeroAutorisationEuropeenne, String titulaire, boolean surveillanceRenforcee,
+			String libellePresentation, String etatCommercialisation, String tauxRemboursement, String prix,
+			String indicationDroitRemboursement, String elementPharmaceutique, String codeSubstance,
+			String nomSubstance, String dosageSubstance, String natureComposant, String referenceDosage,
+			String numeroLiaisonSubstances, String conditionPrescriptionDelivrance, String typeGenerique,
+			String numeroTri, String identifiantGroupeGenerique, String libelleGenerique) {
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.formePharmaceutique = formePharmaceutique;
 		this.voieAdministration = voieAdministration;
 		this.autorisation = autorisation;
-		this.procedureAdministrative = procedure;
+		this.procedureAdministrative = procedureAdministrative;
 		this.commercialise = commercialise;
 		this.dateCommercialisation = dateCommercialisation;
 		this.statutBdm = statutBdm;
 		this.numeroAutorisationEuropeenne = numeroAutorisationEuropeenne;
-		this.titulaire = societe;
+		this.titulaire = titulaire;
 		this.surveillanceRenforcee = surveillanceRenforcee;
-		libellePresentation = "";
-		etatCommercialisation = "";
-		tauxRemboursement = "";
-		prix = "";
-		indicationDroitRemboursement = "";
-		elementPharmaceutique = "";
-		codeSubstance = "";
-		dosageSubstance = "";
-		natureComposant = "";
-		referenceDosage = "";
-		numeroLiaisonSubstances = "";
-		conditionPrescriptionDelivrance = "";
+		this.libellePresentation = libellePresentation;
+		this.etatCommercialisation = etatCommercialisation;
+		this.tauxRemboursement = tauxRemboursement;
+		this.prix = prix;
+		this.indicationDroitRemboursement = indicationDroitRemboursement;
+		this.elementPharmaceutique = elementPharmaceutique;
+		this.codeSubstance = codeSubstance;
+		this.nomSubstance = nomSubstance;
+		this.dosageSubstance = dosageSubstance;
+		this.natureComposant = natureComposant;
+		this.referenceDosage = referenceDosage;
+		this.numeroLiaisonSubstances = numeroLiaisonSubstances;
+		this.conditionPrescriptionDelivrance = conditionPrescriptionDelivrance;
+		this.typeGenerique = typeGenerique;
+		this.numeroTri = numeroTri;
+		this.identifiantGroupeGenerique = identifiantGroupeGenerique;
+		this.libelleGenerique = libelleGenerique;
+	}
+	
+	
+
+	public WebGouvMedic(Long id, String nom, String formePharmaceutique, String voieAdministration, String autorisation,
+			String procedureAdministrative, boolean commercialise, LocalDate dateCommercialisation, String statutBdm,
+			String numeroAutorisationEuropeenne, String titulaire, boolean surveillanceRenforcee) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.formePharmaceutique = formePharmaceutique;
+		this.voieAdministration = voieAdministration;
+		this.autorisation = autorisation;
+		this.procedureAdministrative = procedureAdministrative;
+		this.commercialise = commercialise;
+		this.dateCommercialisation = dateCommercialisation;
+		this.statutBdm = statutBdm;
+		this.numeroAutorisationEuropeenne = numeroAutorisationEuropeenne;
+		this.titulaire = titulaire;
+		this.surveillanceRenforcee = surveillanceRenforcee;
 	}
 
 	public WebGouvMedic() {
@@ -385,17 +482,19 @@ public class WebGouvMedic {
 	@Override
 	public String toString() {
 		return "WebGouvMedic [id=" + id + ", nom=" + nom + ", formePharmaceutique=" + formePharmaceutique
-				+ ", voieAdministration=" + voieAdministration + ", autorisation=" + autorisation + "\n"
+				+ ", voieAdministration=" + voieAdministration + ", autorisation=" + autorisation
 				+ ", procedureAdministrative=" + procedureAdministrative + ", commercialise=" + commercialise
-				+ ", dateCommercialisation=" + dateCommercialisation + ", statutBdm=" + statutBdm + "\n"
+				+ ", dateCommercialisation=" + dateCommercialisation + ", statutBdm=" + statutBdm
 				+ ", numeroAutorisationEuropeenne=" + numeroAutorisationEuropeenne + ", titulaire=" + titulaire
 				+ ", surveillanceRenforcee=" + surveillanceRenforcee + ", libellePresentation=" + libellePresentation
-				+ "\n" + ", etatCommercialisation=" + etatCommercialisation + ", tauxRemboursement=" + tauxRemboursement
-				+ ", prix=" + prix + ", indicationDroitRemboursement=" + indicationDroitRemboursement + "\n"
+				+ ", etatCommercialisation=" + etatCommercialisation + ", tauxRemboursement=" + tauxRemboursement
+				+ ", prix=" + prix + ", indicationDroitRemboursement=" + indicationDroitRemboursement
 				+ ", elementPharmaceutique=" + elementPharmaceutique + ", codeSubstance=" + codeSubstance
-				+ ", dosageSubstance=" + dosageSubstance + ", natureComposant=" + natureComposant + ", referenceDosage="
-				+ referenceDosage + "\n" + ", numeroLiaisonSubstances=" + numeroLiaisonSubstances
-				+ ", conditionPrescriptionDelivrance=" + conditionPrescriptionDelivrance + "]";
+				+ ", nomSubstance=" + nomSubstance + ", dosageSubstance=" + dosageSubstance + ", natureComposant="
+				+ natureComposant + ", referenceDosage=" + referenceDosage + ", numeroLiaisonSubstances="
+				+ numeroLiaisonSubstances + ", conditionPrescriptionDelivrance=" + conditionPrescriptionDelivrance
+				+ ", typeGenerique=" + typeGenerique + ", numeroTri=" + numeroTri + ", identifiantGroupeGenerique="
+				+ identifiantGroupeGenerique + "]";
 	}
 
 }

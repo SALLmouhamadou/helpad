@@ -17,13 +17,12 @@ public class WebGouvSecurite {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@ManyToOne
-	private WebGouvMedic medicament;
-	@Column(name="DEBUT_INFO")
+	private Long codeCis;
+	@Column(name = "DEBUT_INFO")
 	private LocalDate debutInfoSecurite;
-	@Column(name="FIN_INFO")
+	@Column(name = "FIN_INFO")
 	private LocalDate finInfoSecurite;
-	@Column(name="INFORMATION_SECURITE", length=9999)
+	@Column(name = "INFORMATION_SECURITE", length = 9999)
 	private String informationSecurite;
 
 	public Long getId() {
@@ -34,12 +33,18 @@ public class WebGouvSecurite {
 		this.id = id;
 	}
 
-	public WebGouvMedic getMedicament() {
-		return medicament;
+	/**
+	 * @return the codeCis
+	 */
+	public Long getCodeCis() {
+		return codeCis;
 	}
 
-	public void setMedicament(WebGouvMedic medicament) {
-		this.medicament = medicament;
+	/**
+	 * @param codeCis the codeCis to set
+	 */
+	public void setCodeCis(Long codeCis) {
+		this.codeCis = codeCis;
 	}
 
 	public LocalDate getDebutInfoSecurite() {
@@ -66,10 +71,10 @@ public class WebGouvSecurite {
 		this.informationSecurite = informationSecurite;
 	}
 
-	public WebGouvSecurite(WebGouvMedic medicament, LocalDate debutInfoSecurite, LocalDate finInfoSecurite,
+	public WebGouvSecurite(Long codeCis, LocalDate debutInfoSecurite, LocalDate finInfoSecurite,
 			String informationSecurite) {
 		super();
-		this.medicament = medicament;
+		this.codeCis = codeCis;
 		this.debutInfoSecurite = debutInfoSecurite;
 		this.finInfoSecurite = finInfoSecurite;
 		this.informationSecurite = informationSecurite;

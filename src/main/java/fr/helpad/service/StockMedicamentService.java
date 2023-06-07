@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fr.helpad.entity.StockMedicament;
 import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.repository.StockMedicamentRepository;
 import fr.helpad.repository.WebGouvMedicRepository;
 
+@Service
 public class StockMedicamentService implements StockMedicamentServiceI {
 
 	@Autowired

@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fr.helpad.entity.WebGouvSecurite;
 import fr.helpad.repository.WebGouvSecuriteRepository;
 
+@Service
 public class WebGouvSecuriteService implements WebGouvSecuriteServiceI {
 	@Autowired
 	WebGouvSecuriteRepository repo;

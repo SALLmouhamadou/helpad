@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -120,238 +121,25 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 					secu.setCodeCis(id);
 					secus.add(secu);
 				} catch (NoSuchElementException ex) {
-					 System.out.println("[WebGouvSecurite] Le médicament avec l'ID : " + id +
-					 " est introuvable.");
+					System.out.println("[WebGouvSecurite] Le médicament avec l'ID : " + id + " est introuvable.");
 					continue;
 				}
 			}
 		}
-		System.out.println(LocalDateTime.now().toString() + 
-				" [Securite] Enregistrement de " + secus.size() + " fiches de sécurité de médicaments dans la BDD.");
+		System.out.println(LocalDateTime.now().toString() + " [Securite] Enregistrement de " + secus.size()
+				+ " fiches de sécurité de médicaments dans la BDD.");
 		repoSecu.saveAll(secus);
 		sc.close();
 		input.close();
 		System.out.println(LocalDateTime.now().toString() + " [Sécurité] Fin traitement informations.");
 	}
 
-	private void traiterCondition(File path) throws IOException, NullPointerException, NumberFormatException {
-		FileInputStream input = new FileInputStream(path);
-		// Lire le fichier avec l'encodage ANSI (Cp1252)
-		Scanner sc = new Scanner(input, "Cp1252");
-		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
-		// taille que peut atteindre le fichier téléchargé en ligne)
-		List<WebGouvMedic> medocs = new LinkedList<>();
-		medocs = (List<WebGouvMedic>) repo.findAll();
-		while (sc.hasNextLine()) {
-			String line = sc.nextLine();
-			if (line == "" || line == "\n")
-				continue;
-			String[] speMatcher = line.split("\\t", -1);
-			boolean matchFound = speMatcher.length == 2;
-			if (!matchFound) {
-				System.out.println("[Condition] Erreur de match " + speMatcher.length + " : " + line);
-				continue;
-			} else {
-				long id = Long.parseLong(speMatcher[0].strip());
-				String conditionPrescription = speMatcher[1].strip();
+	private void traiterMedicaments(File medicPath, File generiquePath, File conditionPath, File compositionPath,
+			File presentationPath) throws IOException {
+		FileInputStream medicInput = new FileInputStream(medicPath);
+		Scanner sc = new Scanner(medicInput, "Cp1252");
+		HashMap<Long, WebGouvMedic> medicaments = new HashMap<>();
 
-				List<WebGouvMedic> optMedic = medocs.stream().filter(a -> a.getId() == id).collect(Collectors.toList());
-
-				try {
-					WebGouvMedic medoc = optMedic.get(0);
-					medoc.setConditionPrescriptionDelivrance(conditionPrescription);
-					repo.save(medoc);
-					//medocs.add(medoc);
-				} catch (NoSuchElementException ex) {
-					System.out.println("[WebGouvCondition] Le médicament avec l'ID : " + id + " est introuvable.");
-				}
-			}
-		}
-		//repo.saveAll(medocs);
-		System.out.println(LocalDateTime.now().toString() + " [Condition] " + medocs.size() + " médicaments ont été modifiés dans la BDD.");
-		sc.close();
-		input.close();
-	}
-
-	private void traiterGenerique(File path) throws IOException, NullPointerException, NumberFormatException {
-		FileInputStream input = new FileInputStream(path);
-		// Lire le fichier avec l'encodage ANSI (Cp1252)
-		Scanner sc = new Scanner(input, "Cp1252");
-		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
-		// taille que peut atteindre le fichier téléchargé en ligne)
-		List<WebGouvMedic> medocs = new LinkedList<>();
-		medocs = (List<WebGouvMedic>) repo.findAll();
-		while (sc.hasNextLine()) {
-			String line = sc.nextLine();
-			if (line == "" || line == "\n")
-				continue;
-			String[] speMatcher = line.split("\\t", -1);
-			boolean matchFound = speMatcher.length == 6;
-			if (!matchFound) {
-				System.out.println("[Generique] Erreur de match " + speMatcher.length + " : " + line);
-			} else {
-				Long id;
-				try {
-					id = Long.parseLong(speMatcher[2].strip());
-				} catch (NumberFormatException ex) {
-					System.out.println("L'ID : " + speMatcher[2] + " n'est pas parsable.");
-					continue;
-				}
-				String generiqueId = speMatcher[0].strip();
-				String libelleGroupeGenerique = speMatcher[1].strip();
-				String typeGenerique = (speMatcher[3].strip().charAt(0) == '0' ? "princeps" : "")
-						+ (speMatcher[3].strip().charAt(0) == '1' ? "générique" : "")
-						+ (speMatcher[3].strip().charAt(0) == '2' ? "générique par complémentarité posologique" : "")
-						+ (speMatcher[3].strip().charAt(0) == '4' ? "générique substituable" : "");
-				String numeroElement = speMatcher[4].strip();
-
-				WebGouvMedic generique = new WebGouvMedic();
-				generique.setId(id);
-				generique.setIdentifiantGroupeGenerique(generiqueId);
-				generique.setLibelleGenerique(libelleGroupeGenerique);
-				generique.setNumeroTri(numeroElement);
-				generique.setTypeGenerique(typeGenerique);
-				//repo.save(generique);
-				medocs.add(generique);
-			}
-		}
-
-		System.out.println(LocalDateTime.now().toString() + " [Generique] Modification de " + medocs.size() + " médicaments génériques dans la BDD.");
-		repo.saveAll(medocs);
-		sc.close();
-		input.close();
-	}
-
-	private void traiterComposition(File path) throws IOException, NullPointerException, NumberFormatException {
-		FileInputStream input = new FileInputStream(path);
-		// Lire le fichier avec l'encodage ANSI (Cp1252)
-		Scanner sc = new Scanner(input, "Cp1252");
-		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
-		// taille que peut atteindre le fichier téléchargé en ligne)
-		ArrayList<WebGouvMedic> medocs = new ArrayList<>();
-		medocs = (ArrayList<WebGouvMedic>) repo.findAll();
-		while (sc.hasNextLine()) {
-			String line = sc.nextLine();
-			if (line == "" || line == "\n")
-				continue;
-			String[] speMatcher = line.split("\\t", -1);
-			boolean matchFound = speMatcher.length == 9;
-			if (!matchFound) {
-				System.out.println("[Composition] Erreur de match " + speMatcher.length + " : " + line);
-			} else {
-				long id = Long.parseLong(speMatcher[0].strip());
-				String elementPharmaceutique = speMatcher[1].strip();
-				String codeSubstance = speMatcher[2].strip();
-				String nomSubstance = speMatcher[3].strip();
-				String dosageSubstance = speMatcher[4].strip();
-				String referenceDosage = speMatcher[5].strip();
-				String natureComposant = (speMatcher[6].strip() == "SA" ? "principe actif" : " fraction thérapeutique");
-				String numeroSubstance = speMatcher[7].strip();
-
-				List<WebGouvMedic> optMedic = medocs.stream().filter(a -> a.getId() == id).collect(Collectors.toList());
-
-				try {
-					WebGouvMedic medoc = optMedic.get(0);
-					medoc.setElementPharmaceutique(elementPharmaceutique);
-					medoc.setCodeSubstance(codeSubstance);
-					medoc.setNomSubstance(nomSubstance);
-					medoc.setDosageSubstance(dosageSubstance);
-					medoc.setReferenceDosage(referenceDosage);
-					medoc.setNatureComposant(natureComposant);
-					medoc.setNumeroLiaisonSubstances(numeroSubstance);
-					//repo.save(medoc);
-					medocs.add(medoc);
-				} catch (NoSuchElementException ex) {
-					System.out.println("[WebGouvComposition] Le médicament avec l'ID : " + id + " est introuvable.");
-				}
-			}
-		}
-		repo.saveAll(medocs);
-		System.out.println(LocalDateTime.now().toString() + " [Composition] " + medocs.size() + " médicaments ont été modifiés dans la BDD.");
-		sc.close();
-		input.close();
-	}
-
-	private void traiterPresentation(File path) throws IOException, NullPointerException, NumberFormatException {
-		FileInputStream input = new FileInputStream(path);
-		try (// Lire le fichier avec l'encodage ANSI (Cp1252)
-				Scanner sc = new Scanner(input, "Cp1252")) {
-			// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
-			// taille que peut atteindre le fichier téléchargé en ligne)
-			List<WebGouvMedic> medocs = new ArrayList<>();
-			medocs = (ArrayList<WebGouvMedic>) repo.findAll();
-			while (sc.hasNextLine()) {
-				String line = sc.nextLine();
-				if (line == "" || line == "\n")
-					continue;
-				String[] speMatcher = line.split("\\t", -1);
-				boolean matchFound = speMatcher.length == 13;
-				long idMedic = Long.parseLong(speMatcher[0].strip());
-				String libellePresentation = speMatcher[2].strip();;
-				String etatCommercialisation = speMatcher[4].strip();
-				LocalDate dateDeclarationCommercialisation = LocalDate.MIN;
-				try {
-					dateDeclarationCommercialisation = LocalDate.parse(speMatcher[5].strip(),
-							DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-				} catch (DateTimeParseException ex) {
-					System.out.println("Date incorrecte : " + speMatcher[5]);
-				}
-				String tauxRemboursement = "";
-				String prix = "";
-				String droitRemboursement = "";
-
-				if (!matchFound) {
-					if (speMatcher.length == 8) {
-						
-					} else {
-						System.out.println("[Présentation] Erreur de match " + speMatcher.length + " : " + line);
-						for (String s : speMatcher)
-							System.out.println(s);
-					}
-				} else {
-					tauxRemboursement = speMatcher[8].strip();
-					prix = speMatcher[9].strip();
-					droitRemboursement = speMatcher[10].strip();
-
-//					System.out.println("prix : " + prix + " tx rmb : " + tauxRemboursement + " libelle Presentation : "
-//							+ libellePresentation);
-				}
-				List<WebGouvMedic> optMedic = medocs.stream().filter(a -> a.getId() == idMedic).collect(Collectors.toList());
-				try {
-					if (optMedic.size() == 0)
-						continue;
-					WebGouvMedic medoc = optMedic.get(0);
-					medoc.setLibellePresentation(libellePresentation);
-					medoc.setDateCommercialisation(dateDeclarationCommercialisation);
-					medoc.setEtatCommercialisation(etatCommercialisation);
-					medoc.setTauxRemboursement(tauxRemboursement);
-					medoc.setPrix(prix);
-					medoc.setIndicationDroitRemboursement(droitRemboursement);
-					//repo.save(medoc);
-					medocs.add(medoc);
-				} catch (NoSuchElementException ex) {
-					//System.out.println("[WebGouvPresentation] Le médicament avec l'ID : " + id + " est introuvable.");
-				}
-			}
-			repo.saveAll(medocs);
-			System.out.println(LocalDateTime.now().toString() + " [Presentation] " + medocs.size() + " médicaments ont été modifiés dans la BDD.");
-			sc.close();
-			input.close();
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private void traiterSpecialite(File path)
-			throws IOException, NullPointerException, FileNotFoundException, NumberFormatException {
-		FileInputStream input = new FileInputStream(path);
-		System.out.println(LocalDateTime.now().toString() + " Début de traitement des spécialités.");
-		// Lire le fichier avec l'encodage ANSI (Cp1252)
-		Scanner sc = new Scanner(input, "Cp1252");
-		// On lit le fichier ligne par ligne (RAM safe, on ne connait pas la
-		// taille que peut atteindre le fichier téléchargé en ligne)
-		List<WebGouvMedic> medocs = new LinkedList<WebGouvMedic>();
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			if (line == "" || line == "\n")
@@ -389,14 +177,171 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 						procedureAutorisation, etatCommercialisation, dateAMM, statutBDM, numeroAutorisationEurope,
 						titulaire, surveillanceRenforcee);
 				// medoc = sauvegarder(medoc);
-				medocs.add(medoc);
+				medicaments.put(id, medoc);
 			}
 		}
-		System.out.println(LocalDateTime.now().toString() + " [Specialites] Enregistrement de " + medocs.size()
-				+ " médicaments dans la BDD.");
-		saveAll(medocs);
 		sc.close();
-		input.close();
+		medicInput.close();
+
+		FileInputStream generiqueInput = new FileInputStream(generiquePath);
+		Scanner generiqueSc = new Scanner(generiqueInput, "Cp1252");
+
+		while (generiqueSc.hasNextLine()) {
+			String line = generiqueSc.nextLine();
+			if (line == "" || line == "\n")
+				continue;
+			String[] speMatcher = line.split("\\t", -1);
+			boolean matchFound = speMatcher.length == 6;
+			if (!matchFound) {
+				System.out.println("[Generique] Erreur de match " + speMatcher.length + " : " + line);
+			} else {
+				Long id;
+				try {
+					id = Long.parseLong(speMatcher[2].strip());
+				} catch (NumberFormatException ex) {
+					System.out.println("L'ID : " + speMatcher[2] + " n'est pas parsable.");
+					continue;
+				}
+				String generiqueId = speMatcher[0].strip();
+				String libelleGroupeGenerique = speMatcher[1].strip();
+				String typeGenerique = (speMatcher[3].strip().charAt(0) == '0' ? "princeps" : "")
+						+ (speMatcher[3].strip().charAt(0) == '1' ? "générique" : "")
+						+ (speMatcher[3].strip().charAt(0) == '2' ? "générique par complémentarité posologique" : "")
+						+ (speMatcher[3].strip().charAt(0) == '4' ? "générique substituable" : "");
+				String numeroElement = speMatcher[4].strip();
+
+				WebGouvMedic generique = new WebGouvMedic();
+				generique.setId(id);
+				generique.setIdentifiantGroupeGenerique(generiqueId);
+				generique.setLibelleGenerique(libelleGroupeGenerique);
+				generique.setNumeroTri(numeroElement);
+				generique.setTypeGenerique(typeGenerique);
+				// repo.save(generique);
+				medicaments.put(id, generique);
+			}
+		}
+		generiqueSc.close();
+		generiqueInput.close();
+
+		FileInputStream conditionInput = new FileInputStream(conditionPath);
+		// Lire le fichier avec l'encodage ANSI (Cp1252)
+		Scanner conditionSc = new Scanner(conditionInput, "Cp1252");
+
+		while (conditionSc.hasNextLine()) {
+			String line = conditionSc.nextLine();
+			if (line == "" || line == "\n")
+				continue;
+			String[] speMatcher = line.split("\\t", -1);
+			boolean matchFound = speMatcher.length == 2;
+			if (!matchFound) {
+				System.out.println("[Condition] Erreur de match " + speMatcher.length + " : " + line);
+				continue;
+			} else {
+				long id = Long.parseLong(speMatcher[0].strip());
+				String conditionPrescription = speMatcher[1].strip();
+
+				WebGouvMedic optMedic = medicaments.get(id);
+				if (optMedic == null)
+					continue;
+
+				optMedic.setConditionPrescriptionDelivrance(conditionPrescription);
+			}
+		}
+
+		conditionSc.close();
+		conditionInput.close();
+
+		FileInputStream compositionInput = new FileInputStream(compositionPath);
+		// Lire le fichier avec l'encodage ANSI (Cp1252)
+		Scanner compositionSc = new Scanner(compositionInput, "Cp1252");
+		while (compositionSc.hasNextLine()) {
+			String line = compositionSc.nextLine();
+			if (line == "" || line == "\n")
+				continue;
+			String[] speMatcher = line.split("\\t", -1);
+			boolean matchFound = speMatcher.length == 9;
+			if (!matchFound) {
+				System.out.println("[Composition] Erreur de match " + speMatcher.length + " : " + line);
+			} else {
+				long id = Long.parseLong(speMatcher[0].strip());
+				String elementPharmaceutique = speMatcher[1].strip();
+				String codeSubstance = speMatcher[2].strip();
+				String nomSubstance = speMatcher[3].strip();
+				String dosageSubstance = speMatcher[4].strip();
+				String referenceDosage = speMatcher[5].strip();
+				String natureComposant = (speMatcher[6].strip() == "SA" ? "principe actif" : " fraction thérapeutique");
+				String numeroSubstance = speMatcher[7].strip();
+
+				WebGouvMedic medoc = medicaments.get(id);
+				if (medoc == null)
+					continue;
+				medoc.setElementPharmaceutique(elementPharmaceutique);
+				medoc.setCodeSubstance(codeSubstance);
+				medoc.setNomSubstance(nomSubstance);
+				medoc.setDosageSubstance(dosageSubstance);
+				medoc.setReferenceDosage(referenceDosage);
+				medoc.setNatureComposant(natureComposant);
+				medoc.setNumeroLiaisonSubstances(numeroSubstance);
+			}
+		}
+		compositionSc.close();
+		compositionInput.close();
+
+		FileInputStream presentationInput = new FileInputStream(presentationPath);
+		Scanner presentationSc = new Scanner(presentationInput, "Cp1252");
+
+		while (presentationSc.hasNextLine()) {
+			String line = presentationSc.nextLine();
+			if (line == "" || line == "\n")
+				continue;
+			String[] speMatcher = line.split("\\t", -1);
+			boolean matchFound = speMatcher.length == 13;
+			long idMedic = Long.parseLong(speMatcher[0].strip());
+			String libellePresentation = speMatcher[2].strip();
+			;
+			String etatCommercialisation = speMatcher[4].strip();
+			LocalDate dateDeclarationCommercialisation = LocalDate.MIN;
+			try {
+				dateDeclarationCommercialisation = LocalDate.parse(speMatcher[5].strip(),
+						DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+			} catch (DateTimeParseException ex) {
+				System.out.println("Date incorrecte : " + speMatcher[5]);
+			}
+			String tauxRemboursement = "";
+			String prix = "";
+			String droitRemboursement = "";
+
+			if (!matchFound) {
+				if (speMatcher.length == 8) {
+
+				} else {
+					System.out.println("[Présentation] Erreur de match " + speMatcher.length + " : " + line);
+					for (String s : speMatcher)
+						System.out.println(s);
+				}
+			} else {
+				tauxRemboursement = speMatcher[8].strip();
+				prix = speMatcher[9].strip();
+				droitRemboursement = speMatcher[10].strip();
+
+//					System.out.println("prix : " + prix + " tx rmb : " + tauxRemboursement + " libelle Presentation : "
+//							+ libellePresentation);
+			}
+			WebGouvMedic medoc = medicaments.get(idMedic);
+			if (medoc == null)
+				continue;
+			medoc.setLibellePresentation(libellePresentation);
+			medoc.setDateCommercialisation(dateDeclarationCommercialisation);
+			medoc.setEtatCommercialisation(etatCommercialisation);
+			medoc.setTauxRemboursement(tauxRemboursement);
+			medoc.setPrix(prix);
+			medoc.setIndicationDroitRemboursement(droitRemboursement);
+		}
+		repo.saveAll(medicaments.values());
+		System.out.println(LocalDateTime.now().toString() + " [Medicaments] " + medicaments.size()
+				+ " médicaments ont été enregistrés dans la BDD.");
+		presentationSc.close();
+		presentationInput.close();
 	}
 
 	// Fait une backup du fichier original et le détruit.
@@ -515,18 +460,9 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				e.printStackTrace();
 				return false;
 			}
-		}).exceptionally(ex -> {
-			System.out.println("Oups! Exception dans getSpecialites - " + ex.getMessage());
-			try {
-				traiterSpecialite(medocFiles.get(1));
-			} catch (NumberFormatException | NullPointerException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return false;
 		}).thenRunAsync(() -> {
-			if (medocFiles.get(0).length() != medocFiles.get(1).length() || count() == 0) {
-				
+			if (medocFiles.get(0).length() != medocFiles.get(1).length() && medocFiles.get(0).length() > 0 || count() == 0) {
+
 				CompletableFuture<Boolean> futureGenerique = CompletableFuture.supplyAsync(() -> {
 					try {
 						return getFileFromWeb(generiqueUrl, generiqueFiles);
@@ -541,7 +477,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				});
 
 				ArrayList<CompletableFuture<Boolean>> futures = new ArrayList<>();
-				
+
 				futures.add(futureGenerique);
 
 				CompletableFuture<Boolean> futurePresentation = CompletableFuture.supplyAsync(() -> {
@@ -588,10 +524,12 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				});
 
 				futures.add(futureCondition);
-				
+
 				CompletableFuture<Void> futureSpecialiteSet = CompletableFuture.runAsync(() -> {
 					try {
-						traiterSpecialite(medocFiles.get(0));
+						// traiterSpecialite(medocFiles.get(0));
+						traiterMedicaments(medocFiles.get(0), generiqueFiles.get(0), conditionFiles.get(0),
+								compositionFiles.get(0), presentationFiles.get(0));
 					} catch (NumberFormatException | NullPointerException | IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -599,30 +537,18 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				}).exceptionally(ex -> {
 					System.out.println("Oups! Exception dans setSpecialites - " + ex.getMessage());
 					return null;
-				}).thenRunAsync(() -> {
-					CompletableFuture<Void> allFutures = CompletableFuture
-							.allOf(futures.toArray(new CompletableFuture[futures.size()]));
-
-					allFutures.thenRunAsync(() -> {
-						try {
-							traiterGenerique(generiqueFiles.get(0));
-							traiterPresentation(presentationFiles.get(0));
-							traiterComposition(compositionFiles.get(0));
-							traiterCondition(conditionFiles.get(0));
-							System.out.println(LocalDateTime.now().toString() + " Tous les documents ont été enregistrés dans la base de donnée.");
-						} catch (NumberFormatException | NullPointerException | IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}).exceptionally(ex -> {
-						System.out.println("Oops! Exception dans le traitement des présentations - " + ex.getMessage());
-						return null;
-					});
 				});
-				
-			} else {
-				WebGouvMAJDate.setDateMiseAJour(LocalDate.now());
+			} else if (medocFiles.get(0).length() == medocFiles.get(1).length()) {
 				System.out.println("Aucune modification détectée pour les médicaments.");
+			}
+			else if (medocFiles.get(0).length() == 0) {
+				try {
+					traiterMedicaments(medocFiles.get(1), generiqueFiles.get(1), conditionFiles.get(1),
+							compositionFiles.get(1), presentationFiles.get(1));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 

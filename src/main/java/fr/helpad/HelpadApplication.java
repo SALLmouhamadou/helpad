@@ -16,7 +16,10 @@ import fr.helpad.service.WebGouvMedicServiceI;
 import org.springframework.context.annotation.Bean;
 
 import fr.helpad.entity.Plat;
+import fr.helpad.entity.StockMedicament;
+import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.service.PlatService;
+import fr.helpad.service.StockMedicamentServiceI;
 
 @SpringBootApplication
 public class HelpadApplication {
@@ -48,6 +51,31 @@ public class HelpadApplication {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@Bean
+	CommandLineRunner commandLineRunner(StockMedicamentServiceI stockService, WebGouvMedicServiceI medicServ) {
+		return args -> {
+			Short s = 90;
+			// On ajoute un stock de 90 Doliranes.
+			try {
+			WebGouvMedic med1 = medicServ.get(60234100l);
+			stockService.sauvegarder(new StockMedicament(med1.getId(), s));
+			}
+			catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
+			s = 50;
+			// 50 Homeoplasmines
+			try {
+			WebGouvMedic med2 = medicServ.get(61237035l);
+			stockService.sauvegarder(new StockMedicament(med2.getId(), s));
+			}
+			catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			stockService.listerTout().forEach(m -> System.out.println(m.getCodeCis() + " : " + m.getQuantite() + " en stock."));
+		};
 	}
 
 	@Bean

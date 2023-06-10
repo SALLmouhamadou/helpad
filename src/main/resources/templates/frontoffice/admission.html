@@ -8,14 +8,12 @@
 	th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" href="../static/css/style.css"
 	th:href="@{/css/style.css}" />
+<link rel="stylesheet" type="text/css" href="../static/assets/css/style.css" th:href="@{/assets/css/style.css}">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-	<div class="container">
-		<nav
-			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
-	</div>
+	<nav th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 	<form class="p-2" id="myForm" th:action="@{/sendAdmission}"
 		method="post" enctype="multipart/form-data" >
 		<h1 align=center>Formulaire de demande d'admission</h1>
@@ -45,7 +43,7 @@
 			<div>
 				<label for="email"> Email <span class="text-danger">*</span></label>
 				<input type="email" placeholder="dupont.jean@gmail.com" name="email"
-					 required>
+					 >
 			</div>
 			<div>
 				<label for="telephone">Téléphone<span class="text-danger">*</span></label>
@@ -59,7 +57,7 @@
 					<span id="dateNaissanceError" class="text-danger"></span> 
 					<input type="date"
 					placeholder="Date naissance" id="dateNaissance"
-					name="dateNaissance"  required>
+					name="dateNaissance">
 			</div>
 			<div class="index-btn-wrapper">
 				<button class="index-btn" id="btnDateNaissance" onclick="run(1, 2);">Suivant</button>
@@ -70,23 +68,23 @@
 			<p>Adresse:</p>
 			<div>
 				<label for="numero"> N° <span class="text-danger">*</span></label> <input
-					type="number" placeholder="85" name="numero" required>
+					type="number" placeholder="85" id="numero" name="numero">
 			</div>
 			<div>
 				<label for="rue">Rue <span class="text-danger">*</span></label> <input
-					type="text" placeholder="Boulevard de la paris" name="rue" required>
+					type="text" placeholder="Boulevard de la paris" id="rue" name="rue">
 				<div>
 					<label for="ville">Ville <span class="text-danger">*</span></label>
-					<input type="text" placeholder="Paris" name="ville" required>
+					<input type="text" placeholder="Paris" id="ville" name="ville">
 				</div>
 				<div>
 					<label for="codePostal">Code postal <span
-						class="text-danger">*</span></label><input type="text" placeholder="75015"
-						name="codePostal" required>
+						class="text-danger">*</span></label><input type="text" id="codePostal" placeholder="75015"
+						name="codePostal">
 				</div>
 				<div>
 					<label for="pays"> Pays <span class="text-danger">*</span></label>
-					<input type="text" placeholder="Pays" name="pays" required>
+					<input type="text" placeholder="Pays" id="pays" name="pays" >
 				</div>
 				<div class="index-btn-wrapper">
 					<div class="index-btn" onclick="run(2, 1);">Précedent</div>
@@ -103,12 +101,12 @@
 					<span id="dateEntreeError" class="text-danger"></span> 
 					<input type="date"
 					placeholder="Date entrée souhaitée" id="dateEntree"
-					name="dateEntree" required>
+					name="dateEntree">
 			</div>
 			<div>
 				<label for="dateEntree"> N° sécurité sociale <span
 					class="text-danger">*</span></label> <input type="text"
-					placeholder="1000000000" name="numeroSecuriteSocial" required>
+					placeholder="1000000000" name="numeroSecuriteSocial">
 			</div>
 			<div>
 				<label for="numeroDeCaf"> N° de CAF</label> <input type="text"
@@ -117,7 +115,7 @@
 			<div>
 				<label for="revenu"> Revenu annuellement <span
 					class="text-danger">*</span></label> <input type="text"
-					placeholder="Revenu" name="revenu" required>
+					placeholder="Revenu" name="revenu">
 			</div>
 			<input type="hidden" name="libelle" value="En cours de traitement" />
 			<select name="pathologie" id="pathologie-select" required>
@@ -141,47 +139,54 @@
 		 <div class="tab" id="tab-4">
 			<p>Piéce justificatifs</p>
 			<div>
+				<span class="fw-bold text-primary" id="errorMessage"></span>
 				<label class="text-primary" for="file1">Photocopie de pièce d'identité(JPG,PNG,
 					PDF|max. 2 Mo) <span class="text-danger">*</span>
-				</label> <input type="file" name="file1" required>
+				</label> <input class="fileInput"  type="file" name="file1" accept="application/pdf,image/*" required>
 			</div>
 			<div>
+				<span class="fw-bold text-primary" id="errorMessage"></span>
 				<label class="text-primary" for="file2">Justificatif de domicile (JPG,PNG,
 					PDF|max. 2 Mo) <span class="text-danger">*</span>
-				</label> <input type="file" name="file2" required>
+				</label> <input class="fileInput" type="file" name="file2" accept="application/pdf,image/*" required>
 			</div>
 			<div>
+				<span class="fw-bold text-primary" id="errorMessage"></span>
 				<label class="text-primary" for="file3">Attestation d'hébergement
-					d'identité(JPG,PNG, PDF|max. 2 Mo) </label> <input type="file" name="file3">
+					d'identité(JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput" type="file" name="file3" accept="application/pdf,image/*">
 			</div>
 			<div>
+				<span class="fw-bold text-primary" id="errorMessage"></span>
 				<label class="text-primary" for="file4">Photocopie de pièce d'identité de
-					l'hébergeur(JPG,PNG, PDF|max. 2 Mo) </label> <input type="file"
-					name="file4">
+					l'hébergeur(JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput" type="file"
+					name="file4" accept="application/pdf,image/*">
 			</div>
 			<div>
 				<label class="text-primary" for="file5">Quitance de loyer moins de 3
-					mois(JPG,PNG, PDF|max. 2 Mo) </label> <input type="file" name="file5">
+					mois(JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput" type="file" name="file5" accept="application/pdf,image/*">
 			</div>
 			<div>
 				<label class="text-primary" for="file6">Justificatif de situation familiale
 					(JPG,PNG, PDF|max. 2 Mo) <span class="text-danger">*</span>
-				</label> <input type="file" name="file6" required>
+				</label> <input class="fileInput" type="file" name="file6" accept="application/pdf,image/*" required>
 			</div>
 			<div>
+				<span class="fw-bold text-primary" id="errorMessage"></span>
 				<label class="text-primary" for="file7">Avsi d'imposition (JPG,PNG, PDF|max. 2
 					Mo) <span class="text-danger">*</span>
-				</label> <input type="file" name="file7" required>
+				</label> <input class="fileInput" type="file" name="file7" accept="application/pdf,image/*" required>
 			</div>
 			<div>
+				<span class="fw-bold text-primary" id="errorMessage"></span>
 				<label class="text-primary" for="file8">Attestation de droits de sécurité social
 					(JPG,PNG, PDF|max. 2 Mo) <span class="text-danger">*</span>
-				</label> <input type="file" name="file8" required>
+				</label> <input class="fileInput" type="file" name="file8" accept="application/pdf,image/*" required>
 			</div>
 			<div>
+				<span class="fw-bold text-primary" id="errorMessage"></span>
 				<label class="text-primary" for="file9">Si vous avez des pathologies, joindre un
-					justificatif (JPG,PNG, PDF|max. 2 Mo) </label> <input type="file"
-					name="file9">
+					justificatif (JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput" type="file"
+					name="file9" accept="application/pdf,image/*">
 			</div> 
 			<div class="index-btn-wrapper">
 				<div class="index-btn" onclick="run(4, 3);">Précedent</div>
@@ -207,17 +212,15 @@
 					</div>
 				</div>
 				<div class="index-btn" onclick="run(5, 4);">Précedent</div>
-				<button class="index-btn"  type="submit" name="submit"
+				<button class="index-btn"  type="submit" 
 					style="background: blue;">Valider</button>
 			</div>
 		</div>
 		<input type="hidden" th:name="${_csrf.parameterName}"
 			th:value="${_csrf.token}" />
 	</form>
-	<div class="container">
 		<footer
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
-	</div>
 	<script>
 		// Default tab
 		$(".tab").css("display", "none");
@@ -238,5 +241,6 @@
 	</script>
 	<script href="../static/js/admissionForm.js"
 	th:src="@{/js/admissionForm.js}"></script>
+	<script href="../static/js/adresseFormAdmission.js" th:src="@{/js/adresseFormAdmission.js}"></script>
 </body>
 </html>

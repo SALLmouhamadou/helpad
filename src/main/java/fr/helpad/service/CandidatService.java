@@ -6,7 +6,7 @@ import java.util.Optional;
 import fr.helpad.entity.Candidat;
 
 public interface CandidatService {
-    public void sauveCandidat(Candidat candidat);
+    public boolean sauveCandidat(Candidat candidat);
     public List<Candidat> findAllCandidats();
     public Candidat get(Long id);
     public void delete(Long id);

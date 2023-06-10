@@ -18,4 +18,13 @@ public class HomeController {
 		mav.setViewName("backoffice/dashboard");
 		return mav;
 	}
+	@GetMapping("/about")
+	public String showAbout() {
+		return "frontoffice/about";
+	}
+	
+	@GetMapping("/contact")
+	public String showContactPage() {
+		return "frontoffice/contact";
+	}
 }

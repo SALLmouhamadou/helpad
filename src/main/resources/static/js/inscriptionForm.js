@@ -59,7 +59,7 @@ function validateEmailForm() {
 }
 function validatePasswordFom() {
 	var password = document.getElementById("password");
-	var pass =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$/;
+	var pass =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 	if (password.value == "") {
 		document.getElementById('errorpassword').innerHTML = "Mot de passe non valide";
 		password.focus();

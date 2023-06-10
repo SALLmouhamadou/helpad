@@ -10,21 +10,18 @@
 <link rel="stylesheet" type="text/css" href="../static/assets/css/style.css" th:href="@{/assets/css/style.css}">
 </head>
 <body>
-	<!--<section th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice ::top-bar}"></section> -->
+
 	<nav th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 	
-	<header class="bg-dark py-5">
-        <div class="container px-5">
-            <div class="row gx-5 justify-content-center">
+	<header id="hero" class="bg-dark py-5">
+        <div class="container">
+            <div class="row gx-5">
                 <h3 class="lead fw-normal mb-0 me-3" th:text="${messageSuccess}"></h3>
                 <div class="col-lg-6">
-                    <div class="my-5">
-                        <h3 class="display-5 fw-bolder text-white mb-2">HELPAD est un établissement de retraite
-                            médicalisé qui propose un accueil en chambre</h3>
-                        <p class="lead text-white-50 mb-4">HELPAD s’adresse à des personnes âgées de plus de 60 ans qui
-                            ont besoin d’aide et de soins au quotidien. Ces personnes nécessitent une aide plus ou moins
-                            importante d’un tiers dans les actes de la vie quotidienne pour des raisons physiques ou
-                            mentales.</p>
+                    <div class="my-3">
+                        <h3 class="display-5 fw-bolder text-primary mb-2">HELPAD</h3>
+                        <h5>Un établissement de retraite
+                            médicalisé qui propose un accueil en chambre</h5>
                         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
                             <a class="btn btn-primary btn-lg px-4 me-sm-3" th:href="@{/justificatifAFournir}">Faire une demande
                                 admission</a>

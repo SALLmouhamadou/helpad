@@ -29,9 +29,11 @@ import fr.helpad.dto.CandidatureStatusDTO;
 import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
+import fr.helpad.entity.EmailDetails;
 import fr.helpad.entity.Status;
 import fr.helpad.service.CandidatService;
 import fr.helpad.service.CandidatureServiceImpl;
+import fr.helpad.service.EmailService;
 import fr.helpad.service.PersonneService;
 import fr.helpad.service.StatusService;
 import fr.helpad.service.StorageService;
@@ -48,6 +50,8 @@ public class AdmissionController {
 	CandidatureServiceImpl candidatureServiceImpl;
 	@Autowired
 	StatusService statusService;
+	@Autowired
+	EmailService emailService;
 
 	@GetMapping("/getAdmission")
 	public ModelAndView showAdmissionForm(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
@@ -146,7 +150,16 @@ public class AdmissionController {
 
 		return mav;
 	}
-
+	@GetMapping("/mail")
+	public String sendEmail() {
+		EmailDetails mail =new EmailDetails();
+		mail.setFrom("helpad.essonne@gmail.com");
+		mail.setRecipient("salllmouha10@gmail.com");
+		mail.setSubject("Confirmation demande d'admission");
+		mail.setMsgBody("Bonjour  votre candidature a bien été envoyée");
+		emailService.sendSimpleMail(mail);
+		return "redirect:/";
+	}
 	@GetMapping("/consulter")
 	public ModelAndView getDetailCandidature(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {

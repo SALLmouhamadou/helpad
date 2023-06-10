@@ -114,9 +114,9 @@
 				<ul class="list-group">
 					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName1}}" th:text="${candidature.fileName1}"></a></li>
 					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName2}}" th:text="${candidature.fileName2}"></a></li>
-					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName3}}" th:if="${candidature.fileName3}"></a></li>
-					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName4}}" th:if="${candidature.fileName4}"></a></li>
-					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName5}}" th:text="${candidature.fileName5}"></a></li>
+					<li th:if="${candidature.fileName3!=''}" class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName3}}" th:text="${candidature.fileName3}"></a></li>
+					<li  th:if="${candidature.fileName4 !=''}"  class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName4}}" th:text="${candidature.fileName4}"></a></li>
+					<li th:if="${candidature.fileName5 !=''}" class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName5}}" th:text="${candidature.fileName5}"></a></li>
 					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName6}}" th:text="${candidature.fileName6}"></a></li>
 					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName7}}" th:text="${candidature.fileName7}"></a></li>
 					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName8}}" th:text="${candidature.fileName8}"></a></li>

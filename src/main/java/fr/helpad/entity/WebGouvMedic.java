@@ -1,13 +1,13 @@
 package fr.helpad.entity;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 import org.hibernate.validator.constraints.Length;
@@ -17,6 +17,7 @@ public class WebGouvMedic {
 	@Id
 	private Long id; // Code CIS
 	@OrderBy
+	@Length(max = 1000)
 	private String nom;
 	@Column(name = "FORME_PHARMACEUTIQUE")
 	private String formePharmaceutique;
@@ -68,8 +69,26 @@ public class WebGouvMedic {
 	@Column(name = "IDENTIFIANT_GROUPE_GENERIQUE")
 	private String identifiantGroupeGenerique;
 	@Column(name = "LIBELLE_GENERIQUE")
-	@Length(max = 100000)
+	@Length(max = 1000)
 	private String libelleGenerique;
+
+	@OneToOne(cascade = CascadeType.DETACH)
+	@JoinColumn(name = "codeCis")
+	private StockMedicament stock;
+
+	/**
+	 * @return the stock
+	 */
+	public StockMedicament getStock() {
+		return stock;
+	}
+
+	/**
+	 * @param stock the stock to set
+	 */
+	public void setStock(StockMedicament stock) {
+		this.stock = stock;
+	}
 
 	/**
 	 * @return the libelleGenerique
@@ -454,8 +473,6 @@ public class WebGouvMedic {
 		this.identifiantGroupeGenerique = identifiantGroupeGenerique;
 		this.libelleGenerique = libelleGenerique;
 	}
-	
-	
 
 	public WebGouvMedic(Long id, String nom, String formePharmaceutique, String voieAdministration, String autorisation,
 			String procedureAdministrative, boolean commercialise, LocalDate dateCommercialisation, String statutBdm,

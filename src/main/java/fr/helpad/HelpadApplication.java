@@ -31,7 +31,6 @@ public class HelpadApplication {
 		System.out.println("Initialisation complétée.");
 
 		WebGouvMedicServiceI webMedic = appContext.getBean(WebGouvMedicService.class);
-
 		CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
 			try {
 				return webMedic.setMedicaments();

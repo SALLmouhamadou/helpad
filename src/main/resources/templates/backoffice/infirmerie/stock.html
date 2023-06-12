@@ -6,93 +6,104 @@
 <link rel="stylesheet" type="text/css"
 	href="../static/css/bootstrap.min.css"
 	th:href="@{/css/bootstrap.min.css}" />
+<script th:src="@{/js/completion-medicament.js}"
+	href="../static/js/completion-medicament.js"></script>
 </head>
-<body>
+<body onload="remplir()">
 	<div class="container">
 		<nav
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
-		<h2>Inventaire de médicament</h2>
+		<h2 class="text-center">Inventaire de médicament</h2>
 		<p></p>
+		<label hidden="true" id="pageNow" th:value="${page}" th:text="${page}"></label>
+		<label hidden="true" id="nombrePage" th:value="${nombrePage}"
+			th:text="${nombrePage}"></label>
 		<div th:text="${message}" th:class="${alertClass}" role="alert"></div>
-		<form action="rechercher-medicament" method="post">
-		<div th:text="${message}" th:class="${alertClass}"></div>
-		<form th:action="rechercher-medicament" method="post">
-			<div class="md-2 row g-8 my-2">
-				<div class="col-md-2">
-					<a class="btn btn-primary" type="button"
-						th:href="@{/ajouter-medicament}">Ajouter un Médicament</a>
-				</div>
-				<div class="col-md-3">
-					<input class="form-control" type="text" id="nom" name="nom"
-						placeholder="Rechercher par nom" />
-				</div>
-				<div class="col-md-3">
-					<input class="btn btn-primary" type="submit" value="Rechercher" />
-				</div>
+		<div class="md-2 row g-8 my-2">
+			<div class="col-md-3">
+				<form class="row g-12 my-2" action="/infirmerie/inventaire/rechercher" method="get" id="recherche">
+					<input class="form-control col-md-5" type="text" id="nomSearch" name="nom"
+						placeholder="Rechercher par nom" onchange="comp()" /> 
+						<input class="form-control col-md-3" type="submit" value="Rechercher" />
+				</form>
 			</div>
-		</form>
+		</div>
 		<h4>Veuillez sélectionner un médicament :</h4>
-
-		<div class="row g-8">
-			<div class="col-md-1">
+		<br/>
+		<div>
+			<h5 th:text="${nombre} ? ${nombre} + ' résultat(s).' : 'UNKNOWN'"></h5>
+		</div>
+		<br/>
+		<div class="row g-10">
+			<div class="col-md-1 text-center">
 				<label class="form-label">ID</label>
 			</div>
 
-			<div class="col-md-2">
+			<div class="col-md-3 text-center">
 				<label class="form-label">Nom</label>
 			</div>
 
-			<div class="col-md-2">
-				<label class="form-label">Fonction</label>
+			<div class="col-md-1 text-center">
+				<label class="form-label">Forme</label>
 			</div>
 
-			<div class="col-md-2">
-				<label class="form-label">Quantité par boîte</label>
+			<div class="col-md-2 text-center">
+				<label class="form-label">Titulaire</label>
 			</div>
 
-			<div class="col-md-2">
-				<label class="form-label">Type de stock</label>
+			<div class="col-md-1 text-center">
+				<label class="form-label">Référence de dosage</label>
 			</div>
 
-			<div class="col-md-2">
+			<div class="col-md-2 text-center">
+				<label class="form-label">Substance</label>
+			</div>
+
+			<div class="col-md-1 text-center">
 				<label class="form-label">Stock</label>
 			</div>
 
-			<div class="col-md-1">
+			<div class="col-md-1 text-center">
 				<label class="form-label">Action</label>
 			</div>
 		</div>
 
-		<form class="row g-8 my-2" action="modifier-stock" method="post"
-			th:object="${Medicament}" th:each="medicament : ${medicaments}">
+		<form class="row g-10 my-2" th:action="@{/infirmerie/modifier-stock}" method="post"
+			th:object="${WebGouvMedic}" th:each="medicament : ${medicaments}"
+			id="medikit">
 
 			<div class="col-md-1">
-				<input class="form-control" type="number" hidden="true" id="id"
-					name="id" th:value="${medicament.idMedicament}" /> <label
-					class="form-control" th:text="${medicament.idMedicament}"></label>
+				<input class="form-control disabled" disabled type="number" hidden="true" id="id"
+					name="id" th:value="${medicament.id}" /> <label
+					class="form-control" th:text="${medicament.id}"></label>
+			</div>
+
+			<div class="col-md-3">
+				<input type="text" hidden="true" class="form-control disabled" id="nom" name="nom"
+					th:text="${medicament.nom}" />
+			</div>
+
+			<div class="col-md-1">
+				<label class="form-control disabled" id="formePharmaceutique"
+					th:text="${medicament.formePharmaceutique}"></label>
 			</div>
 
 			<div class="col-md-2">
-				<label class="form-control disabled" id="nom"
-					th:text="${medicament.nom}"></label>
+				<label class="form-control disabled" id="titulaire"
+					th:text="${medicament.titulaire}"></label>
+			</div>
+
+			<div class="col-md-1">
+				<label class="form-control disabled" id="referenceDosage"
+					th:text="${medicament.referenceDosage}"></label>
 			</div>
 
 			<div class="col-md-2">
-				<label class="form-control disabled" id="fonction"
-					th:text="${medicament.fonction}"></label>
+				<label class="form-control disabled" id="substance"
+					th:text="${medicament.nomSubstance}"></label>
 			</div>
 
-			<div class="col-md-2">
-				<label class="form-control disabled" id="qt"
-					th:text="${medicament.quantiteParBoite}"></label>
-			</div>
-
-			<div class="col-md-2">
-				<label class="form-control disabled" id="type"
-					th:text="${medicament.typeStock}"></label>
-			</div>
-
-			<div class="col-md-2">
+			<div class="col-md-1">
 				<input class="form-control" type="number" id="stock" name="stock"
 					th:value="${medicament.stock}" />
 			</div>
@@ -102,6 +113,17 @@
 			</div>
 
 		</form>
+		<br />
+		<nav aria-label="Navigation de page inventaire de médicament">
+			<ul class="pagination position-absolute start-50 translate-middle"
+				id="pages">
+				<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item"><a class="page-link" href="#">Next</a></li>
+			</ul>
+		</nav>
 		<br />
 		<footer
 			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>

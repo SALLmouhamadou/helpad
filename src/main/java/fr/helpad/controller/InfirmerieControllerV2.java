@@ -1,7 +1,25 @@
 package fr.helpad.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import fr.helpad.entity.StockMedicament;
+import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.service.StockMedicamentServiceI;
 import fr.helpad.service.WebGouvMedicServiceI;
 import fr.helpad.service.WebGouvSecuriteServiceI;
@@ -14,18 +32,63 @@ public class InfirmerieControllerV2 {
 	WebGouvSecuriteServiceI infoService;
 	@Autowired
 	StockMedicamentServiceI stockService;
-	
-//	@GetMapping("/inventaire")
-//	public String inventory(Model model) {
-//		model.addAttribute("medicaments", service.listerTout());
-//		return "backoffice/stock";
-//	}
-//
-//	@GetMapping("/ajouter-medicament")
-//	public String addMedic() {
-//		return "backoffice/add-medic";
-//	}
-//	
+
+	@GetMapping("/infirmerie/inventaire")
+	public String inventory(Model model) {
+		Page<WebGouvMedic> medoc = medicService.findLimited(PageRequest.of(0, 10));
+		model.addAttribute("medicaments", medoc);
+		model.addAttribute("nombrePage", medicService.count() / 10);
+		model.addAttribute("page", 0);
+		model.addAttribute("nombre", 10);
+		return "backoffice/infirmerie/stock";
+	}
+
+	@GetMapping("/infirmerie/inventaire/{page}")
+	public String inventoryPage(@PathVariable int page, Model model) {
+		System.out.println("[Inventaire Médicament] Page : " + page);
+		long medicCount = medicService.count();
+		int elementLimit = 10;
+		model.addAttribute("page", page);
+		model.addAttribute("nombrePage", medicCount / elementLimit);
+		model.addAttribute("nombre", elementLimit);
+		if (medicCount >= page * elementLimit + elementLimit && page >= 0) {
+			Page<WebGouvMedic> medoc = medicService.findLimited(PageRequest.of(page, elementLimit));
+			model.addAttribute("medicaments", medoc);
+			model.addAttribute("nombre", medoc.getSize());
+		} else {
+			model.addAttribute("nombre", 0);
+			model.addAttribute("alertClass", "alert");
+			model.addAttribute("message", " Echec de la récupération, vous avez spécifié une page hors limite.");
+		}
+		return "backoffice/infirmerie/stock";
+	}
+
+	static int addition(int x, int y) {
+		return x + y;
+	}
+
+	@GetMapping("/infirmerie/inventaire/rechercher")
+	public String chercher(Model model, @RequestParam String nom) {
+		String recherche = nom;
+		System.out.println(recherche);
+
+		List<WebGouvMedic> medicaments = new ArrayList<>();
+		if (nom.length() > 0 && recherche.length() < 50) {
+			medicaments = medicService.findByNameLimited(recherche, PageRequest.of(0, 50));
+			model.addAttribute("medicaments", medicaments);
+		} else {
+			model.addAttribute("alertClass", "alert");
+			model.addAttribute("message", " Echec de la récupération, vous recherchez un nom trop court ou trop long.");
+		}
+
+		model.addAttribute("nombre", medicaments.size());
+
+		model.addAttribute("page", 0);
+		model.addAttribute("nombrePage", 0);
+
+		return "backoffice/infirmerie/stock";
+	}
+
 //	@GetMapping("/prevision-medicament")
 //	public String verifStock(Model model) {
 //		
@@ -73,113 +136,81 @@ public class InfirmerieControllerV2 {
 //		model.addAttribute("medicaments", medicaments);
 //		return "backoffice/stock-search";
 //	}
-//
-//	@PostMapping("/ajout-medicament")
-//	public String saveMedic(@ModelAttribute Medicament medicament, HttpServletRequest request,
-//			HttpServletResponse response, RedirectAttributes redirectAttributes) {
-//		System.out.println("entree dans le controlleur saveMedic");
-//
-//		String quantiteEnStock = request.getParameter("stock");
-//		String quantiteParBoite = request.getParameter("quantiteParBoite");
-//		String nom = request.getParameter("nom");
-//		String fonction = request.getParameter("fonction");
-//		String typeStock = request.getParameter("typeStock");
-//
-//		System.out.println("Quantité en stock (string) : " + quantiteEnStock);
-//		System.out.println("Quantité par boîte (string) : " + quantiteParBoite);
-//		System.out.println("Nom : " + nom);
-//		System.out.println("Fonction : " + fonction);
-//		System.out.println("typeStock (string) : " + typeStock);
-//
-//		if (nom.length() > 2 && nom.length() < 30)
-//			medicament.setNom(nom);
-//		else {
-//			redirectAttributes.addFlashAttribute("message",
-//					"Erreur : Le nom du médicament doit contenir entre 3 et 30 caractères.");
-//			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
-//			return "redirect:/ajouter-medicament";
-//		}
-//
-//		List<Medicament> medoc = new ArrayList<Medicament>();
-//
-//		try {
-//			medoc = service.getByNom(nom);
-//		} catch (NoSuchElementException e1) {
-//
-//		}
-//
-//		if (!medoc.isEmpty()) {
-//			redirectAttributes.addFlashAttribute("message", "Erreur : Ce médicament est déjà renseigné.");
-//			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
-//			return "redirect:/ajouter-medicament";
-//		}
-//
-//		if (fonction.length() > 2 && fonction.length() < 40)
-//			System.out.println("TODO");
-//			//TODO
-//			//medicament.setFonction(fonction);
-//		else {
-//			redirectAttributes.addFlashAttribute("message",
-//					"Erreur : La fonction du médicament doit contenir entre 3 et 40 caractères.");
-//			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
-//			return "redirect:/ajouter-medicament";
-//		}
-//
-//		if (typeStock.equalsIgnoreCase("LIQUIDE"))
-//			medicament.setTypeStock(typeMedicament.LIQUIDE);
-//		else if (typeStock.equalsIgnoreCase("UNITAIRE"))
-//			medicament.setTypeStock(typeMedicament.UNITAIRE);
-//		else if (typeStock.equalsIgnoreCase("INHALATION"))
-//			medicament.setTypeStock(typeMedicament.INHALATION);
-//		else {
-//			redirectAttributes.addFlashAttribute("message", "Erreur : Type de stockage indéfini.");
-//			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
-//			return "redirect:/ajouter-medicament";
-//		}
-//
-//		int stock = -1;
-//		try {
-//			stock = Integer.parseInt(quantiteEnStock);
-//		} catch (NumberFormatException e) {
-//			redirectAttributes.addFlashAttribute("message", "Erreur : Format du stock invalide.");
-//			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
-//			return "redirect:/ajouter-medicament";
-//		}
-//		if (stock >= 0 && stock <= 999)
-//			medicament.setStock(stock);
-//		else {
-//			redirectAttributes.addFlashAttribute("message",
-//					"Erreur : La quantité en stock doit être un nombre positif entre 0 et 999");
-//			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
-//			return "redirect:/ajouter-medicament";
-//		}
-//
-//		int intParBoite = -1;
-//		try {
-//			intParBoite = Integer.parseInt(quantiteParBoite);
-//		} catch (NumberFormatException e) {
-//			redirectAttributes.addFlashAttribute("message",
-//					"Erreur : Le format de la quantité par boîte est invalide.");
-//			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
-//			return "redirect:/ajouter-medicament";
-//		}
-//		if (intParBoite > 0 && intParBoite <= 10000)
-//			medicament.setQuantiteParBoite(intParBoite);
-//		else {
-//			redirectAttributes.addFlashAttribute("message",
-//					"Erreur : Quantité par boîte incorrecte, elle doit être comprise entre 1 et 10000");
-//			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
-//			return "redirect:/ajouter-medicament";
-//		}
-//
-//		System.out.println("Traitement effectué");
-//		service.sauvegarder(medicament);
-//		System.out.println("envoyé");
-//		redirectAttributes.addFlashAttribute("message", "Succès de l'ajout du médicament.");
-//		redirectAttributes.addFlashAttribute("alertClass", "alert alert-success alert-dismissible fade show");
-//		return "redirect:/inventaire";
-//	}
-//
+
+	@PostMapping("/infirmerie/modifier-stock")
+	public String saveStock(HttpServletRequest request, HttpServletResponse response,
+			RedirectAttributes redirectAttributes) {
+		System.out.println("Entrée dans le controlleur saveStock");
+
+		String idString = request.getParameter("id");
+		String quantiteEnStock = request.getParameter("stock");
+		String nom = request.getParameter("nom");
+
+		System.out.println("Paramètres : ");
+		System.out.println("Nom : " + nom);
+		System.out.println("ID : " + idString);
+		System.out.println("Stock : " + quantiteEnStock);
+
+		Long id = -1l;
+
+		if (idString != null)
+			id = Long.parseLong(idString);
+		else {
+			redirectAttributes.addFlashAttribute("message",
+					"Erreur : Impossible de récupérer l'ID du médicament.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+			return "redirect:/infirmerie/inventaire";
+		}
+
+		List<WebGouvMedic> verifNom;
+		WebGouvMedic verifId;
+		Boolean isValide = false;
+
+		if (nom.length() > 2 && nom.length() < 200 && id > 0) {
+			verifNom = medicService.findByNameLimited(nom, PageRequest.of(0, 1));
+			verifId = medicService.get(id);
+		} else {
+			redirectAttributes.addFlashAttribute("message",
+					"Erreur : Le nom du médicament était hors des limites de la taille de recherche.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+			return "redirect:/infirmerie/inventaire";
+		}
+
+		if (verifNom.size() > 0 && verifNom.get(0).equals(verifId))
+			isValide = true;
+
+		if (isValide) {
+			short stock = -1;
+			try {
+				stock = Short.parseShort(quantiteEnStock);
+			} catch (NumberFormatException e) {
+				redirectAttributes.addFlashAttribute("message", "Erreur : Format du stock invalide.");
+				redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+				return "redirect:/infirmerie/inventaire";
+			}
+
+			StockMedicament stockMed = stockService.get(id);
+
+			if (stock >= 0 && stock <= 999 && (stock + 100) < stockMed.getQuantite()) {
+				stockMed.setQuantite(stock);
+				verifId.setStock(stockMed);
+			} else {
+				redirectAttributes.addFlashAttribute("message",
+						"Erreur : La quantité en stock doit être un nombre positif entre 0 et 999");
+				redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+				return "redirect:/infirmerie/inventaire";
+			}
+		}
+
+		System.out.println("Traitement effectué");
+		// TODO
+		System.out.println("envoyé");
+		redirectAttributes.addFlashAttribute("message",
+				"Succès de la modification du stock pour : " + verifId.getNom() + ".");
+		redirectAttributes.addFlashAttribute("alertClass", "alert alert-success alert-dismissible fade show");
+		return "redirect:/inventaire";
+	}
+
 //	@PostMapping("/modifier-stock")
 //	public String saveStock(@ModelAttribute Medicament medicament, @ModelAttribute Adresse adresse,
 //			HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {

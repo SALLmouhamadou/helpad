@@ -49,7 +49,7 @@ public class FileSystemStorageService implements StorageService {
 			}
 			if (filename.contains("..")) {
 			}
-			if(filename.endsWith(".pdf")|| filename.endsWith(".jpg") || filename.endsWith(".jpg")||filename.endsWith(".jpg")) {
+			if(filename.endsWith(".pdf")|| filename.endsWith(".jpg") || filename.endsWith(".jpeg")||filename.endsWith(".png")) {
 			try (InputStream inputStream = file.getInputStream()) {
 				Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e) {}}

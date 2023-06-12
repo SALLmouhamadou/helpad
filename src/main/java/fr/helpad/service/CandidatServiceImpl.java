@@ -1,18 +1,16 @@
 package fr.helpad.service;
 
-import fr.helpad.entity.Candidat;
-import fr.helpad.entity.Candidature;
-import fr.helpad.entity.Personne;
-import fr.helpad.repository.CandidatRepository;
-import fr.helpad.repository.CandidatureRepository;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import fr.helpad.entity.Candidat;
+import fr.helpad.entity.Candidature;
+import fr.helpad.repository.CandidatRepository;
+import fr.helpad.repository.CandidatureRepository;
 
 @Service
 @Transactional
@@ -23,19 +21,17 @@ public class CandidatServiceImpl implements CandidatService {
 	CandidatureRepository candidatureRepository;
 
 	@Override
-	public boolean sauveCandidat(Candidat candidat) {
-		boolean isValide = true;
+	public Candidat sauveCandidat(Candidat candidat) {
+		//boolean isValide = true;
 		List<Candidature> candidatures = candidatureRepository.findByCandidat(candidat);
 		for (Candidature candidature : candidatures) {
 			if (candidature.getStatus().getLibelle().equals("En cours de traitement")
 					|| candidature.getStatus().getLibelle().equals("En instruction")) {
-				return false;
+				return null;
 			}
 		}
-		if (isValide) {
-			candidatRepository.save(candidat);
-		}
-		return isValide;
+		
+		return candidatRepository.save(candidat);
 	}
 
 	@Override

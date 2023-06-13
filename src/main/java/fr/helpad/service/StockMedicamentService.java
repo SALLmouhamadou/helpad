@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import fr.helpad.entity.StockMedicament;
@@ -43,6 +44,11 @@ public class StockMedicamentService implements StockMedicamentServiceI {
 	@Override
 	public List<StockMedicament> listerTout() {
 		return (List<StockMedicament>) repo.findAll();
+	}
+
+	@Override
+	public List<StockMedicament> findByQuantiteGreaterThan(short quantite, Pageable page) {
+		return repo.findByQuantiteGreaterThan(quantite, page);
 	}
 
 }

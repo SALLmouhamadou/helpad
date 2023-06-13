@@ -15,4 +15,5 @@ public interface WebGouvMedicServiceI extends BasicBusiness<WebGouvMedic> {
 	public List<WebGouvMedic> findByNameLimited(String nom, Pageable pageable);
 	public long count();
 	public Page<WebGouvMedic> findLimited(Pageable pageable);
+	List<WebGouvMedic> findByNameExactLimited(String nom, Pageable pageable);
 }

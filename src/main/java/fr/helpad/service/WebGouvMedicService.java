@@ -16,18 +16,13 @@ import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.transaction.Transaction;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +31,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import fr.helpad.entity.StockMedicament;
 import fr.helpad.entity.WebGouvMAJDate;
 import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.entity.WebGouvSecurite;
+import fr.helpad.repository.StockMedicamentRepository;
 import fr.helpad.repository.WebGouvMedicRepository;
 import fr.helpad.repository.WebGouvSecuriteRepository;
 
@@ -50,8 +47,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 	WebGouvMedicRepository repo;
 	@Autowired
 	WebGouvSecuriteRepository repoSecu;
-	@PersistenceContext
-	EntityManager entityManager;
+	@Autowired
+	StockMedicamentRepository repoStock;
 
 	@Override
 	public WebGouvMedic sauvegarder(WebGouvMedic entity) throws NullPointerException {
@@ -81,6 +78,11 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 	@Override
 	public List<WebGouvMedic> findByNameLimited(String nom, Pageable pageable) {
 		return repo.findByNomContainingIgnoreCaseOrderByNomDesc(nom, pageable);
+	}
+
+	@Override
+	public List<WebGouvMedic> findByNameExactLimited(String nom, Pageable pageable) {
+		return repo.findByNom(nom, pageable);
 	}
 
 	@Override
@@ -158,6 +160,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		FileInputStream medicInput = new FileInputStream(medicPath);
 		Scanner sc = new Scanner(medicInput, "Cp1252");
 		Map<Long, WebGouvMedic> medicaments = repo.findAllMap();
+		Map<Long, StockMedicament> stocks = new HashMap<>();
+		Short baseQuantiteStock = 0;
 
 		// Traitement des spécialités
 		while (sc.hasNextLine()) {
@@ -211,6 +215,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 					medoc = new WebGouvMedic(id, nom, forme, voieAdministration, statutAdministratif,
 							procedureAutorisation, etatCommercialisation, dateAMM, statutBDM, numeroAutorisationEurope,
 							titulaire, surveillanceRenforcee);
+					stocks.put(id, new StockMedicament(id, baseQuantiteStock));
+					medoc.setStock(stocks.get(id));
 				}
 				// medoc = sauvegarder(medoc);
 				medicaments.put(id, medoc);
@@ -254,6 +260,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				else {
 					generique = new WebGouvMedic();
 					generique.setId(id);
+					stocks.put(id, new StockMedicament(id, baseQuantiteStock));
+					generique.setStock(stocks.get(id));
 				}
 				generique.setIdentifiantGroupeGenerique(generiqueId);
 				generique.setLibelleGenerique(libelleGroupeGenerique);
@@ -266,6 +274,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		}
 		generiqueSc.close();
 		generiqueInput.close();
+
+		repoStock.saveAll(stocks.values());
 
 		FileInputStream conditionInput = new FileInputStream(conditionPath);
 		// Lire le fichier avec l'encodage ANSI (Cp1252)
@@ -381,7 +391,10 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 			medoc.setPrix(prix);
 			medoc.setIndicationDroitRemboursement(droitRemboursement);
 		}
-		repo.saveAll(medicaments.values());
+		Map<Long, WebGouvMedic> filteredMap = medicaments.entrySet().stream()
+				.filter(x -> x.getValue().getNomSubstance() != null)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		repo.saveAll(filteredMap.values());
 		System.out.println(LocalDateTime.now().toString() + " [Medicaments] " + medicaments.size()
 				+ " médicaments ont été enregistrés dans la BDD.");
 		presentationSc.close();
@@ -599,8 +612,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 						e1.printStackTrace();
 					}
 				}).exceptionally(ex -> {
-					System.out
-							.println("Oups! Exception dans setSpecialites - " + ex);
+					System.out.println("Oups! Exception dans setSpecialites - " + ex);
 					return null;
 				});
 			} else if (medocFiles.get(0).length() == medocFiles.get(1).length()) {
@@ -621,20 +633,6 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		System.out.println(LocalDateTime.now().toString() + " Temps d'exécution de setMedicament() : "
 				+ execTimer.until(LocalDateTime.now(), ChronoUnit.MILLIS) + "ms");
 		return "Medicaments récupérés";
-	}
-
-	@Transactional
-	public void truncateSecus() {
-		final String sql = "DROP TABLE IF EXISTS :web_gouv_securite";
-		Query query = entityManager.createNativeQuery(sql);
-		query.executeUpdate();
-	}
-
-	@Transactional
-	public void truncateMeds() {
-		final String sql = "DROP TABLE IF EXISTS :web_gouv_medic";
-		Query query = entityManager.createNativeQuery(sql);
-		query.executeUpdate();
 	}
 
 }

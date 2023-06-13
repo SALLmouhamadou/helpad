@@ -1,8 +1,6 @@
 package fr.helpad;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -14,6 +12,7 @@ import fr.helpad.service.WebGouvMedicService;
 import fr.helpad.service.WebGouvMedicServiceI;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.PageRequest;
 
 import fr.helpad.entity.Plat;
 import fr.helpad.entity.StockMedicament;
@@ -73,7 +72,8 @@ public class HelpadApplication {
 			catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-			stockService.listerTout().forEach(m -> System.out.println(m.getCodeCis() + " : " + m.getQuantite() + " en stock."));
+			short sss = 0;
+			stockService.findByQuantiteGreaterThan(sss, PageRequest.of(0, 50)).forEach(m -> System.out.println(m.getCodeCis() + " : " + m.getQuantite() + " en stock."));
 		};
 	}
 

@@ -12,7 +12,7 @@ password.addEventListener("blur", validatePasswordFom)
 function validateFirstForm() {
 	var firstName = document.getElementById("firstName");
 	if (firstName.value == "") {
-		document.getElementById('errorfirstname').innerHTML = "Prénom non valide";
+		document.getElementById('errorfirstname').innerHTML = "Prénom invalide";
 		firstName.focus();
 		document.getElementById('btnInscription').disabled = true;
 		return false;
@@ -36,7 +36,7 @@ function validateLastNameForme() {
 function validateEmailForm() {
 	var email = document.getElementById("emailAddress");
 	if (email.value == "") {
-		document.getElementById('erroremailaddress').innerHTML = "Veuillez entrez un adresse mail valide";
+		document.getElementById('erroremailaddress').innerHTML = "Veuillez entrez une adresse mail valide";
 		email.focus();
 		document.getElementById('btnInscription').disabled = true;
 		return false;
@@ -44,13 +44,13 @@ function validateEmailForm() {
 		document.getElementById('erroremailaddress').innerHTML = "";
 	}
 	if (email.value.indexOf("@", 0) < 0) {
-		document.getElementById('erroremailaddress').innerHTML = "Veuillez entrez un adresse mail valide";
+		document.getElementById('erroremailaddress').innerHTML = "Veuillez entrez une adresse mail valide";
 		email.focus();
 		document.getElementById('btnInscription').disabled = true;
 		return false;
 	}
 	if (email.value.indexOf(".", 0) < 0) {
-		document.getElementById('erroremailaddress').innerHTML = "Veuillez entrez un adresse mail valide";
+		document.getElementById('erroremailaddress').innerHTML = "Veuillez entrez une adresse mail valide";
 		email.focus();
 		document.getElementById('btnInscription').disabled = true;
 		return false;
@@ -61,7 +61,7 @@ function validatePasswordFom() {
 	var password = document.getElementById("password");
 	var pass =/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 	if (password.value == "") {
-		document.getElementById('errorpassword').innerHTML = "Mot de passe non valide";
+		document.getElementById('errorpassword').innerHTML = "Mot de passe invalide";
 		password.focus();
 		document.getElementById('btnInscription').disabled = true;
 		return false;
@@ -70,7 +70,7 @@ function validatePasswordFom() {
 		document.getElementById('errorpassword').innerHTML = ""	
 		return true;
 	}else{
-		document.getElementById('errorpassword').innerHTML = "Mot de passe doit contenir au minimum 8 caracteres dont 1 maj, 1 min, 1 chiffre et 1 caractere spécial(@$!%*?&)";
+		document.getElementById('errorpassword').innerHTML = "Le mot de passe doit contenir au minimum 8 caractères dont 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial(@$!%*?&)";
 		password.focus();
 		document.getElementById('btnInscription').disabled = true;
 		return false;

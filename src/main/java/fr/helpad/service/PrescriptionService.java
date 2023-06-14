@@ -6,9 +6,9 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.helpad.entity.Medicament;
 import fr.helpad.entity.Pensionnaire;
 import fr.helpad.entity.Prescription;
+import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.repository.PrescriptionRepository;
 
 @Service("prescrptionBusiness")
@@ -18,7 +18,7 @@ public class PrescriptionService implements PrescriptionServiceI {
 	PrescriptionRepository repo;
 	
 	@Autowired
-	MedicamentService medic;
+	WebGouvMedicServiceI medic;
 
 	@Override
 	public Prescription sauvegarder(Prescription entity) {
@@ -44,12 +44,12 @@ public class PrescriptionService implements PrescriptionServiceI {
 		return repo.chercherParPensionnaire(pensionnaire.getIdPersonne());
 	}
 
-	public List<Prescription> chercherParMedicament(Medicament medicament) {
-		return repo.chercherParMedicament(medicament.getIdMedicament());
+	public List<Prescription> chercherParMedicament(WebGouvMedic medicament) {
+		return repo.chercherParMedicament(medicament.getId());
 	}
 
 	@Override
-	public Long getConsoMois(Medicament medicament) {
-		return repo.getSumConsoMois(medicament.getIdMedicament());
+	public Long getConsoMois(WebGouvMedic medicament) {
+		return repo.getSumConsoMois(medicament.getId());
 	}
 }

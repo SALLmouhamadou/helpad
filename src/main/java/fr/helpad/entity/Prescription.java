@@ -28,7 +28,7 @@ public class Prescription implements Serializable {
 	private Long id;
 	@Autowired
 	@OneToOne
-	private Medicament medicament;
+	private WebGouvMedic medicament;
 	@Autowired
 	@OneToOne
 	private Pensionnaire pensionnaire;
@@ -86,7 +86,7 @@ public class Prescription implements Serializable {
 		super();
 	}
 
-	public Prescription(Medicament medicament, Pensionnaire pensionnaire, LocalDate dateDebutTraitement,
+	public Prescription(WebGouvMedic medicament, Pensionnaire pensionnaire, LocalDate dateDebutTraitement,
 			LocalDate dateFinTraitement, String posologie, int quantiteParPrise,
 			float priseParJour, int jourRestant, Moment moment, Regularite regularite) {
 		super();
@@ -102,7 +102,7 @@ public class Prescription implements Serializable {
 		this.regularite = regularite;
 	}
 
-	public Prescription(Long id, Medicament medicament, Pensionnaire pensionnaire, LocalDate dateDebutTraitement,
+	public Prescription(Long id, WebGouvMedic medicament, Pensionnaire pensionnaire, LocalDate dateDebutTraitement,
 			LocalDate dateFinTraitement, String posologie, int quantiteParBoite, int quantiteParPrise,
 			float priseParJour, int jourRestant, Moment moment, Regularite regularite) {
 		super();
@@ -168,7 +168,7 @@ public class Prescription implements Serializable {
 	/**
 	 * @return the medicament
 	 */
-	public Medicament getMedicament() {
+	public WebGouvMedic getMedicament() {
 		return medicament;
 	}
 
@@ -217,7 +217,7 @@ public class Prescription implements Serializable {
 	/**
 	 * @param medicament the medicament to set
 	 */
-	public void setMedicament(Medicament medicament) {
+	public void setMedicament(WebGouvMedic medicament) {
 		this.medicament = medicament;
 	}
 

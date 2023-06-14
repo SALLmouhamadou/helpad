@@ -1,5 +1,6 @@
 package fr.helpad.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.helpad.entity.Personne;
+import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Role;
 import fr.helpad.service.PersonneService;
 import fr.helpad.service.RoleServiceImpl;
@@ -26,19 +27,19 @@ public class AuthController {
 	
 	@GetMapping("/login")
 	public String showLoginForm(Model model) {
-		model.addAttribute("personne", new Personne());
+		model.addAttribute("personne", new Candidat());
 		model.addAttribute("title", "Connexion");		
 		return "frontoffice/connexion";
 	}
 	
 	@GetMapping("/inscription")
 	public String showSignForm(Model model) {
-		model.addAttribute("personne", new Personne());
+		model.addAttribute("personne", new Candidat());
 		model.addAttribute("title", "Inscription");		
 		return "frontoffice/inscription";
 	}
 	@PostMapping("/user/add")
-    public ModelAndView traiterForm(@ModelAttribute("personne") Personne personne , BindingResult errors,
+    public ModelAndView traiterForm(@ModelAttribute("personne") Candidat personne , BindingResult errors,
                     ModelAndView mv) {
             
             if (errors.hasErrors()) {
@@ -49,6 +50,8 @@ public class AuthController {
                     mv.setViewName("frontoffice/inscription");
             } else {
             	try {
+            		personne.setDateNaissance(LocalDate.of(2000, 1, 1));
+            		personne.setNumeroSecuriteSocial("");
             		personneService.save(personne);
                     mv.setViewName("redirect:/login");
             	}catch(Exception e){

@@ -3,6 +3,7 @@ package fr.helpad.entity;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,28 +14,27 @@ import javax.persistence.OneToMany;
 @Entity
 public class Etage {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_ETAGE")
-	private Long idEtage;
-	@Column(name = "ETAGE_SECURISE")
-	private boolean etageSecurise;
-	@OneToMany
+	@Column(name = "no_ETAGE")
+	private Long noEtage;
+	@Column(name = "type")
+	private String type;
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Chambre> chambres;
 
-	public Long getIdEtage() {
-		return idEtage;
+	public Long getNoEtage() {
+		return noEtage;
 	}
 
-	public void setIdEtage(Long idEtage) {
-		this.idEtage = idEtage;
+	public void setNoEtage(Long noEtage) {
+		this.noEtage = noEtage;
 	}
 
-	public boolean isEtageSecurise() {
-		return etageSecurise;
+	public String getType() {
+		return type;
 	}
 
-	public void setEtageSecurise(boolean etageSecurise) {
-		this.etageSecurise = etageSecurise;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public List<Chambre> getChambres() {
@@ -47,7 +47,7 @@ public class Etage {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(chambres, etageSecurise, idEtage);
+		return Objects.hash(chambres, type, noEtage);
 	}
 
 	@Override
@@ -59,25 +59,25 @@ public class Etage {
 		if (getClass() != obj.getClass())
 			return false;
 		Etage other = (Etage) obj;
-		return Objects.equals(chambres, other.chambres) && etageSecurise == other.etageSecurise
-				&& Objects.equals(idEtage, other.idEtage);
+		return Objects.equals(chambres, other.chambres) && type == other.type
+				&& Objects.equals(noEtage, other.noEtage);
 	}
 
 	@Override
 	public String toString() {
-		return "Etage [idEtage=" + idEtage + ", etageSecurise=" + etageSecurise + ", chambres=" + chambres + "]";
+		return "Etage [idEtage=" + noEtage + ", etageSecurise=" + type + ", chambres=" + chambres + "]";
 	}
 
-	public Etage(Long idEtage, boolean etageSecurise, List<Chambre> chambres) {
+	public Etage(Long noEtage, String type, List<Chambre> chambres) {
 		super();
-		this.idEtage = idEtage;
-		this.etageSecurise = etageSecurise;
+		this.noEtage = noEtage;
+		this.type = type;
 		this.chambres = chambres;
 	}
 
-	public Etage(boolean etageSecurise, List<Chambre> chambres) {
+	public Etage(String type, List<Chambre> chambres) {
 		super();
-		this.etageSecurise = etageSecurise;
+		this.type = type;
 		this.chambres = chambres;
 	}
 

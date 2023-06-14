@@ -13,6 +13,11 @@ public class Status implements Serializable{
 	@GeneratedValue(strategy =GenerationType.AUTO )
 	private Long idStatus;
 	private String libelle;
+	
+	
+	public Status() {
+		
+	}
 	public Status(String libelle) {
 		super();
 		this.libelle = libelle;

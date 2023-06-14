@@ -19,20 +19,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "PERSONNE")
+@Table(name = "PERSONNES")
 @Inheritance(strategy = InheritanceType.JOINED)
-
 public class Personne {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_personne")
 	private Long idPersonne;
+	@Column(name="nom", nullable = false)
 	private String nom;
+	@Column(name="prenom", nullable = false)
 	private String prenom;
 	private String telephone;
+	@Column(name="email", nullable = false, unique =true, length = 50)
 	private String email;
 	private String password;
-	private String username;
 	@ManyToOne (cascade = CascadeType.ALL)
 	@JoinColumn(name = "ADRESSE")
 	private Adresse adresse;
@@ -49,12 +50,11 @@ public class Personne {
 		this.password = password;
 	}
 
-	public Personne(String nom, String prenom, String password, String username, Set<Role> roles) {
+	public Personne(String nom, String prenom, String password, Set<Role> roles) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.password = password;
-		this.username = username;
 		roles = new HashSet<>();
 	}
 
@@ -133,14 +133,6 @@ public class Personne {
 		this.adresse = adresse;
 	}
 	
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public Set<Role> getRoles() {
 		return roles;

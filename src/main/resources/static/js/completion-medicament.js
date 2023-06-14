@@ -14,7 +14,7 @@ function remplir() {
 
 	if (parseInt(page) > 0)
 		liens += '<li class="page-item"><a class="page-link"  aria-label="Début" href="' + lienBase + lienPage +
-		+ '0">' + '<span aria-hidden="true">&laquo;</span>' + '<span class="sr-only">Début</span>' + '</a></li>'
+		'0">' + '<span aria-hidden="true">&laquo;</span>' + '<span class="sr-only">Début</span>' + '</a></li>'
 
 
 	if (parseInt(page) > 0)

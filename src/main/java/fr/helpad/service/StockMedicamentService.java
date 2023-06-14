@@ -51,4 +51,10 @@ public class StockMedicamentService implements StockMedicamentServiceI {
 		return repo.findByQuantiteGreaterThan(quantite, page);
 	}
 
+	@Override
+	public long countPositive() {
+		final short s = 0;
+		return repo.countByQuantiteGreaterThan(s);
+	}
+
 }

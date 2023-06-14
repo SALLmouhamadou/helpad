@@ -1,18 +1,23 @@
 function remplir() {
-	var page = document.getElementById("pageNow").innerText;
-	var nombrePage = document.getElementById("nombrePage").innerText;
-	var liens = "";
+	let page = document.getElementById("pageNow").innerText;
+	let nombrePage = document.getElementById("nombrePage").innerText;
+	let chkBox = document.getElementById('isStock');
+	let liens = "";
 	let lienBase = "http://localhost:8080/infirmerie/inventaire/";
-	let lienPage = "page/"
+	let lienPage = "page/";
 
 	var pagePrec = parseInt(page) - 1;
 	var pageSuiv = parseInt(page) + parseInt(1);
+	
+	if (chkBox.checked)
+		lienPage = "stock/";
 
-	liens += '<li class="page-item"><a class="page-link"  aria-label="Début" href="' + lienBase
-		+ '">' + '<span aria-hidden="true">&laquo;</span>' + '<span class="sr-only">Début</span>' + '</a></li>'
+	if (parseInt(page) > 0)
+		liens += '<li class="page-item"><a class="page-link"  aria-label="Début" href="' + lienBase + lienPage +
+		+ '0">' + '<span aria-hidden="true">&laquo;</span>' + '<span class="sr-only">Début</span>' + '</a></li>'
 
 
-	if (page > 0)
+	if (parseInt(page) > 0)
 		liens += '<li class="page-item"><a class="page-link"  aria-label="Précédent" href="' + lienBase + lienPage +
 			pagePrec + '">' + '<span aria-hidden="true">&lt;</span>' + '<span class="sr-only">Précédent</span>' + '</a></li>'
 

@@ -11,4 +11,5 @@ import fr.helpad.entity.WebGouvMedic;
 public interface StockMedicamentServiceI extends BasicBusiness<StockMedicament> {
 	public WebGouvMedic getMedicament(Long id) throws NoSuchElementException;
 	public List<StockMedicament> findByQuantiteGreaterThan(short quantite, Pageable pageable);
+	public long countPositive();
 }

@@ -10,4 +10,5 @@ import fr.helpad.entity.StockMedicament;
 
 public interface StockMedicamentRepository extends CrudRepository<StockMedicament, Long> {
 	public List<StockMedicament> findByQuantiteGreaterThan(@Param(value = "quantite") short quantite, Pageable pageable);
+	public long countByQuantiteGreaterThan(@Param(value = "quantite") short quantite);
 }

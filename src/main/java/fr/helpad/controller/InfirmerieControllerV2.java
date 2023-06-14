@@ -97,7 +97,6 @@ public class InfirmerieControllerV2 {
 			model.addAttribute("message", "Erreur, numéro de page invalide");
 			return "backoffice/infirmerie/stock";
 		}
-		System.out.println(pageInt <= pageLimite);
 		model.addAttribute("page", pageInt);
 		if (pageInt >= 0 && pageInt <= pageLimite) {
 			short s = 0;

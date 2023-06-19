@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h2>Ajouter un plat</h2>
+
+	<form method="post" th:action="@{savePlat}" th:object="${plat}">
+		
+	<div>
+		<label>Nom</label>
+		<input type="text" name="nom" th:field="*{nom}" th:value="${plat.nom}"/>
+		<span th:errors="${plat.nom}"></span>
+	</div>
+   	<div>
+		<label>Allergenes</label>
+<!-- 		<input type="text" name="nomAllergene" th:value="${allergene.nomAllergene}"/>
+ -->
+<!--		<span th:errors="${allergene.nomAllergene}"></span>
+-->
+		<select multiple th:field="*{allergenes}">
+                         <option value=""> -- </option>
+                         <option th:each="allergene : ${allergenes}"
+                            th:value="${allergene.idAllergene}"
+                            th:text="${allergene.nomAllergene}"> kalid
+                            </option>
+                  </select>
+	</div>
+ 	
+	
+	<button type="submit">Save</button>
+	
+	<a href="http://localhost:8080/plat">Annuler</a>
+	
+	</form>
+
+</body>
+</html>

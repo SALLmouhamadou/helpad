@@ -19,21 +19,16 @@ public class Repas {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_REPAS")
 	private Long idRepas;
-	private Horaire horaire;
+	private String horaire;
 	@ManyToMany
 	private List<Plat> plats;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateRepas;
-<<<<<<< HEAD
-	private String nom;
-=======
-	private LocalDate date;
 	private String nom;
 
->>>>>>> refs/remotes/origin/main
-	public enum Horaire {
-		PETIT_DEJEUNER, DEJEUNER, GOUTER, SOUPER;
-	}
+//	public enum Horaire {
+//		PETIT_DEJEUNER, DEJEUNER, GOUTER, SOUPER;
+//	}
 
 	public Long getIdRepas() {
 		return idRepas;
@@ -43,11 +38,11 @@ public class Repas {
 		this.idRepas = idRepas;
 	}
 
-	public Horaire getHoraire() {
+	public String getHoraire() {
 		return horaire;
 	}
 
-	public void setHoraire(Horaire horaire) {
+	public void setHoraire(String horaire) {
 		this.horaire = horaire;
 	}
 
@@ -69,7 +64,7 @@ public class Repas {
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(LocalDate dateRepas) {
+	public void setDateRepas(LocalDate dateRepas) {
 		this.dateRepas = dateRepas;
 	}
 
@@ -96,14 +91,14 @@ public class Repas {
 		return "Repas [idRepas=" + idRepas + ", horaire=" + horaire + ", plats=" + plats + ", date=" + dateRepas + "]";
 	}
 
-	public Repas(Horaire horaire, List<Plat> plats, LocalDate dateRepas) {
+	public Repas(String horaire, List<Plat> plats, LocalDate dateRepas) {
 		super();
 		this.horaire = horaire;
 		this.plats = plats;
 		this.dateRepas = dateRepas;
 	}
 
-	public Repas(Long idRepas, Horaire horaire, List<Plat> plats, LocalDate date) {
+	public Repas(Long idRepas, String horaire, List<Plat> plats, LocalDate dateRepas) {
 		super();
 		this.idRepas = idRepas;
 		this.horaire = horaire;

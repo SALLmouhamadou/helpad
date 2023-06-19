@@ -1,5 +1,6 @@
 package fr.helpad.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -34,5 +35,12 @@ public class RepasServiceImpl implements RepasService {
 	public void supprimer(Long id) throws IllegalArgumentException {
 		repasRepo.deleteById(id);		
 	}
+
+	@Override
+	public List<Repas> findByDateRepas(LocalDate dr) {
+		return repasRepo.findByDateRepas(dr);
+	}
+	
+
 
 }

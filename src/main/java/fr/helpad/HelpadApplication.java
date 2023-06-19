@@ -2,9 +2,8 @@ package fr.helpad;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import javax.persistence.ManyToMany;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,15 +11,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Allergene;
-import fr.helpad.entity.Candidat;
-import fr.helpad.entity.Candidature;
 import fr.helpad.entity.Plat;
 import fr.helpad.entity.Repas;
-import fr.helpad.repository.PlatRepository;
-import fr.helpad.service.CandidatService;
+import fr.helpad.service.AllergeneService;
 import fr.helpad.service.PlatService;
+import fr.helpad.service.RepasService;
 
 @SpringBootApplication
 public class HelpadApplication {
@@ -185,16 +181,52 @@ public class HelpadApplication {
 		
 	}
 	@Bean
-	CommandLineRunner commandLineRunner(PlatService platService) {
+	CommandLineRunner commandLineRunner(PlatService platService, AllergeneService allergeneService, RepasService repasService) {
 		return args->{
-			platService.sauvegarder(new Plat(null, null, "thieb"));
+			
+			
+			allergeneService.sauvegarder(new Allergene("gluten"));
+			allergeneService.sauvegarder(new Allergene("crustacés"));
+			allergeneService.sauvegarder(new Allergene("oeufs"));
+			allergeneService.sauvegarder(new Allergene("poissons"));
+			allergeneService.sauvegarder(new Allergene("arachides"));
+			allergeneService.sauvegarder(new Allergene("soja"));
+			allergeneService.sauvegarder(new Allergene("lait"));
+			allergeneService.sauvegarder(new Allergene("fruits à coques"));
+			allergeneService.sauvegarder(new Allergene("céleri"));
+			allergeneService.sauvegarder(new Allergene("moutarde"));
+			allergeneService.sauvegarder(new Allergene("graines de sésame"));
+			allergeneService.sauvegarder(new Allergene("sulfites"));
+			allergeneService.sauvegarder(new Allergene("lupin"));
+			allergeneService.sauvegarder(new Allergene("mollusques"));
+
+			
+			List<Allergene> listAllergene = new ArrayList<Allergene>();
+			listAllergene.add(allergeneService.get((long) 1));
+			listAllergene.add(allergeneService.get((long) 3));
+			listAllergene.add(allergeneService.get((long) 5));
+			platService.sauvegarder(new Plat(null, listAllergene, "thieb"));
 			platService.sauvegarder(new Plat(null, null, "choucroute"));
 			platService.sauvegarder(new Plat(null, null, "couscous"));
 			platService.sauvegarder(new Plat(null, null, "poulet frit"));
 			platService.sauvegarder(new Plat(null, null, "souris d'agneau"));
 			
-			platService.listerTout().forEach(p->
-			System.out.println(p.getNom()));
+			List<Plat> listPlats1 = new ArrayList<Plat>();
+			listPlats1.add(platService.get((long)1));
+			listPlats1.add(platService.get((long)2));
+			List<Plat> listPlats2 = new ArrayList<Plat>();
+			listPlats1.add(platService.get((long)3));
+			
+			repasService.sauvegarder(new Repas("dejeuner", listPlats1, LocalDate.of(2023, 06, 01)));
+			repasService.sauvegarder(new Repas("diner", listPlats2, LocalDate.of(2023, 06, 01)));
+//			Repas repas1 = new Repas();
+//			repas1.setDateRepas(LocalDate.of(2023, 01, 01));
+//			
+//			platService.listerTout().forEach(p->
+//			System.out.println(p.getNom()));
+			
+			allergeneService.listerTout().forEach(a->
+			System.out.println(a.getNomAllergene()));
 
 		};
 	}

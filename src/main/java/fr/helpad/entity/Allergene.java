@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,8 +22,8 @@ public class Allergene implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_ALLERGENE")
 	private Long idAllergene;
-	private String nom;
-	@ManyToMany
+	private String nomAllergene;
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Plat> plats;
 
 	public Long getIdAllergene() {
@@ -33,12 +34,12 @@ public class Allergene implements Serializable {
 		this.idAllergene = idAllergene;
 	}
 
-	public String getNom() {
-		return nom;
+	public String getNomAllergene() {
+		return nomAllergene;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setNomAllergene(String nomAllergene) {
+		this.nomAllergene = nomAllergene;
 	}
 
 	public List<Plat> getPlats() {
@@ -51,7 +52,7 @@ public class Allergene implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(idAllergene, nom, plats);
+		return Objects.hash(idAllergene, nomAllergene, plats);
 	}
 
 	@Override
@@ -63,26 +64,31 @@ public class Allergene implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Allergene other = (Allergene) obj;
-		return Objects.equals(idAllergene, other.idAllergene) && Objects.equals(nom, other.nom)
+		return Objects.equals(idAllergene, other.idAllergene) && Objects.equals(nomAllergene, other.nomAllergene)
 				&& Objects.equals(plats, other.plats);
 	}
 
 	@Override
 	public String toString() {
-		return "Allergene [idAllergene=" + idAllergene + ", nom=" + nom + ", plats=" + plats + "]";
+		return "Allergene [idAllergene=" + idAllergene + ", nom=" + nomAllergene + ", plats=" + plats + "]";
 	}
 
-	public Allergene(Long idAllergene, String nom, List<Plat> plats) {
+	public Allergene(Long idAllergene, String nomAllergene, List<Plat> plats) {
 		super();
 		this.idAllergene = idAllergene;
-		this.nom = nom;
+		this.nomAllergene = nomAllergene;
 		this.plats = plats;
 	}
 
-	public Allergene(String nom, List<Plat> plats) {
+	public Allergene(String nomAllergene, List<Plat> plats) {
 		super();
-		this.nom = nom;
+		this.nomAllergene = nomAllergene;
 		this.plats = plats;
+	}
+	
+	public Allergene(String nomAllergene) {
+		super();
+		this.nomAllergene = nomAllergene;
 	}
 
 	public Allergene() {

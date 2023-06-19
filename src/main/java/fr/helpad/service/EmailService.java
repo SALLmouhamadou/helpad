@@ -1,5 +1,7 @@
 package fr.helpad.service;
 
-public class EmailService {
+import fr.helpad.entity.EmailDetails;
 
+public interface EmailService {
+	String sendSimpleMail(EmailDetails details);
 }

@@ -25,7 +25,6 @@ public class PersonneServiceImpl implements PersonneService,UserDetailsService {
     @Autowired
     PersonneRepository personneRepository;
     @Autowired
-    
     PasswordEncoder passwordEncoder;
 
     @Override

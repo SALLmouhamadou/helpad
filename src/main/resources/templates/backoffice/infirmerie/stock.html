@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Helpad</title>
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<script th:src="@{/js/completion-medicament.js}"
+	href="../static/js/completion-medicament.js"></script>
+</head>
+<body onload="remplir()">
+	<div class="container">
+		<nav
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
+		<h2 class="text-center">Inventaire de médicament</h2>
+		<label hidden="true" id="pageNow" th:value="${page}" th:text="${page}"></label>
+		<label hidden="true" id="nombrePage" th:value="${nombrePage}"
+			th:text="${nombrePage}"></label> <label hidden="true" id="mode" th:value="${mode}" th:text="${mode}"></label>
+			<label hidden="true" id="rech" th:value="${recherche}" th:text="${recherche}"></label>
+		<div th:class="${alertClass}" role="alert">
+			<div th:text="${message}"></div>
+			<button type="button" class="btn-close" data-dismiss="alert"
+				data-bs-dismiss="alert" aria-label="Close"
+				th:unless="${message == null}"></button>
+		</div>
+		<div
+			class="d-flex justify-content-between align-items-center align-self-center mb-3 object-fit-contain rounded col-auto">
+			<form action="/infirmerie/inventaire/rechercher" method="get"
+				id="recherche">
+				<input type="text" id="nomSearch" name="nom"
+					placeholder="Rechercher par nom" th:value="${recherche}"
+					onchange="comp()" /> <input type="checkbox" id="isStock"
+					name="isStock" th:checked="${checkedStock}"> <label
+					for="isStock">En stock</label> <input
+					class="btn btn-outline-primary" type="submit" value="Rechercher" />
+				<h5 class="text-center"
+					th:text="${nombre} ? ${nombre} + ' résultat(s).' : 'Introuvable.'"></h5>
+			</form>
+
+			<a href="/infirmerie/inventaire" th:unless="${checkedStock == null}"><button type="button"
+					class="btn btn-primary">Revenir à l'inventaire</button></a> 
+			<a href="/infirmerie/inventaire/stock/0" th:unless="${checkedStock == true}"><button type="button"
+					class="btn btn-primary">Voir les médicaments en stock</button></a>
+
+			<nav aria-label="Navigation de page inventaire de médicament">
+				<ul class="pagination" id="pages"></ul>
+			</nav>
+		</div>
+
+		<form class="row g-10 my-2" th:action="@{/infirmerie/modifier-stock}"
+			method="post" th:object="${WebGouvMedic}" id="medikit">
+			<table class="table table-hover table-sm">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Forme</th>
+						<th scope="col">Titulaire</th>
+						<th scope="col">Référence de dosage</th>
+						<th scope="col">Substance</th>
+						<th scope="col">Stock</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="medicament : ${medicaments}">
+						<th scope="row"><input class="form-control" hidden="false"
+							type="number" id="id" name="id" th:value="${medicament.id}"
+							th:text="${medicament.id}" form="medikit" /></th>
+						<td><input class="form-control" hidden="false" type="text"
+							id="nomMedic" name="nomMedic" th:value="${medicament.nom}"
+							th:text="${medicament.nom}" form="medikit" /></td>
+						<td th:text="${medicament.formePharmaceutique}"></td>
+						<td th:text="${medicament.titulaire}"></td>
+						<td th:text="${medicament.referenceDosage}"></td>
+						<td th:text="${medicament.nomSubstance}"></td>
+						<td><input class="form-control" type="number" min="0"
+							max="999" id="stock" name="stock"
+							th:value="${medicament.stock.quantite}" form="medikit" /></td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="d-flex flex-column">
+				<input class="btn btn-dark flex-item" type="submit"
+					value="Enregistrer" form="medikit" />
+			</div>
+		</form>
+
+		<br />
+		<nav aria-label="Navigation de page inventaire de médicament">
+			<ul class="pagination position-absolute start-50 translate-middle"
+				id="pages2"></ul>
+		</nav>
+		<br />
+		<footer
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
+		<div>
+			<p>
+				Date de la dernière mise à jour de la base de données des
+				médicaments : <strong th:text="${dateMaj}"></strong>
+			</p>
+			<p>
+				Source : Base de données publique des médicaments, lien : <a
+					href="http://base-donnees-publique.medicaments.gouv.fr/">http://base-donnees-publique.medicaments.gouv.fr/</a>
+			</p>
+		</div>
+	</div>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+		crossorigin="anonymous"></script>
+</body>
+</html>

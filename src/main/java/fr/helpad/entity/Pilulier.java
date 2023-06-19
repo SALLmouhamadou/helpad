@@ -25,7 +25,7 @@ public class Pilulier {
 	@OneToOne
 	private Pensionnaire pensionnaire;
 	@OneToMany(cascade = CascadeType.MERGE)
-	private List<Medicament> medicaments;
+	private List<WebGouvMedic> medicaments;
 
 	enum Horaire {
 		MATIN, MIDI, SOIR;
@@ -44,7 +44,7 @@ public class Pilulier {
 		super();
 	}
 
-	public Pilulier(Jour jour, Horaire horaire, Pensionnaire pensionnaire, List<Medicament> medicaments) {
+	public Pilulier(Jour jour, Horaire horaire, Pensionnaire pensionnaire, List<WebGouvMedic> medicaments) {
 		super();
 		this.jour = jour;
 		this.horaire = horaire;
@@ -53,7 +53,7 @@ public class Pilulier {
 	}
 
 	public Pilulier(Long idPululier, Jour jour, Horaire horaire, Pensionnaire pensionnaire,
-			List<Medicament> medicaments) {
+			List<WebGouvMedic> medicaments) {
 		super();
 		this.idPululier = idPululier;
 		this.jour = jour;
@@ -79,7 +79,7 @@ public class Pilulier {
 	/**
 	 * @return the medicaments
 	 */
-	public List<Medicament> getMedicaments() {
+	public List<WebGouvMedic> getMedicaments() {
 		return medicaments;
 	}
 
@@ -100,7 +100,7 @@ public class Pilulier {
 	/**
 	 * @param medicaments the medicaments to set
 	 */
-	public void setMedicaments(List<Medicament> medicaments) {
+	public void setMedicaments(List<WebGouvMedic> medicaments) {
 		this.medicaments = medicaments;
 	}
 

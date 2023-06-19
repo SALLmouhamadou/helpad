@@ -19,64 +19,81 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-@Service
-public class FileSystemStorageService implements StorageService{
-	private final Path rootLocation;
-	  @Autowired
-	  public FileSystemStorageService() {
-	    this.rootLocation = Paths.get("./stockages/");
-	   }
-	  @Override
-	  @PostConstruct
-	  public void init() {
-	     try {
-		Files.createDirectories(rootLocation);
-	    } catch (IOException e) {}
-	   }
+import net.bytebuddy.implementation.bytecode.Throw;
 
-	  @Override
-	   public String store(MultipartFile file) {
-	String filename = StringUtils.cleanPath(file.getOriginalFilename());
-	  try {
-	  if (file.isEmpty()) {}  
-	  if (filename.contains("..")) { }
-	   try (InputStream inputStream = file.getInputStream()) {
-	    Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-	    }
-	   } catch (IOException e) {	}
-	   return filename;
+
+@Service
+public class FileSystemStorageService implements StorageService {
+	private final Path rootLocation;
+
+	@Autowired
+	public FileSystemStorageService() {
+		this.rootLocation = Paths.get("../static/Stockage/");
+	}
+
+	@Override
+	@PostConstruct
+	public void init() {
+		try {
+			Files.createDirectories(rootLocation);
+		} catch (IOException e) {
+		}
+	}
+	
+	@Override
+	public String store(MultipartFile[] files) throws Exception {
+		String filename="";
+		for(MultipartFile file :files) {
+			 filename = StringUtils.cleanPath(file.getOriginalFilename());
+			if (file.isEmpty()) {
+			}
+			if (filename.contains("..")) {
+			}
+			if(filename.endsWith(".pdf")|| filename.endsWith(".jpg") || filename.endsWith(".jpeg")||filename.endsWith(".png")) {
+			try (InputStream inputStream = file.getInputStream()) {
+				Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {}}
+			else {
+				throw new Exception();
+			}
+		}
+		return filename;
 	}
 
 	@Override
 	public Stream<Path> loadAll() {
-	 try {
-	    return Files.walk(this.rootLocation, 1).filter(path -> !path.equals(this.rootLocation)).map(this.rootLocation::relativize);
-	 } catch (IOException e) {	return null; }
+		try {
+			return Files.walk(this.rootLocation, 1).filter(path -> !path.equals(this.rootLocation))
+					.map(this.rootLocation::relativize);
+		} catch (IOException e) {
+			return null;
+		}
 
 	}
 
 	@Override
 	public Path load(String filename) {
-	  return rootLocation.resolve(filename);
+		return rootLocation.resolve(filename);
 	}
 
 	@Override
 	public Resource loadAsResource(String filename) {
-	  Path file = load(filename);
-	  Resource resource = null;
-	  try {
-	     resource = new UrlResource(file.toUri());
-	   if (resource.exists() || resource.isReadable()) {
-	      return resource;
-	   } else {
-	     System.out.println("File not found " + filename); 
-	   }
-	  } catch (MalformedURLException e) { }
-			return resource;
+		Path file = load(filename);
+		Resource resource = null;
+		try {
+			resource = new UrlResource(file.toUri());
+			if (resource.exists() || resource.isReadable()) {
+				return resource;
+			} else {
+				System.out.println("File not found " + filename);
+			}
+		} catch (MalformedURLException e) {
+		}
+		return resource;
 	}
 
 	@Override
 	public void deleteAll() {
-	  FileSystemUtils.deleteRecursively(rootLocation.toFile());
+		FileSystemUtils.deleteRecursively(rootLocation.toFile());
 	}
 }

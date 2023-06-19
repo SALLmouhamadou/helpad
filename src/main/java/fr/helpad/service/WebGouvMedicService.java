@@ -94,6 +94,11 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 	public long count() {
 		return repo.count();
 	}
+	
+	@Override
+	public long countByName(String nom) {
+		return repo.countByNomContainingIgnoreCase(nom);
+	}
 
 	private void traiterInformation(File path) throws IOException, NullPointerException, NumberFormatException {
 		System.out.println(LocalDateTime.now().toString() + " Début traitement informations.");

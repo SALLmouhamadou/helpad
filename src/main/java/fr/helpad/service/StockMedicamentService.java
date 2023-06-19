@@ -22,7 +22,9 @@ public class StockMedicamentService implements StockMedicamentServiceI {
 	WebGouvMedicRepository repoMedic;
 	
 	@Override
-	public StockMedicament sauvegarder(StockMedicament entity) {
+	public StockMedicament sauvegarder(StockMedicament entity) throws NumberFormatException {
+		if (entity.getQuantite() < 0)
+			throw new NumberFormatException();
 		return repo.save(entity);
 	}
 

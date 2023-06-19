@@ -48,9 +48,10 @@ function validateDateEntreeForm() {
 
 
 var fileInput = document.getElementsByClassName('fileInput');
-var errorMessage = document.getElementById('errorMessage');
-
-fileInput.addEventListener('change', function(event) {
+for(var i=0; i<fileInput.length; i++){
+	var errorMessage = document.getElementById('errorMessage');
+	console.log(fileInput[i])
+	fileInput[i].addEventListener('change', function(event) {
 	const file = event.target.files[0];
 	if (file.type.startsWith('image/')) {
 		// Fichier image
@@ -74,3 +75,6 @@ fileInput.addEventListener('change', function(event) {
 		fileInput.value = '';
 	}
 })	
+}
+
+

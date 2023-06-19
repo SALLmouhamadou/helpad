@@ -120,7 +120,7 @@
 					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName6}}" th:text="${candidature.fileName6}"></a></li>
 					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName7}}" th:text="${candidature.fileName7}"></a></li>
 					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName8}}" th:text="${candidature.fileName8}"></a></li>
-					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName9}}" th:text="${candidature.fileName9}"></a></li>
+					<li th:if="${candidature.fileName9 !=''}" class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName9}}" th:text="${candidature.fileName9}"></a></li>
 				</ul>
 			</div> 
 			</div>

@@ -83,7 +83,6 @@ public class AdmissionController {
 		if (userDetails != null) {
 			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
 			mav.addObject("candidat", candidat.get());
-			// mav.addObject("candidature", candidatures.get());
 			mav.addObject("title", "Mes candidatures");
 			mav.setViewName("frontoffice/candidature");
 		} else {

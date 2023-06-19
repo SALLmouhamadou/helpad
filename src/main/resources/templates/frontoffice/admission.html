@@ -8,14 +8,17 @@
 	th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" href="../static/css/style.css"
 	th:href="@{/css/style.css}" />
-<link rel="stylesheet" type="text/css" href="../static/assets/css/style.css" th:href="@{/assets/css/style.css}">
+<link rel="stylesheet" type="text/css"
+	href="../static/assets/css/style.css"
+	th:href="@{/assets/css/style.css}">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-	<nav th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
+	<nav
+		th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 	<form class="p-2" id="myForm" th:action="@{/sendAdmission}"
-		method="post" enctype="multipart/form-data" >
+		method="post" enctype="multipart/form-data">
 		<h1 align=center>Formulaire de demande d'admission</h1>
 		<h3 class="text-danger" th:text="${error}"></h3>
 		<div style="text-align: center;">
@@ -23,7 +26,7 @@
 				id="step-2">Adresse</span> <span class="step" id="step-3">Candidautres</span>
 			<span class="step" id="step-4">Documents</span>
 		</div>
-		
+
 		<div class="tab" id="tab-1">
 			<p>Identité</p>
 			<select name="civilite" id="civilité-select">
@@ -34,29 +37,28 @@
 			<div>
 				<input type="hidden" name="idPersonne" th:value="${user.idPersonne}">
 				<label for="nom"> Nom <span class="text-danger">*</span></label> <input
-					type="text" placeholder="DUPONT" name="nom" th:value="${user.nom}" required>
-			</div>
-			<div>
-				<label for="prenom">Prénom <span class="text-danger">*</span></label>
-				<input type="text" placeholder="Jean" name="prenom" th:value="${user.prenom}" required>
-			</div>
-			<div>
-				<label for="email"> Email <span class="text-danger">*</span></label>
-				<input type="email" placeholder="dupont.jean@gmail.com" name="email"
-					 >
-			</div>
-			<div>
-				<label for="telephone">Téléphone<span class="text-danger">*</span></label>
-				<input type="text" placeholder="0033700000000" name="telephone" 
+					type="text" placeholder="DUPONT" name="nom" th:value="${user.nom}"
 					required>
 			</div>
 			<div>
-				 <label
-					for="dateNaissance">Date naissance <span
-					class="text-danger">*</span></label> <br>
-					<span id="dateNaissanceError" class="text-danger"></span> 
-					<input type="date"
-					placeholder="Date naissance" id="dateNaissance"
+				<label for="prenom">Prénom <span class="text-danger">*</span></label>
+				<input type="text" placeholder="Jean" name="prenom"
+					th:value="${user.prenom}" required>
+			</div>
+			<div>
+				<label for="email"> Email <span class="text-danger">*</span></label>
+				<input type="email" placeholder="dupont.jean@gmail.com" name="email">
+			</div>
+			<div>
+				<label for="telephone">Téléphone<span class="text-danger">*</span></label>
+				<input type="text" placeholder="0033700000000" name="telephone"
+					required>
+			</div>
+			<div>
+				<label for="dateNaissance">Date naissance <span
+					class="text-danger">*</span></label> <br> <span
+					id="dateNaissanceError" class="text-danger"></span> <input
+					type="date" placeholder="Date naissance" id="dateNaissance"
 					name="dateNaissance">
 			</div>
 			<div class="index-btn-wrapper">
@@ -79,12 +81,12 @@
 				</div>
 				<div>
 					<label for="codePostal">Code postal <span
-						class="text-danger">*</span></label><input type="text" id="codePostal" placeholder="75015"
-						name="codePostal">
+						class="text-danger">*</span></label><input type="text" id="codePostal"
+						placeholder="75015" name="codePostal">
 				</div>
 				<div>
 					<label for="pays"> Pays <span class="text-danger">*</span></label>
-					<input type="text" placeholder="Pays" id="pays" name="pays" >
+					<input type="text" placeholder="Pays" id="pays" name="pays">
 				</div>
 				<div class="index-btn-wrapper">
 					<div class="index-btn" onclick="run(2, 1);">Précedent</div>
@@ -95,11 +97,9 @@
 		<div class="tab" id="tab-3">
 
 			<div>
-				<label
-					for="dateEntree"> Date entrée souhaite <span
-					class="text-danger">*</span></label><br>
-					<span id="dateEntreeError" class="text-danger"></span> 
-					<input type="date"
+				<label for="dateEntree"> Date entrée souhaite <span
+					class="text-danger">*</span></label><br> <span id="dateEntreeError"
+					class="text-danger"></span> <input type="date"
 					placeholder="Date entrée souhaitée" id="dateEntree"
 					name="dateEntree">
 			</div>
@@ -126,8 +126,8 @@
 			<div>
 				<label class="mt-2" for="informationComplementaire">Des
 					informations complémentaires</label><br>
-				<textarea id="informationComplementaire"
-					name="informationComplementaire" rows="8" cols="115">
+				<textarea class="form-control" id="informationComplementaire"
+					name="informationComplementaire" rows="8" cols="1">
 				</textarea>
 			</div>
 			<div class="index-btn-wrapper">
@@ -136,58 +136,68 @@
 			</div>
 		</div>
 
-		 <div class="tab" id="tab-4">
+		<div class="tab" id="tab-4">
 			<p>Piéce justificatifs</p>
 			<div>
-				<span class="fw-bold text-primary" id="errorMessage"></span>
-				<label class="text-primary" for="file1">Photocopie de pièce d'identité(JPG,PNG,
-					PDF|max. 2 Mo) <span class="text-danger">*</span>
-				</label> <input class="fileInput"  type="file" name="file1" accept="application/pdf,image/*" required>
+				<span class="fw-bold text-primary" id="errorMessage"></span> <label
+					class="text-primary" for="file1">Photocopie de pièce
+					d'identité(JPG,PNG, PDF|max. 2 Mo) <span class="text-danger">*</span>
+				</label> <input class="fileInput" type="file" name="file1"
+					accept="application/pdf,image/*" required>
 			</div>
 			<div>
-				<span class="fw-bold text-primary" id="errorMessage"></span>
-				<label class="text-primary" for="file2">Justificatif de domicile (JPG,PNG,
-					PDF|max. 2 Mo) <span class="text-danger">*</span>
-				</label> <input class="fileInput" type="file" name="file2" accept="application/pdf,image/*" required>
-			</div>
-			<div>
-				<span class="fw-bold text-primary" id="errorMessage"></span>
-				<label class="text-primary" for="file3">Attestation d'hébergement
-					d'identité(JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput" type="file" name="file3" accept="application/pdf,image/*">
-			</div>
-			<div>
-				<span class="fw-bold text-primary" id="errorMessage"></span>
-				<label class="text-primary" for="file4">Photocopie de pièce d'identité de
-					l'hébergeur(JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput" type="file"
-					name="file4" accept="application/pdf,image/*">
-			</div>
-			<div>
-				<label class="text-primary" for="file5">Quitance de loyer moins de 3
-					mois(JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput" type="file" name="file5" accept="application/pdf,image/*">
-			</div>
-			<div>
-				<label class="text-primary" for="file6">Justificatif de situation familiale
+				<span class="fw-bold text-primary" id="errorMessage"></span> <label
+					class="text-primary" for="file2">Justificatif de domicile
 					(JPG,PNG, PDF|max. 2 Mo) <span class="text-danger">*</span>
-				</label> <input class="fileInput" type="file" name="file6" accept="application/pdf,image/*" required>
+				</label> <input class="fileInput" type="file" name="file2"
+					accept="application/pdf,image/*" required>
 			</div>
 			<div>
-				<span class="fw-bold text-primary" id="errorMessage"></span>
-				<label class="text-primary" for="file7">Avsi d'imposition (JPG,PNG, PDF|max. 2
-					Mo) <span class="text-danger">*</span>
-				</label> <input class="fileInput" type="file" name="file7" accept="application/pdf,image/*" required>
+				<span class="fw-bold text-primary" id="errorMessage"></span> <label
+					class="text-primary" for="file3">Attestation d'hébergement
+					d'identité(JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput"
+					type="file" name="file3" accept="application/pdf,image/*">
 			</div>
 			<div>
-				<span class="fw-bold text-primary" id="errorMessage"></span>
-				<label class="text-primary" for="file8">Attestation de droits de sécurité social
+				<span class="fw-bold text-primary" id="errorMessage"></span> <label
+					class="text-primary" for="file4">Photocopie de pièce
+					d'identité de l'hébergeur(JPG,PNG, PDF|max. 2 Mo) </label> <input
+					class="fileInput" type="file" name="file4"
+					accept="application/pdf,image/*">
+			</div>
+			<div>
+				<label class="text-primary" for="file5">Quitance de loyer
+					moins de 3 mois(JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput"
+					type="file" name="file5" accept="application/pdf,image/*">
+			</div>
+			<div>
+				<label class="text-primary" for="file6">Justificatif de
+					situation familiale (JPG,PNG, PDF|max. 2 Mo) <span
+					class="text-danger">*</span>
+				</label> <input class="fileInput" type="file" name="file6"
+					accept="application/pdf,image/*" required>
+			</div>
+			<div>
+				<span class="fw-bold text-primary" id="errorMessage"></span> <label
+					class="text-primary" for="file7">Avsi d'imposition
 					(JPG,PNG, PDF|max. 2 Mo) <span class="text-danger">*</span>
-				</label> <input class="fileInput" type="file" name="file8" accept="application/pdf,image/*" required>
+				</label> <input class="fileInput" type="file" name="file7"
+					accept="application/pdf,image/*" required>
 			</div>
 			<div>
-				<span class="fw-bold text-primary" id="errorMessage"></span>
-				<label class="text-primary" for="file9">Si vous avez des pathologies, joindre un
-					justificatif (JPG,PNG, PDF|max. 2 Mo) </label> <input class="fileInput" type="file"
-					name="file9" accept="application/pdf,image/*">
-			</div> 
+				<span class="fw-bold text-primary" id="errorMessage"></span> <label
+					class="text-primary" for="file8">Attestation de droits de
+					sécurité social (JPG,PNG, PDF|max. 2 Mo) <span class="text-danger">*</span>
+				</label> <input class="fileInput" type="file" name="file8"
+					accept="application/pdf,image/*" required>
+			</div>
+			<div>
+				<span class="fw-bold text-primary" id="errorMessage"></span> <label
+					class="text-primary" for="file9">Si vous avez des
+					pathologies, joindre un justificatif (JPG,PNG, PDF|max. 2 Mo) </label> <input
+					class="fileInput" type="file" name="file9"
+					accept="application/pdf,image/*">
+			</div>
 			<div class="index-btn-wrapper">
 				<div class="index-btn" onclick="run(4, 3);">Précedent</div>
 				<div class="index-btn" onclick="run(4, 5);">Suivant</div>
@@ -196,31 +206,39 @@
 
 		<div class="tab" id="tab-5">
 			<div class="index-btn-wrapper">
-				<div>
-					<div>
-						<input type="checkbox" value="accepter"
-							name="declarationExactitudeDesInformations" id="flexCheckDefault">
-						<label class="form-check-label" for="flexCheckDefault">Je
-							déclare sur l'honneur de l'exactitude des informations renseignes</label>
+				<div class="row">
+					<div class="col">
+						<div class="mt-5">
+							<input type="checkbox" value="Je déclare sur l'honneur de
+								l'exactitude des informations renseignes" class="form-check-input"
+								name="declarationExactitudeDesInformations"
+								id="flexCheckDefault" required> <label class="form-check-label"
+								for="flexCheckDefault">Je déclare sur l'honneur de
+								l'exactitude des informations renseignes</label>
+						</div>
+						<div>
+							<input type="checkbox" value="J'ai lu
+								et accepter les conditions générales d'utilisations des données" name="conditionGeneral" class="form-check-input"
+								id="flexCheckChecked" checked required> <label
+								class="form-check-label" for="flexCheckChecked">J'ai lu
+								et accepter les conditions générales d'utilisations des données.
+							</label>
+						</div>
 					</div>
-					<div>
-						<input type="checkbox" value="accepter" name="conditionGeneral"
-							id="flexCheckChecked" checked> <label
-							class="form-check-label" for="flexCheckChecked">J'ai lu
-							et accepter les conditions générales d'utilisations des données.
-						</label>
-					</div>
+					
 				</div>
-				<div class="index-btn" onclick="run(5, 4);">Précedent</div>
-				<button class="index-btn"  type="submit" 
-					style="background: blue;">Valider</button>
 			</div>
+			<div class="mt-3 float-end">
+					<div class="btn btn-primary" onclick="run(5, 4);">Précedent</div>
+					<button class="btn btn-primary" type="submit"
+					>Valider</button>
+				</div>
 		</div>
 		<input type="hidden" th:name="${_csrf.parameterName}"
 			th:value="${_csrf.token}" />
 	</form>
-		<footer
-			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
+	<footer
+		th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
 	<script>
 		// Default tab
 		$(".tab").css("display", "none");
@@ -239,8 +257,8 @@
 			$("input").css("background", "#fff");
 		}
 	</script>
-	<script href="../static/js/admissionForm.js"
-	th:src="@{/js/admissionForm.js}"></script>
-	<script href="../static/js/adresseFormAdmission.js" th:src="@{/js/adresseFormAdmission.js}"></script>
+	<script src="../static/js/admissionForm.js"
+		th:src="@{/js/admissionForm.js}"></script>
+	<!-- 	<script src="../static/js/adresseFormAdmission.js" th:src="@{/js/adresseFormAdmission.js}"></script> -->
 </body>
 </html>

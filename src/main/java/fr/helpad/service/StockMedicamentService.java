@@ -22,7 +22,9 @@ public class StockMedicamentService implements StockMedicamentServiceI {
 	WebGouvMedicRepository repoMedic;
 	
 	@Override
-	public StockMedicament sauvegarder(StockMedicament entity) {
+	public StockMedicament sauvegarder(StockMedicament entity) throws NumberFormatException {
+		if (entity.getQuantite() < 0)
+			throw new NumberFormatException();
 		return repo.save(entity);
 	}
 
@@ -50,10 +52,11 @@ public class StockMedicamentService implements StockMedicamentServiceI {
 	public List<StockMedicament> findByQuantiteGreaterThan(short quantite, Pageable page) {
 		return repo.findByQuantiteGreaterThan(quantite, page);
 	}
+	
+	private static final short s = 0;
 
 	@Override
 	public long countPositive() {
-		final short s = 0;
 		return repo.countByQuantiteGreaterThan(s);
 	}
 

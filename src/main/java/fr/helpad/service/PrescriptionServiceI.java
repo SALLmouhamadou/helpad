@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.data.repository.query.Param;
 
-import fr.helpad.entity.Medicament;
 import fr.helpad.entity.Pensionnaire;
 import fr.helpad.entity.Prescription;
+import fr.helpad.entity.WebGouvMedic;
 
 public interface PrescriptionServiceI extends BasicBusiness<Prescription> {
 	public List<Prescription> chercherParPensionnaire(@Param("pensionnaire") Pensionnaire pensionnaire);
-	public List<Prescription> chercherParMedicament(@Param("medicament") Medicament medicament);
-	public Long getConsoMois(@Param("medicament") Medicament medicament);
+	public List<Prescription> chercherParMedicament(@Param("medicament") WebGouvMedic medicament);
+	public Long getConsoMois(@Param("medicament") WebGouvMedic medicament);
 }

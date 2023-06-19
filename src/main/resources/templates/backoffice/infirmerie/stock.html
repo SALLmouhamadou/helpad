@@ -16,7 +16,8 @@
 		<h2 class="text-center">Inventaire de médicament</h2>
 		<label hidden="true" id="pageNow" th:value="${page}" th:text="${page}"></label>
 		<label hidden="true" id="nombrePage" th:value="${nombrePage}"
-			th:text="${nombrePage}"></label>
+			th:text="${nombrePage}"></label> <label hidden="true" id="mode" th:value="${mode}" th:text="${mode}"></label>
+			<label hidden="true" id="rech" th:value="${recherche}" th:text="${recherche}"></label>
 		<div th:class="${alertClass}" role="alert">
 			<div th:text="${message}"></div>
 			<button type="button" class="btn-close" data-dismiss="alert"

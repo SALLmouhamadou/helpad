@@ -5,8 +5,15 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import fr.helpad.entity.WebGouvMedic;
 
 public interface WebGouvMedicServiceI extends BasicBusiness<WebGouvMedic> {
-	public boolean setMedicaments() throws MalformedURLException, IOException, ProtocolException;
+	public String setMedicaments() throws MalformedURLException, IOException, ProtocolException;
+	public List<WebGouvMedic> findByNameLimited(String nom, Pageable pageable);
+	public long count();
+	public Page<WebGouvMedic> findLimited(Pageable pageable);
+	List<WebGouvMedic> findByNameExactLimited(String nom, Pageable pageable);
 }

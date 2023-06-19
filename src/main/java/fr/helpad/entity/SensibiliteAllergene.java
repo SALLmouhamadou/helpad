@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
@@ -13,18 +15,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 @IdClass(SensibiliteAllergene.class)
-@Table(name="SENSIBILITE_ALLERGENE")
+@Table(name = "SENSIBILITE_ALLERGENE")
 public class SensibiliteAllergene implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	@Column(name = "ID_PERSONNE", unique = true, nullable = false)
+	private static final long serialVersionUID = -2817514642991327179L;
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	@Column(name = "ID_PERSONNE", unique = true, nullable = false)
 	@Autowired
 	private Pensionnaire pensionnaire;
 	@Autowired
-	@Id
 	@Column(name = "ID_ALLERGENE", unique = true, nullable = false)
 	private Allergene allergene;
 	@Column(name = "EN_CAS_DE_CRISE")
@@ -54,6 +57,14 @@ public class SensibiliteAllergene implements Serializable {
 		this.enCasDeCrise = enCasDeCrise;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(allergene, enCasDeCrise, pensionnaire);
@@ -78,6 +89,14 @@ public class SensibiliteAllergene implements Serializable {
 				+ enCasDeCrise + "]";
 	}
 
+	public SensibiliteAllergene(Long id, Pensionnaire pensionnaire, Allergene allergene, String enCasDeCrise) {
+		super();
+		this.id = id;
+		this.pensionnaire = pensionnaire;
+		this.allergene = allergene;
+		this.enCasDeCrise = enCasDeCrise;
+	}
+
 	public SensibiliteAllergene(Pensionnaire pensionnaire, Allergene allergene, String enCasDeCrise) {
 		super();
 		this.pensionnaire = pensionnaire;
@@ -88,5 +107,5 @@ public class SensibiliteAllergene implements Serializable {
 	public SensibiliteAllergene() {
 		super();
 	}
-}
 
+}

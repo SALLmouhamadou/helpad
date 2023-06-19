@@ -14,7 +14,7 @@ function validateDateNaissanceForm() {
 		document.getElementById('btnDateNaissance').disabled = true;
 		return false;
 	} else if (date_naissance.getFullYear() > 1959) {
-		date_naissance_error.innerHTML = "La date de naissance doit être avant 1959.";
+		date_naissance_error.innerHTML = "La date de naissance doit précéder 1959.";
 		document.getElementById('btnDateNaissance').disabled = true;
 		return false;
 	} else {
@@ -34,7 +34,7 @@ function validateDateEntreeForm() {
 		document.getElementById('btnDateEntree').disabled = true;
 		return false;
 	} else if (date_entree < today) {
-		date_entree_error.innerHTML = "La date d'entrée doit être après aujourd'hui.";
+		date_entree_error.innerHTML = "La date d'entrée doit être ultérieur à aujourd'hui.";
 		document.getElementById('btnDateEntree').disabled = true;
 		return false;
 	} else {
@@ -56,7 +56,7 @@ for(var i=0; i<fileInput.length; i++){
 	if (file.type.startsWith('image/')) {
 		// Fichier image
 		if (file.size > 2 * 1024 * 1024) {
-			errorMessage.textContent = 'La taille du fichier image doit être inférieure à 2 Mo.';
+			errorMessage.textContent = 'La taille du fichier image doit être inférieur à 2 Mo.';
 			fileInput.value = '';
 		} else {
 			errorMessage.textContent = '';
@@ -64,14 +64,14 @@ for(var i=0; i<fileInput.length; i++){
 	} else if (file.type === 'application/pdf') {
 		// Fichier PDF
 		if (file.size > 2 * 1024 * 1024) {
-			errorMessage.textContent = 'La taille du fichier PDF doit être inférieure à 2 Mo.';
+			errorMessage.textContent = 'La taille du fichier PDF doit être inférieur à 2 Mo.';
 			fileInput.value = '';
 		} else {
 			errorMessage.textContent = '';
 		}
 	} else {
 		// Type de fichier non pris en charge
-		errorMessage.textContent = 'Le fichier sélectionné est ni une image ni un PDF.';
+		errorMessage.textContent = "Le fichier sélectionné n'est ni une image ni un PDF.";
 		fileInput.value = '';
 	}
 })	

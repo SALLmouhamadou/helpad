@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Les pièces justificatifs à fournir</title>
@@ -8,32 +8,32 @@
 	th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
-	<div class="container">
+<!-- 	<div class="container"> -->
 
-		<nav class="navbar bg-primary" data-bs-theme="dark">
-			<div class="container-fluid">
-				<a class="navbar-brand text-white" th:href="@{/}">HELPAD</a>
-				<ul class="nav justify-content-end">
-					<li class="nav-item"><a class="nav-link text-white"
-						aria-current="page" th:each="candidat:${candidat}"
-						th:href="@{/dashboard/{id}(id=${candidat.idPersonne})}">Espace
-							personnel</a></li>
-					<li class="nav-item"><a class="nav-link text-white" href="#">Utilisateur</a></li>
-				</ul>
-			</div>
-		</nav>
-	</div>
+<!-- 		<nav class="navbar bg-primary" data-bs-theme="dark"> -->
+<!-- 			<div class="container-fluid"> -->
+<!-- 				<a class="navbar-brand text-white" th:href="@{/}">HELPAD</a> -->
+<!-- 				<ul class="nav justify-content-end"> -->
+<!-- 					<li class="nav-item"><a class="nav-link text-white" -->
+<!-- 						aria-current="page" th:each="candidat:${candidat}" -->
+<!-- 						th:href="@{/dashboard/{id}(id=${candidat.idPersonne})}">Espace -->
+<!-- 							personnel</a></li> -->
+<!-- 					<li class="nav-item"><a class="nav-link text-white" href="#">Utilisateur</a></li> -->
+<!-- 				</ul> -->
+<!-- 			</div> -->
+<!-- 		</nav> -->
+<!-- 	</div> -->
 	<div class="container p-3">
-		<h1 class="text-center mb-3">Pièces justificatives à fournir</h1>
+		<h1 class="text-center mt-5 mb-5 text-primary">Pièces justificatives à fournir</h1>
 		<div class="bg-white shadow-lg p-3 mb-5 bg-body-tertiary ">
-			<p>Avant de commencer votre candidature de demande d'admission, merci de préparer tous les pièces justificatifs suivant:</p>
+			<p>Avant de commencer votre candidature de demande d'admission, merci de préparer toutes les pièces justificatives suivantes:</p>
 			<ul>
 				<li>Photocopie de la carte d'identité ou du passeport</li>
 				<li>Justificatif de domicile (facture d'électricité, de gaz ou
 					d'eau, avis d'imposition...)</li>
 				<li>Attestation de d'hebergment si vous êtes hébergé</li>
 				<li>La quittance de loyer de l'hébergeur datant de moins de trois mois</li>
-				<li>La photocopie de la pièce identité de l'hébergeur </li>
+				<li>La photocopie de la pièce d'identité de l'hébergeur </li>
 				<li>Justificatif de situation familiale (livret de famille,
 					acte de mariage ou de Pacs...)</li>
 				<li>Justificatif de ressources (derniers avis d'imposition,
@@ -44,8 +44,11 @@
 			<p>Si vous avez des questions ou des doutes concernant les pièces
 				justificatives à fournir, n'hésitez pas à nous contacter.</p>
 		</div>
-		<div class="float-end">
-			<a th:href="@{/getAdmission}">
+		<div >
+			<a class="float-start" th:href="@{/}">
+				<button class="btn btn-primary">Retour</button>
+			</a>
+			<a class="float-end" th:href="@{/getAdmission}">
 				<button class="btn btn-primary">Commencer</button>
 			</a>
 		</div>

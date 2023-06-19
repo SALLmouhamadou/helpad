@@ -47,4 +47,9 @@ public class PrescriptionService implements PrescriptionServiceI {
 	public List<Prescription> chercherParMedicament(Medicament medicament) {
 		return repo.chercherParMedicament(medicament.getIdMedicament());
 	}
+
+	@Override
+	public Long getConsoMois(Medicament medicament) {
+		return repo.getSumConsoMois(medicament.getIdMedicament());
+	}
 }

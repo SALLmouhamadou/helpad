@@ -1,6 +1,7 @@
 package fr.helpad.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Medicament implements Serializable {
@@ -20,7 +22,10 @@ public class Medicament implements Serializable {
 	@Column(name = "ID_MEDICAMENT")
 	private Long idMedicament;
 	private String nom;
-	private String fonction;
+	@ManyToMany
+	private List<CategorieMedicament> fonctions;
+	@ManyToMany
+	private List<PrincipeActif> principesActifs;
 	private int stock;
 	private typeMedicament typeStock;
 	private int consoMois;
@@ -31,77 +36,34 @@ public class Medicament implements Serializable {
 		LIQUIDE, UNITAIRE, INHALATION
 	}
 
-	public Medicament(String nom, String fonction, int stock, typeMedicament typeStock, int consoMois) {
-		super();
-		this.nom = nom;
-		this.fonction = fonction;
-		this.stock = stock;
-		this.typeStock = typeStock;
-		this.consoMois = consoMois;
-	}
-
-	public Medicament(Long idMedicament, String nom, String fonction, int stock, typeMedicament typeStock,
-			int consoMois) {
+	public Medicament(Long idMedicament, String nom, List<CategorieMedicament> fonctions,
+			List<PrincipeActif> principesActifs, int stock, typeMedicament typeStock, int consoMois,
+			int quantiteParBoite) {
 		super();
 		this.idMedicament = idMedicament;
 		this.nom = nom;
-		this.fonction = fonction;
+		this.fonctions = fonctions;
+		this.principesActifs = principesActifs;
 		this.stock = stock;
 		this.typeStock = typeStock;
 		this.consoMois = consoMois;
+		this.quantiteParBoite = quantiteParBoite;
+	}
+
+	public Medicament(String nom, List<CategorieMedicament> fonctions, List<PrincipeActif> principesActifs, int stock,
+			typeMedicament typeStock, int consoMois, int quantiteParBoite) {
+		super();
+		this.nom = nom;
+		this.fonctions = fonctions;
+		this.principesActifs = principesActifs;
+		this.stock = stock;
+		this.typeStock = typeStock;
+		this.consoMois = consoMois;
+		this.quantiteParBoite = quantiteParBoite;
 	}
 
 	public Medicament() {
 		super();
-	}
-
-	/**
-	 * @return the quantiteParBoite
-	 */
-	public int getQuantiteParBoite() {
-		return quantiteParBoite;
-	}
-
-	/**
-	 * @param quantiteParBoite the quantiteParBoite to set
-	 */
-	public void setQuantiteParBoite(int quantiteParBoite) {
-		this.quantiteParBoite = quantiteParBoite;
-	}
-
-	/**
-	 * @return the serialversionuid
-	 */
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	/**
-	 * @return the consoMois
-	 */
-	public int getConsoMois() {
-		return consoMois;
-	}
-
-	/**
-	 * @param consoMois the consoMois to set
-	 */
-	public void setConsoMois(int consoMois) {
-		this.consoMois = consoMois;
-	}
-
-	/**
-	 * @return the typeStock
-	 */
-	public typeMedicament getTypeStock() {
-		return typeStock;
-	}
-
-	/**
-	 * @param typeStock the typeStock to set
-	 */
-	public void setTypeStock(typeMedicament typeStock) {
-		this.typeStock = typeStock;
 	}
 
 	public Long getIdMedicament() {
@@ -120,12 +82,20 @@ public class Medicament implements Serializable {
 		this.nom = nom;
 	}
 
-	public String getFonction() {
-		return fonction;
+	public List<CategorieMedicament> getFonctions() {
+		return fonctions;
 	}
 
-	public void setFonction(String fonction) {
-		this.fonction = fonction;
+	public void setFonctions(List<CategorieMedicament> fonctions) {
+		this.fonctions = fonctions;
+	}
+
+	public List<PrincipeActif> getPrincipesActifs() {
+		return principesActifs;
+	}
+
+	public void setPrincipesActifs(List<PrincipeActif> principesActifs) {
+		this.principesActifs = principesActifs;
 	}
 
 	public int getStock() {
@@ -136,28 +106,32 @@ public class Medicament implements Serializable {
 		this.stock = stock;
 	}
 
-	@Override
-	public String toString() {
-		return "Medicament [idMedicament=" + idMedicament + ", nom=" + nom + ", fonction=" + fonction + ", stock="
-				+ stock + "]";
+	public typeMedicament getTypeStock() {
+		return typeStock;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(fonction, idMedicament, nom, stock);
+	public void setTypeStock(typeMedicament typeStock) {
+		this.typeStock = typeStock;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Medicament other = (Medicament) obj;
-		return Objects.equals(fonction, other.fonction) && Objects.equals(idMedicament, other.idMedicament)
-				&& Objects.equals(nom, other.nom) && stock == other.stock;
+	public int getConsoMois() {
+		return consoMois;
+	}
+
+	public void setConsoMois(int consoMois) {
+		this.consoMois = consoMois;
+	}
+
+	public int getQuantiteParBoite() {
+		return quantiteParBoite;
+	}
+
+	public void setQuantiteParBoite(int quantiteParBoite) {
+		this.quantiteParBoite = quantiteParBoite;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

@@ -18,7 +18,7 @@
 						personnel</a></li>
 				<li class="nav-item"><a class="nav-link text-white"
 					th:each="candidature:${candidatures}"
-					th:href="@{/dashboard/candidature/{id}(id=${candidature.idCandidature})}">Mes
+					th:href="@{/dashboard/candidature}">Mes
 						candidatures </a></li>
 			</ul>
 		</div>
@@ -48,12 +48,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="candidature :${candidatures}">
+					<tr th:each="candidature :${candidat.mesCandidatures}">
 						<th th:text="${candidature.numeroRef}"></th>
 						<td th:text="${candidature.jourDeCandidature}"></td>
-						<td></td>
+						<td th:text="${candidature.status.libelle}"></td>
 						<td><a
-							th:href="@{/consulter/{id}(id=${candidature.idCandidature})}">
+							th:href="@{/consulter}">
 								<Button class="btn btn-primary">Consulter</Button>
 						</a></td>
 					</tr>

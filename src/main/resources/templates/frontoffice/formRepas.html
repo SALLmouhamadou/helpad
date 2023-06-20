@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h2>Ajouter un repas</h2>
+
+	<form method="post" th:action="@{saveRepas}" th:object="${repas}">
+		
+	<div>
+		<label for="dateRepas">Date :</label>
+		<input type="date" th:field="*{dateRepas}" required/>
+		<br><br>
+<!-- 		<label>Nom</label> -->
+<!-- 		<input type="text" name="nom" th:value="${repas.nom}"/> -->
+<!-- 		<span th:errors="${repas.nom}"></span> -->
+	</div>
+   	<div>
+		<label>Horaire</label>
+<!-- 		<input type="text" name="nomAllergene" th:value="${allergene.nomAllergene}"/>
+ -->
+<!--		<span th:errors="${allergene.nomAllergene}"></span>
+-->
+		<select th:field="*{horaire}">
+			<option value=""> -- </option>
+            <option value="petit déjeuner">petit déjeuner</option>
+            <option value="déjeuner">déjeuner</option>
+            <option value="goûter">goûter</option>
+            <option value="dîner">dîner</option>
+                            
+		</select>
+	</div>
+	<div>
+		<label>Plats</label>
+		<select multiple th:field="*{plats}">
+         	<option value=""> -- </option>
+            <option th:each="plat : ${plats}"
+            		th:value="${plat.idPlat}"
+                    th:text="${plat.nom}"> 
+			</option>
+        </select>
+	</div>
+ 	
+	
+	<button type="submit">Save</button>
+	
+	
+	
+	</form>
+	<a href="http://localhost:8080/repas">
+	<button>Annuler</button>
+	</a>
+
+</body>
+</html>

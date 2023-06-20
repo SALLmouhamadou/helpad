@@ -19,7 +19,7 @@ public class Plat {
 	@ManyToMany
 	private List<Allergene> allergenes;
 	private String nom;
-	@ManyToMany
+	@ManyToMany(mappedBy = "plats")
 	private List<Repas> repas;
 
 	public Long getIdPlat() {

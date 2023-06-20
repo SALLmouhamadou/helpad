@@ -3,28 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <title>Repas</title>
+<link rel="stylesheet" type="text/css"
+	href="../static/css/bootstrap.min.css"
+	th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" href="../static/css/style.css"
+	th:href="@{/css/style.css}" />
 </head>
 <body>
+<nav th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 	<h2>Liste des repas</h2>
 	
-	<table>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Horaire</th>
-				<th>Date</th>
-			</tr>
-		</thead>
+<!-- 	<table> -->
+<!-- 		<thead> -->
+<!-- 			<tr> -->
+<!-- 				<th>ID</th> -->
+<!-- 				<th>Horaire</th> -->
+<!-- 				<th>Date</th> -->
+<!-- 			</tr> -->
+<!-- 		</thead> -->
 		
-		<tbody>
-			<tr th:each="listRepas : ${listRepas}">
-				<td th:text="${listRepas.idRepas}"></td>
-				<td th:text="${listRepas.horaire}"></td>
-				<td th:text="${listRepas.dateRepas}"></td>
-			</tr>
-		</tbody>
+<!-- 		<tbody> -->
+<!-- 			<tr th:each="listRepas : ${listRepas}"> -->
+<!-- 				<td th:text="${listRepas.idRepas}"></td> -->
+<!-- 				<td th:text="${listRepas.horaire}"></td> -->
+<!-- 				<td th:text="${listRepas.dateRepas}"></td> -->
+<!-- 			</tr> -->
+<!-- 		</tbody> -->
 	
 	
-	</table>
+<!-- 	</table> -->
+
+	<ul>
+		<li th:each="listRepass : ${listRepass}">
+            <h2 th:text="${listRepass.dateRepas}"></h2>
+            <h2 th:text="${listRepass.horaire}"></h2>
+<!-- 		</li> -->
+<!--         <li th:each="listRepass : ${listRepass}"> -->
+<!--             <h2 th:text="${listRepass.horaire}"></h2> -->
+            <ul>
+                <li th:each="listPlats : ${listRepass.plats}">
+                    <span th:text="${listPlats.nom}"></span>
+                </li>
+                
+            </ul>
+        </li>
+    </ul>	
+    
+    <a href="http://localhost:8080/formRepas">Ajouter un plat</a>	
+							
+<footer
+			th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>
 </body>
 </html>

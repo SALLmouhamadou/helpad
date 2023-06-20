@@ -6,20 +6,48 @@
 </head>
 <body>
 	<h2>liste de plats</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Nom</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="listPlats : ${listPlats}">
-					<td th:text="${listPlats.idPlat}"></td>
-					<td th:text="${listPlats.nom}"></td>
-				</tr>
-			</tbody>
+<!-- 	 	<table> -->
+<!-- 			<thead> -->
+<!-- 				<tr> -->
+<!-- 					<th>ID</th> -->
+<!-- 					<th>Nom</th> -->
+<!-- 					<th>Allergene</th> -->
+<!-- 					<th>Allergene</th> -->
+<!-- 					<th>Allergene</th> -->
+<!-- 					<th>Allergene</th> -->
+<!-- 					<th>Allergene</th> -->
+<!-- 				</tr> -->
+<!-- 			</thead> -->
+<!-- 			<tbody> -->
+<!-- 				<tr th:each="listPlats : ${listPlats}"> -->
+<!-- 					<td th:text="${listPlats.idPlat}"></td> -->
+<!-- 					<td th:text="${listPlats.nom}"></td> -->
+ 
+
+<!-- <td th:each="listAllergenes : ${listPlats.allergenes}"> -->
+<!-- <span th:text="${listAllergenes.nomAllergene}"></span> -->
+<!-- </td> -->
+
+<!--  				</tr> -->
+<!--  			</tbody> -->
+<!--  		</table> -->
+
+					
+	<ul>
+        <li th:each="listPlats : ${listPlats}">
+            <h2 th:text="${listPlats.nom}"></h2>
+            <ul>
+                <li th:each="listAllergenes : ${listPlats.allergenes}">
+                    <span th:text="${listAllergenes.nomAllergene}"></span>
+                </li>
+           	<a class="btn btn-danger" th:href="@{supprimer(idPlat=${listPlats.idPlat})}">Supprimer</a>
+            
+            </ul>
+        </li>
+    </ul>	
+    
+    <a href="http://localhost:8080/formPlats">Ajouter un plat</a>	
+							
 		
-		</table>
 </body>
 </html>

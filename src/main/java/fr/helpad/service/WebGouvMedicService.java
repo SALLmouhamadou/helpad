@@ -493,6 +493,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		List<File> conditionFiles = backup("medicaments/conditions.txt");
 		List<File> informationFiles = backup("medicaments/informations.txt");
 
+		// On lance les téléchargements de manière asynchrone et on les traite une fois finis.
 		CompletableFuture.supplyAsync(() -> {
 			try {
 				return getFileFromWeb(informationUrl, informationFiles);

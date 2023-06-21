@@ -236,7 +236,7 @@ public class InfirmerieControllerV2 {
 
 				List<WebGouvMedic> verifNom;
 				WebGouvMedic verifId;
-				Boolean isValide = false;
+				boolean isValide = false;
 
 				if (nom.length() > 2 && nom.length() < 1000 && id > 0) {
 					verifNom = medicService.findByNameExactLimited(nom, PageRequest.of(0, 1));

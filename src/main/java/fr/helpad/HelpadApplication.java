@@ -65,8 +65,7 @@ public class HelpadApplication {
 			Short s = 90;
 			// On ajoute un stock de 90 Doliranes.
 			try {
-			WebGouvMedic med1 = medicServ.get(60234100l);
-			stockService.sauvegarder(new StockMedicament(med1.getId(), s));
+			stockService.sauvegarder(new StockMedicament(60234100l, s));
 			}
 			catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -74,8 +73,7 @@ public class HelpadApplication {
 			s = 50;
 			// 50 Homeoplasmines
 			try {
-			WebGouvMedic med2 = medicServ.get(61237035l);
-			stockService.sauvegarder(new StockMedicament(med2.getId(), s));
+			stockService.sauvegarder(new StockMedicament(60234100l, s));
 			}
 			catch (Exception e) {
 				System.out.println(e.getMessage());

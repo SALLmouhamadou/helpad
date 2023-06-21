@@ -1,6 +1,10 @@
 package fr.helpad;
 
+
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -8,17 +12,21 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import fr.helpad.service.WebGouvMedicService;
-import fr.helpad.service.WebGouvMedicServiceI;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.PageRequest;
 
+import fr.helpad.entity.Allergene;
 import fr.helpad.entity.Plat;
+import fr.helpad.entity.Repas;
 import fr.helpad.entity.StockMedicament;
 import fr.helpad.entity.WebGouvMedic;
+import fr.helpad.service.AllergeneService;
 import fr.helpad.service.PlatService;
+import fr.helpad.service.RepasService;
 import fr.helpad.service.StockMedicamentServiceI;
+import fr.helpad.service.WebGouvMedicService;
+import fr.helpad.service.WebGouvMedicServiceI;
+
 
 @SpringBootApplication
 public class HelpadApplication {
@@ -57,8 +65,7 @@ public class HelpadApplication {
 			Short s = 90;
 			// On ajoute un stock de 90 Doliranes.
 			try {
-			WebGouvMedic med1 = medicServ.get(60234100l);
-			stockService.sauvegarder(new StockMedicament(med1.getId(), s));
+			stockService.sauvegarder(new StockMedicament(60234100l, s));
 			}
 			catch (Exception ex) {
 				System.out.println(ex.getMessage());
@@ -66,8 +73,7 @@ public class HelpadApplication {
 			s = 50;
 			// 50 Homeoplasmines
 			try {
-			WebGouvMedic med2 = medicServ.get(61237035l);
-			stockService.sauvegarder(new StockMedicament(med2.getId(), s));
+			stockService.sauvegarder(new StockMedicament(60234100l, s));
 			}
 			catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -78,15 +84,61 @@ public class HelpadApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(PlatService platService) {
-		return args -> {
+	CommandLineRunner commandLineRunner(PlatService platService, AllergeneService allergeneService, RepasService repasService) {
+		return args->{
+			
+			
+			allergeneService.sauvegarder(new Allergene("gluten"));
+			allergeneService.sauvegarder(new Allergene("crustacés"));
+			allergeneService.sauvegarder(new Allergene("oeufs"));
+			allergeneService.sauvegarder(new Allergene("poissons"));
+			allergeneService.sauvegarder(new Allergene("arachides"));
+			allergeneService.sauvegarder(new Allergene("soja"));
+			allergeneService.sauvegarder(new Allergene("lait"));
+			allergeneService.sauvegarder(new Allergene("fruits à coques"));
+			allergeneService.sauvegarder(new Allergene("céleri"));
+			allergeneService.sauvegarder(new Allergene("moutarde"));
+			allergeneService.sauvegarder(new Allergene("graines de sésame"));
+			allergeneService.sauvegarder(new Allergene("sulfites"));
+			allergeneService.sauvegarder(new Allergene("lupin"));
+			allergeneService.sauvegarder(new Allergene("mollusques"));
+
+			
+			List<Allergene> listAllergene = new ArrayList<Allergene>();
+			listAllergene.add(allergeneService.get((long) 1));
+			listAllergene.add(allergeneService.get((long) 3));
+			listAllergene.add(allergeneService.get((long) 5));
+			platService.sauvegarder(new Plat(null, listAllergene, "thieb"));
+//	CommandLineRunner commandLineRunner(PlatService platService) {
+//		return args -> {
 			platService.sauvegarder(new Plat(null, null, "thieb"));
+
 			platService.sauvegarder(new Plat(null, null, "choucroute"));
 			platService.sauvegarder(new Plat(null, null, "couscous"));
 			platService.sauvegarder(new Plat(null, null, "poulet frit"));
 			platService.sauvegarder(new Plat(null, null, "souris d'agneau"));
 
+			
+			List<Plat> listPlats1 = new ArrayList<Plat>();
+			listPlats1.add(platService.get((long)1));
+			listPlats1.add(platService.get((long)2));
+			List<Plat> listPlats2 = new ArrayList<Plat>();
+			listPlats1.add(platService.get((long)3));
+			
+			repasService.sauvegarder(new Repas("dejeuner", listPlats1, LocalDate.of(2023, 06, 01)));
+			repasService.sauvegarder(new Repas("diner", listPlats2, LocalDate.of(2023, 06, 01)));
+//			Repas repas1 = new Repas();
+//			repas1.setDateRepas(LocalDate.of(2023, 01, 01));
+//			
+//			platService.listerTout().forEach(p->
+//			System.out.println(p.getNom()));
+			
+			allergeneService.listerTout().forEach(a->
+			System.out.println(a.getNomAllergene()));
+
+
 			platService.listerTout().forEach(p -> System.out.println(p.getNom()));
+
 
 		};
 	}

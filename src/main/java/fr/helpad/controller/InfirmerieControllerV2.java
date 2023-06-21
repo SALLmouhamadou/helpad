@@ -77,7 +77,7 @@ public class InfirmerieControllerV2 {
 		}
 		return "backoffice/infirmerie/stock";
 	}
-	
+
 	@GetMapping("/infirmerie/inventaire/stock/{page}")
 	public String stockPage(@PathVariable String page, Model model) {
 		Integer pageInt = 0;
@@ -107,7 +107,7 @@ public class InfirmerieControllerV2 {
 			for (StockMedicament stock : stockList) {
 				medicaments.add(medicService.get(stock.getCodeCis()));
 			}
-			
+
 			model.addAttribute("medicaments", medicaments);
 		} else {
 			model.addAttribute("nombre", 0);
@@ -123,18 +123,26 @@ public class InfirmerieControllerV2 {
 
 	@GetMapping("/infirmerie/inventaire/rechercher")
 	public String chercher(Model model, @RequestParam(defaultValue = "") String nom,
-			@RequestParam(defaultValue="off") String isStock) {
+			@RequestParam(defaultValue = "off") String isStock, @RequestParam(defaultValue = "0") String page) {
 		model.addAttribute("dateMaj", WebGouvMAJDate.dateMiseAJour);
 
 		model.addAttribute("recherche", nom);
 
-		System.out.println("nom: " + nom + " isStock: " + isStock);
-		int elementLimit = 100;
+		System.out.println("nom: " + nom + " isStock: " + isStock + " page: " + page);
+		int elementLimit = 10;
+		int pageInt = 0;
+
+		try {
+			pageInt = Integer.parseInt(page);
+		} catch (Exception e) {
+			model.addAttribute("alertClass", "alert");
+			model.addAttribute("message", " Erreur : Requête invalide");
+		}
 
 		model.addAttribute("dateMaj", WebGouvMAJDate.dateMiseAJour);
 		model.addAttribute("nombrePage", 0);
 
-		model.addAttribute("page", 0);
+		model.addAttribute("page", pageInt);
 
 		List<WebGouvMedic> medicaments = new ArrayList<>();
 		if (nom.length() >= 0 && nom.length() < 50) {
@@ -142,28 +150,46 @@ public class InfirmerieControllerV2 {
 				if (nom.equals(""))
 					return "redirect:/infirmerie/inventaire/stock/0";
 				short s = 0;
+				if (stockService.countPositive() / elementLimit < pageInt) {
+					model.addAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+					model.addAttribute("message", "Erreur : Requête invalide");
+					return "redirect:/infirmerie/inventaire/stock/0";
+				}
 				model.addAttribute("checkedStock", true);
 				List<StockMedicament> stockList = stockService.findByQuantiteGreaterThan(s,
-						PageRequest.of(0, elementLimit));
+						PageRequest.of(pageInt, 50));
+				model.addAttribute("alertClass", "alert alert-info alert-dismissible fade show");
+				model.addAttribute("message", "Cette page est limitée à 50 éléments pour des raisons techniques." + 
+				" Si vous ne trouvez pas l'objet de votre recherche, veuillez préciser la recherche.");
 				for (StockMedicament stock : stockList) {
 					WebGouvMedic med = medicService.get(stock.getCodeCis());
 					if (med.getNom().toLowerCase().contains(nom.toLowerCase()))
 						medicaments.add(med);
 				}
 				model.addAttribute("medicaments", medicaments);
+				model.addAttribute("page", 0);
+				model.addAttribute("nombrePage", 0);
+				model.addAttribute("nombre", medicaments.size());
 			} else {
-				medicaments = medicService.findByNameLimited(nom, PageRequest.of(0, elementLimit));
+				if (medicService.count() / elementLimit < pageInt) {
+					model.addAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+					model.addAttribute("message", " Erreur : Requête invalide");
+					return "redirect:/infirmerie/inventaire/stock/0";
+				}
+				medicaments = medicService.findByNameLimited(nom, PageRequest.of(pageInt, elementLimit));
 				model.addAttribute("medicaments", medicaments);
+				long elementCount = medicService.countByName(nom);
+				model.addAttribute("nombrePage", elementCount / elementLimit);
+				model.addAttribute("nombre", elementCount);
+				System.out.println(medicService.countByName(nom));
 			}
 		} else {
-			model.addAttribute("alertClass", "alert");
+			model.addAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
 			model.addAttribute("message", " Echec de la récupération, vous recherchez un nom trop court ou trop long.");
 		}
 
-		model.addAttribute("nombre", medicaments.size());
-
-		model.addAttribute("page", 0);
-		model.addAttribute("nombrePage", 0);
+		model.addAttribute("mode", "rechercher");
+		model.addAttribute("page", pageInt);
 
 		return "backoffice/infirmerie/stock";
 	}
@@ -188,14 +214,14 @@ public class InfirmerieControllerV2 {
 	@PostMapping("/infirmerie/modifier-stock")
 	public String saveStock(final HttpServletRequest request, HttpServletResponse response,
 			RedirectAttributes redirectAttributes) {
-		
+
 		// Section de vérification inutile et inefficace
 		String requestUrl = request.getHeader("referer");
 		String domainUrl = requestUrl.substring(0, requestUrl.indexOf('/', 8));
 		requestUrl = requestUrl.substring(requestUrl.indexOf('/', 8), requestUrl.length());
-		
+
 		final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-		
+
 		if (!domainUrl.equals(baseUrl)) {
 			TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
 			redirectAttributes.addFlashAttribute("message", "Erreur : Vous avez été redirigé depuis un site tiers.");

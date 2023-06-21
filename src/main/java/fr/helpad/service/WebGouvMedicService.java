@@ -94,6 +94,11 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 	public long count() {
 		return repo.count();
 	}
+	
+	@Override
+	public long countByName(String nom) {
+		return repo.countByNomContainingIgnoreCase(nom);
+	}
 
 	private void traiterInformation(File path) throws IOException, NullPointerException, NumberFormatException {
 		System.out.println(LocalDateTime.now().toString() + " Début traitement informations.");
@@ -161,6 +166,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		Scanner sc = new Scanner(medicInput, "Cp1252");
 		Map<Long, WebGouvMedic> medicaments = repo.findAllMap();
 		Map<Long, StockMedicament> stocks = new HashMap<>();
+		stocks = repoStock.findAllPositiveMap();
 		Short baseQuantiteStock = 0;
 
 		// Traitement des spécialités
@@ -215,7 +221,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 					medoc = new WebGouvMedic(id, nom, forme, voieAdministration, statutAdministratif,
 							procedureAutorisation, etatCommercialisation, dateAMM, statutBDM, numeroAutorisationEurope,
 							titulaire, surveillanceRenforcee);
-					stocks.put(id, new StockMedicament(id, baseQuantiteStock));
+					if (stocks.get(id) == null)
+						stocks.put(id, new StockMedicament(id, baseQuantiteStock));
 					medoc.setStock(stocks.get(id));
 				}
 				// medoc = sauvegarder(medoc);
@@ -260,7 +267,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				else {
 					generique = new WebGouvMedic();
 					generique.setId(id);
-					stocks.put(id, new StockMedicament(id, baseQuantiteStock));
+					if (stocks.get(id) == null)
+						stocks.put(id, new StockMedicament(id, baseQuantiteStock));
 					generique.setStock(stocks.get(id));
 				}
 				generique.setIdentifiantGroupeGenerique(generiqueId);
@@ -370,8 +378,8 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 
 				} else {
 					System.out.println("[Présentation] Erreur de match " + speMatcher.length + " : " + line);
-					for (String s : speMatcher)
-						System.out.println(s);
+					for (String st : speMatcher)
+						System.out.println(st);
 				}
 			} else {
 				tauxRemboursement = speMatcher[8].strip();
@@ -488,6 +496,7 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 		List<File> conditionFiles = backup("medicaments/conditions.txt");
 		List<File> informationFiles = backup("medicaments/informations.txt");
 
+		// On lance les téléchargements de manière asynchrone et on les traite une fois finis.
 		CompletableFuture.supplyAsync(() -> {
 			try {
 				return getFileFromWeb(informationUrl, informationFiles);

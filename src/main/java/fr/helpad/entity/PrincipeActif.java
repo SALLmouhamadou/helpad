@@ -17,7 +17,7 @@ public class PrincipeActif {
 	private Long id;
 	private String nom;
 	@ManyToMany
-	private List<Medicament> medicaments;
+	private List<WebGouvMedic> medicaments;
 
 	public Long getId() {
 		return id;
@@ -35,22 +35,22 @@ public class PrincipeActif {
 		this.nom = nom;
 	}
 
-	public List<Medicament> getMedicaments() {
+	public List<WebGouvMedic> getMedicaments() {
 		return medicaments;
 	}
 
-	public void setMedicaments(List<Medicament> medicaments) {
+	public void setMedicaments(List<WebGouvMedic> medicaments) {
 		this.medicaments = medicaments;
 	}
 
-	public PrincipeActif(Long id, String nom, List<Medicament> medicaments) {
+	public PrincipeActif(Long id, String nom, List<WebGouvMedic> medicaments) {
 		super();
 		this.id = id;
 		this.nom = nom;
 		this.medicaments = medicaments;
 	}
 
-	public PrincipeActif(String nom, List<Medicament> medicaments) {
+	public PrincipeActif(String nom, List<WebGouvMedic> medicaments) {
 		super();
 		this.nom = nom;
 		this.medicaments = medicaments;

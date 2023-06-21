@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Liste des repas</title>
+</head>
+<body>
+
+	<h1>Liste des repas</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Date</th>
+                <th>Heure</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="repas : ${repasList}">
+                <td th:text="${repas.idRepas}"></td>
+                <td th:text="${repas.nom}"></td>
+                <td th:text="${repas.date}"></td>
+                <td th:text="${repas.horaire}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/repas/addRepas}">Ajouter un repas</a>
+</body>
+</html>

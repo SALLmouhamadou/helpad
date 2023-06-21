@@ -30,14 +30,18 @@ public class Pensionnaire extends Personne implements Serializable {
 	@OneToMany(cascade = CascadeType.MERGE)
 	private List<Visite> visites;
 	@OneToMany(cascade = CascadeType.MERGE)
-	private List<Medicament> medicaments;
+
 //	@OneToMany(cascade = CascadeType.MERGE)
 //	private List<Prescription> prescriptions;
+
+	private List<WebGouvMedic> medicaments;
+	@OneToMany(cascade = CascadeType.MERGE)
+	private List<Prescription> prescriptions;
 	@OneToOne
 	private Personne contactUrgence;
 
 	public Pensionnaire(String nom, String prenom, String email, String password, Chambre chambre, String noSecu,
-			List<Medecin> medecins, List<Visite> visites, List<Medicament> medicaments, Personne contactUrgence) {
+			List<Medecin> medecins, List<Visite> visites, List<WebGouvMedic> medicaments, Personne contactUrgence) {
 		super(nom, prenom, email, password);
 		this.chambre = chambre;
 		this.noSecu = noSecu;
@@ -66,14 +70,14 @@ public class Pensionnaire extends Personne implements Serializable {
 	/**
 	 * @return the medicaments
 	 */
-	public List<Medicament> getMedicaments() {
+	public List<WebGouvMedic> getMedicaments() {
 		return medicaments;
 	}
 
 	/**
 	 * @param medicaments the medicaments to set
 	 */
-	public void setMedicaments(List<Medicament> medicaments) {
+	public void setMedicaments(List<WebGouvMedic> medicaments) {
 		this.medicaments = medicaments;
 	}
 

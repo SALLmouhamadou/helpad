@@ -2,13 +2,11 @@ package fr.helpad.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -17,19 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.helpad.dto.CandidatureStatusDTO;
 import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
-import fr.helpad.entity.EmailDetails;
 import fr.helpad.entity.Status;
 import fr.helpad.service.CandidatService;
 import fr.helpad.service.CandidatureServiceImpl;
@@ -56,8 +48,8 @@ public class AdmissionController {
 	@GetMapping("/getAdmission")
 	public ModelAndView showAdmissionForm(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
-			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
-			mav.addObject("user", user.get());
+			Candidat user = candidatService.findByUsername(userDetails.getUsername());
+			mav.addObject("user", user);
 			mav.setViewName("frontoffice/admission");
 		} else {
 			mav.setViewName("redirect:/login");
@@ -68,8 +60,10 @@ public class AdmissionController {
 	@GetMapping("/dashboard")
 	public ModelAndView showDashbord(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
-			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
-			mav.addObject("candidat", candidat.get());
+			Candidat candidat = candidatService.findByUsername(userDetails.getUsername());
+			System.out.println(userDetails.getUsername());
+			System.out.println(userDetails);
+			mav.addObject("candidat", candidat);
 			mav.addObject("title", "Espace usager");
 			mav.setViewName("frontoffice/espacepersonnel");
 		} else {
@@ -81,8 +75,10 @@ public class AdmissionController {
 	@GetMapping("/dashboard/candidature")
 	public ModelAndView getAllCandiduturesById(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
-			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
-			mav.addObject("candidat", candidat.get());
+			Candidat candidat = candidatService.findByUsername(userDetails.getUsername());
+			
+			System.out.println(userDetails);
+			mav.addObject("candidat", candidat);
 			mav.addObject("title", "Mes candidatures");
 			mav.setViewName("frontoffice/candidature");
 		} else {
@@ -110,16 +106,17 @@ public class AdmissionController {
 			@RequestParam("file6") MultipartFile[] file6, @RequestParam("file7") MultipartFile[] file7,
 			@RequestParam("file8") MultipartFile[] file8, @RequestParam("file9") MultipartFile[] file9,
 
-			BindingResult errors, @AuthenticationPrincipal UserDetails userDetails) {
+			BindingResult errors, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 		if (errors.hasErrors()) {
 			mav.setViewName("redirect:/getAdmission");
 		}
 		try {
-			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
-			Candidat candidat1 = user.get();
-			candidat.setPassword(candidat1.getPassword());
+			Candidat user = candidatService.findByUsername(userDetails.getUsername());
+			
+			candidat.setPassword(user.getPassword());
 			String revenu = request.getParameter("revenu");
 			double revenuAnnuelle = Double.parseDouble(revenu);
+			candidat.setIdPersonne(user.getIdPersonne());
 			candidat.setRevenu(revenuAnnuelle);
 			candidat.setAdresse(adresse);
 			Status status = statusService.findStatusByLibelle(libelle);
@@ -143,27 +140,18 @@ public class AdmissionController {
 
 		} catch (Exception e) {
 			mav.addObject("candidat", candidat);
-			mav.addObject("error", "formulaire invalide merci de verifier votre saisi");
+			mav.addObject("error", "Formulaire invalide merci de verifier votre saisi");
 			mav.setViewName("frontoffice/admission");
+			
 		}
-
 		return mav;
 	}
-	@GetMapping("/mail")
-	public String sendEmail() {
-		EmailDetails mail =new EmailDetails();
-		mail.setFrom("helpad.essonne@gmail.com");
-		mail.setRecipient("salllmouha10@gmail.com");
-		mail.setSubject("Confirmation demande d'admission");
-		mail.setMsgBody("Bonjour  votre candidature a bien été envoyée");
-		emailService.sendSimpleMail(mail);
-		return "redirect:/";
-	}
+	
 	@GetMapping("/consulter")
 	public ModelAndView getDetailCandidature(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
-			Optional<Candidat> candidatD = candidatService.findByUsername(userDetails.getUsername());
-			mav.addObject("candidat", candidatD.get());
+			Candidat candidatD = candidatService.findByUsername(userDetails.getUsername());
+			mav.addObject("candidat", candidatD);
 			mav.addObject("title", "Recapitilatif");
 			mav.setViewName("frontoffice/recapitilatif");
 		} else {

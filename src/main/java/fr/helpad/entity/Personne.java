@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "PERSONNES")
+@Table(name = "PERSONNE")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Personne {
 	@Id
@@ -35,7 +35,7 @@ public class Personne {
 	private String email;
 	private String password;
 	@ManyToOne (cascade = CascadeType.ALL)
-	@JoinColumn(name = "ADRESSE")
+	@JoinColumn(name = "id_adresse")
 	private Adresse adresse;
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private Set<Role> roles;

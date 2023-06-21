@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Mes candidatures</title>
@@ -14,10 +14,7 @@
 			<div class="container-fluid">
 				<a class="navbar-brand text-white" th:href="@{/}">HELPAD</a>
 				<ul class="nav justify-content-end">
-					<li class="nav-item"><a class="nav-link text-white"
-						aria-current="page" href="#">Active</a></li>
-					<li class="nav-item"><a class="nav-link text-white" href="#">Mon
-							compte</a></li>
+					<li class="nav-item"><a class="nav-link text-white" th:href="@{/logout}">Déconnexion</a></li>
 				</ul>
 			</div>
 		</nav>

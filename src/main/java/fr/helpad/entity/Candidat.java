@@ -6,12 +6,16 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import fr.helpad.service.Encrypt;
 
 @Entity
 @Table(name = "CANDIDAT")
@@ -24,8 +28,10 @@ public class Candidat extends Personne {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "date_entree")
 	private LocalDate dateEntree;
+	@Convert(converter = Encrypt.class)
 	@Column(name = "numero_security_social", nullable = false,unique = true)
 	private String numeroSecuriteSocial;
+	@Convert(converter = Encrypt.class)
 	@Column(name = "numero_de_caf", nullable= true, unique=true)
 	private String numeroDeCaf;
 	private double revenu;

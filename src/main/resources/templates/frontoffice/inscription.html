@@ -20,7 +20,8 @@
 				</div>
 				<div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
 					<div class="card-body">
-						<h3 class="mb-2 pt-5 pb-md-0 mb-md-5">S'incrire</h3>
+						<h3 class="mb-2 pt-5 pb-md-0 mb-md-5 text-center text-primary">Veuillez vous inscrire</h3>
+						<h4 th:text="${error}" th:class="${alertClass}"></h4>
 						<div class="">
 						<span class="text-danger fw-bold" id="errorfirstname"></span>
 						<span class="text-danger fw-bold" id="errorlastname"></span>

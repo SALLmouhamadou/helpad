@@ -8,6 +8,6 @@ import fr.helpad.entity.Candidat;
 
 public interface CandidatRepository extends CrudRepository<Candidat, Long> {
 
-	Optional<Candidat> findByEmail(String user);
+	Candidat findByEmail(String email);
 	
 }

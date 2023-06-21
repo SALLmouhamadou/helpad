@@ -35,15 +35,15 @@
 				<option value="Madame">Madame</option>
 			</select>
 			<div>
-				<input type="hidden" name="idPersonne" th:value="${user.idPersonne}">
+<!-- 		<input type="hidden" name="idPersonne" th:value="${user.idPersonne}"> -->
 				<label for="nom"> Nom <span class="text-danger">*</span></label> <input
-					type="text" placeholder="DUPONT" name="nom" th:value="${user.nom}"
+					type="text" placeholder="DUPONT" name="nom" 
 					required>
 			</div>
 			<div>
 				<label for="prenom">Prénom <span class="text-danger">*</span></label>
 				<input type="text" placeholder="Jean" name="prenom"
-					th:value="${user.prenom}" required>
+					 required>
 			</div>
 			<div>
 				<label for="email"> Email <span class="text-danger">*</span></label>
@@ -219,7 +219,7 @@
 						<div>
 							<input type="checkbox" value="J'ai lu
 								et accepter les conditions générales d'utilisations des données" name="conditionGeneral" class="form-check-input"
-								id="flexCheckChecked" checked required> <label
+								id="flexCheckChecked" checked="checked"> <label
 								class="form-check-label" for="flexCheckChecked">J'ai lu
 								et accepter les conditions générales d'utilisations des données.
 							</label>
@@ -234,8 +234,6 @@
 					>Valider</button>
 				</div>
 		</div>
-		<input type="hidden" th:name="${_csrf.parameterName}"
-			th:value="${_csrf.token}" />
 	</form>
 	<footer
 		th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: footer }"></footer>

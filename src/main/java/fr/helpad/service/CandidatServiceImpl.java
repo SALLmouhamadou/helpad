@@ -22,7 +22,7 @@ public class CandidatServiceImpl implements CandidatService {
 
 	@Override
 	public Candidat sauveCandidat(Candidat candidat) {
-		//boolean isValide = true;
+
 		List<Candidature> candidatures = candidatureRepository.findByCandidat(candidat);
 		for (Candidature candidature : candidatures) {
 			if (candidature.getStatus().getLibelle().equals("En cours de traitement")
@@ -30,12 +30,12 @@ public class CandidatServiceImpl implements CandidatService {
 				return null;
 			}
 		}
-		
+
 		return candidatRepository.save(candidat);
 	}
 
 	@Override
-	public Optional<Candidat> findByUsername(String user) {
+	public Candidat findByUsername(String user) {
 		return candidatRepository.findByEmail(user);
 	}
 

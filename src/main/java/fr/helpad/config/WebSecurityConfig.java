@@ -30,9 +30,7 @@ public class WebSecurityConfig {
 			.defaultSuccessUrl("/")
 			.failureUrl("/login?error=true")
 			.permitAll();
-			
-			
-
+		
 		return http.build();
 	}
 

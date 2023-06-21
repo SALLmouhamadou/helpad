@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -220,7 +221,11 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 					medoc = new WebGouvMedic(id, nom, forme, voieAdministration, statutAdministratif,
 							procedureAutorisation, etatCommercialisation, dateAMM, statutBDM, numeroAutorisationEurope,
 							titulaire, surveillanceRenforcee);
-					stocks.put(id, new StockMedicament(id, baseQuantiteStock));
+					Optional<StockMedicament> stock = repoStock.findById(id);
+					if (stock.isEmpty())
+						stocks.put(id, new StockMedicament(id, baseQuantiteStock));
+					else
+						stocks.put(id, stock.get());
 					medoc.setStock(stocks.get(id));
 				}
 				// medoc = sauvegarder(medoc);
@@ -265,7 +270,11 @@ public class WebGouvMedicService implements WebGouvMedicServiceI {
 				else {
 					generique = new WebGouvMedic();
 					generique.setId(id);
-					stocks.put(id, new StockMedicament(id, baseQuantiteStock));
+					Optional<StockMedicament> stock = repoStock.findById(id);
+					if (stock.isEmpty())
+						stocks.put(id, new StockMedicament(id, baseQuantiteStock));
+					else
+						stocks.put(id, stock.get());
 					generique.setStock(stocks.get(id));
 				}
 				generique.setIdentifiantGroupeGenerique(generiqueId);

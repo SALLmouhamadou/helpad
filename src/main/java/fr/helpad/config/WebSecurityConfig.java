@@ -17,19 +17,20 @@ public class WebSecurityConfig {
 	
 	@Bean
 	SecurityFilterChain web(HttpSecurity http) throws Exception {
-		http
-			.authorizeHttpRequests(authorize -> authorize
-				//.mvcMatchers("/admin/**").hasRole("ADMIN")
-				//.mvcMatchers("/user/**").hasRole("USER")
-				.anyRequest().permitAll()
-			)
-			.formLogin()
-			.loginPage("/login")
-			.usernameParameter("email")
-			//.loginProcessingUrl("/process-login")
-			.defaultSuccessUrl("/")
-			.failureUrl("/login?error=true")
-			.permitAll();
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                                //.mvcMatchers("/admin/**").hasRole("ADMIN")
+                				//.mvcMatchers("/infirmerie/**").hasRole("INFIRMIERE")
+                                //.mvcMatchers("/user/**").hasRole("USER")
+                                .anyRequest().permitAll()
+                )
+                .formLogin(login -> login
+                        .loginPage("/login")
+                        .usernameParameter("email")
+                        //.loginProcessingUrl("/process-login")
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/login?error=true")
+                        .permitAll());
 			
 			
 

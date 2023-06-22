@@ -159,8 +159,8 @@ public class InfirmerieControllerV2 {
 				List<StockMedicament> stockList = stockService.findByQuantiteGreaterThan(s,
 						PageRequest.of(pageInt, 50));
 				model.addAttribute("alertClass", "alert alert-info alert-dismissible fade show");
-				model.addAttribute("message", "Cette page est limitée à 50 éléments pour des raisons techniques." + 
-				" Si vous ne trouvez pas l'objet de votre recherche, veuillez préciser la recherche.");
+				model.addAttribute("message", "Cette page est limitée à 50 éléments pour des raisons techniques."
+						+ " Si vous ne trouvez pas l'objet de votre recherche, veuillez préciser la recherche.");
 				for (StockMedicament stock : stockList) {
 					WebGouvMedic med = medicService.get(stock.getCodeCis());
 					if (med.getNom().toLowerCase().contains(nom.toLowerCase()))
@@ -229,6 +229,28 @@ public class InfirmerieControllerV2 {
 			return "redirect:" + "/infirmerie/inventaire";
 		}
 		// Fin de section
+		if (request.getParameter("id").isEmpty() || request.getParameter("id") == null
+				|| request.getParameter("id").length() > 301 || request.getParameter("id").length() <= 0) {
+			System.out.println(request.getParameter("id").length());
+			TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
+			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+		}
+		if (request.getParameter("nomMedic").isEmpty() || request.getParameter("nomMedic") == null
+				|| request.getParameter("nomMedic").length() > 45000
+				|| request.getParameter("nomMedic").length() <= 0) {
+			System.out.println(request.getParameter("id").length());
+			TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
+			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+		}
+		if (request.getParameter("stock").isEmpty() || request.getParameter("stock") == null
+				|| request.getParameter("stock").length() > 151 || request.getParameter("stock").length() <= 0) {
+			System.out.println(request.getParameter("id").length());
+			TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
+			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+		}
 
 		String[] idsString = request.getParameterValues("id");
 		String[] quantitesEnStock = request.getParameterValues("stock");
@@ -244,14 +266,23 @@ public class InfirmerieControllerV2 {
 		} else {
 			int index = 0;
 			for (String idString : idsString) {
+				if (idString == null || idString.length() != 8) {
+					TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
+					redirectAttributes.addFlashAttribute("message",
+							"Erreur : Impossible de récupérer l'ID du médicament.");
+					redirectAttributes.addFlashAttribute("alertClass",
+							"alert alert-danger alert-dismissible fade show");
+					return "redirect:" + requestUrl;
+				}
 				String nom = noms[index];
 				String quantiteEnStock = quantitesEnStock[index];
+
 				index++;
 				Long id = -1l;
 
-				if (idString != null)
+				try {
 					id = Long.parseLong(idString);
-				else {
+				} catch (NumberFormatException e) {
 					TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
 					redirectAttributes.addFlashAttribute("message",
 							"Erreur : Impossible de récupérer l'ID du médicament.");

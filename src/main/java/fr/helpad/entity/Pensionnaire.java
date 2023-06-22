@@ -31,8 +31,8 @@ public class Pensionnaire extends Personne implements Serializable {
 	private List<Visite> visites;
 	@OneToMany(cascade = CascadeType.MERGE)
 	private List<WebGouvMedic> medicaments;
-	@OneToMany(cascade = CascadeType.MERGE)
-	private List<Prescription> prescriptions;
+//	@OneToMany(cascade = CascadeType.MERGE)
+//	private List<Prescription> prescriptions;
 	@OneToOne
 	private Personne contactUrgence;
 

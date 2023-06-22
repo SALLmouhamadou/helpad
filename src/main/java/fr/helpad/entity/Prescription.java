@@ -15,7 +15,6 @@ import javax.persistence.OneToOne;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@Entity
 @IdClass(Prescription.class)
 public class Prescription implements Serializable {
 	/**

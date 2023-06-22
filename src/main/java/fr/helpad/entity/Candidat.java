@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -25,8 +26,10 @@ public class Candidat extends Personne {
 	@Column(name = "date_entree")
 	private LocalDate dateEntree;
 	@Column(name = "numero_security_social", nullable = false,unique = true)
+	@Length(max = 15)
 	private String numeroSecuriteSocial;
 	@Column(name = "numero_de_caf", nullable= true, unique=true)
+	@Length(max = 7)
 	private String numeroDeCaf;
 	private double revenu;
 	

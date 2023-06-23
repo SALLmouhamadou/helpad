@@ -2,6 +2,7 @@ package fr.helpad.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -124,7 +125,13 @@ public class InfirmerieControllerV2 {
 	@GetMapping("/infirmerie/inventaire/rechercher")
 	public String chercher(Model model, @RequestParam(defaultValue = "") String nom,
 			@RequestParam(defaultValue = "off") String isStock, @RequestParam(defaultValue = "0") String page) {
-		model.addAttribute("dateMaj", WebGouvMAJDate.dateMiseAJour);
+
+		if (nom == null || isStock == null || page == null || nom.length() > 1000 || nom.contains("\"") || isStock.length() > 3) {
+			System.out.println(nom + " : " + nom.length() + " caractères");
+			model.addAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+			model.addAttribute("message", " Erreur : Requête invalide");
+			return "redirect:/infirmerie/inventaire/stock/0";
+		}
 
 		model.addAttribute("recherche", nom);
 
@@ -135,7 +142,7 @@ public class InfirmerieControllerV2 {
 		try {
 			pageInt = Integer.parseInt(page);
 		} catch (Exception e) {
-			model.addAttribute("alertClass", "alert");
+			model.addAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
 			model.addAttribute("message", " Erreur : Requête invalide");
 		}
 
@@ -150,7 +157,9 @@ public class InfirmerieControllerV2 {
 				if (nom.equals(""))
 					return "redirect:/infirmerie/inventaire/stock/0";
 				short s = 0;
-				if (stockService.countPositive() / elementLimit < pageInt) {
+				// On vérifie si la page demandée n'est pas en dehors des limites de la
+				// recherche
+				if (pageInt < 0 && stockService.countPositive() / elementLimit < pageInt) {
 					model.addAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
 					model.addAttribute("message", "Erreur : Requête invalide");
 					return "redirect:/infirmerie/inventaire/stock/0";
@@ -159,8 +168,8 @@ public class InfirmerieControllerV2 {
 				List<StockMedicament> stockList = stockService.findByQuantiteGreaterThan(s,
 						PageRequest.of(pageInt, 50));
 				model.addAttribute("alertClass", "alert alert-info alert-dismissible fade show");
-				model.addAttribute("message", "Cette page est limitée à 50 éléments pour des raisons techniques." + 
-				" Si vous ne trouvez pas l'objet de votre recherche, veuillez préciser la recherche.");
+				model.addAttribute("message", "Cette page est limitée à 50 éléments pour des raisons techniques."
+						+ " Si vous ne trouvez pas l'objet de votre recherche, veuillez préciser la recherche.");
 				for (StockMedicament stock : stockList) {
 					WebGouvMedic med = medicService.get(stock.getCodeCis());
 					if (med.getNom().toLowerCase().contains(nom.toLowerCase()))
@@ -214,44 +223,54 @@ public class InfirmerieControllerV2 {
 	@PostMapping("/infirmerie/modifier-stock")
 	public String saveStock(final HttpServletRequest request, HttpServletResponse response,
 			RedirectAttributes redirectAttributes) {
-
-		// Section de vérification inutile et inefficace
 		String requestUrl = request.getHeader("referer");
-		String domainUrl = requestUrl.substring(0, requestUrl.indexOf('/', 8));
-		requestUrl = requestUrl.substring(requestUrl.indexOf('/', 8), requestUrl.length());
 
-		final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-
-		if (!domainUrl.equals(baseUrl)) {
-			TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
-			redirectAttributes.addFlashAttribute("message", "Erreur : Vous avez été redirigé depuis un site tiers.");
+		if (request == null || request.getParameter("id") == null || request.getParameter("id").isEmpty()
+				|| request.getParameter("id").length() > 301 || request.getParameter("id").length() <= 0) {
+			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
 			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
-			return "redirect:" + "/infirmerie/inventaire";
 		}
-		// Fin de section
+		if (request.getParameter("nomMedic") == null || request.getParameter("nomMedic").isEmpty()
+				|| request.getParameter("nomMedic").length() > 45000
+				|| request.getParameter("nomMedic").length() <= 0) {
+			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+		}
+		if (request.getParameter("stock") == null || request.getParameter("stock").isEmpty()
+				|| request.getParameter("stock").length() > 151 || request.getParameter("stock").length() <= 0) {
+			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
+			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
+		}
 
 		String[] idsString = request.getParameterValues("id");
 		String[] quantitesEnStock = request.getParameterValues("stock");
 		String[] noms = request.getParameterValues("nomMedic");
 		int nbModif = 0;
 
-		if (idsString == null || idsString.length != quantitesEnStock.length || idsString.length != noms.length
-				|| idsString.length == 0) {
-			TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
+		if (idsString == null || noms == null || quantitesEnStock == null || idsString.length != quantitesEnStock.length
+				|| idsString.length != noms.length || idsString.length == 0) {
 			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
 			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
 			return "redirect:" + requestUrl;
 		} else {
 			int index = 0;
 			for (String idString : idsString) {
+				if (idString == null || idString.length() != 8) {
+					TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
+					redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
+					redirectAttributes.addFlashAttribute("alertClass",
+							"alert alert-danger alert-dismissible fade show");
+					return "redirect:" + requestUrl;
+				}
 				String nom = noms[index];
 				String quantiteEnStock = quantitesEnStock[index];
+
 				index++;
 				Long id = -1l;
 
-				if (idString != null)
+				try {
 					id = Long.parseLong(idString);
-				else {
+				} catch (NumberFormatException e) {
 					TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
 					redirectAttributes.addFlashAttribute("message",
 							"Erreur : Impossible de récupérer l'ID du médicament.");
@@ -264,14 +283,13 @@ public class InfirmerieControllerV2 {
 				WebGouvMedic verifId;
 				boolean isValide = false;
 
-				if (nom.length() > 2 && nom.length() < 1000 && id > 0) {
+				if (nom.length() > 2 && nom.length() < 1000 && id.toString().length() == 8) {
 					verifNom = medicService.findByNameExactLimited(nom, PageRequest.of(0, 1));
 					verifId = medicService.get(id);
 				} else {
 					System.out.println("nom : " + nom + " id : " + id);
 					TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
-					redirectAttributes.addFlashAttribute("message",
-							"Erreur : Le nom du médicament était hors des limites de la taille de recherche.");
+					redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
 					redirectAttributes.addFlashAttribute("alertClass",
 							"alert alert-danger alert-dismissible fade show");
 					return "redirect:" + requestUrl;

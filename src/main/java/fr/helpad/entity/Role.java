@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.validator.constraints.Length;
+
 @Entity
 public class Role {
 private static final long serialVersionUID = 1L;
@@ -18,8 +20,10 @@ private static final long serialVersionUID = 1L;
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_role", length = 20)
 	private Long idRole;
-	
-	@Column(nullable = false)
+		
+
+	@Column(nullable = false, unique = true)
+	@Length(max = 150)
 	private String libelle;
 	
 	@ManyToMany(mappedBy = "roles")

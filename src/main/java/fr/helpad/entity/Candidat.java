@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import fr.helpad.service.Encrypt;
@@ -28,11 +29,15 @@ public class Candidat extends Personne {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "date_entree")
 	private LocalDate dateEntree;
+
 	@Convert(converter = Encrypt.class)
-	@Column(name = "numero_security_social", unique = true)
+	@Column(name = "numero_security_social", nullable = false,unique = true)
+	@Length(max = 15)
 	private String numeroSecuriteSocial;
 	@Convert(converter = Encrypt.class)
-	@Column(name = "numero_de_caf", unique=true)
+	@Column(name = "numero_de_caf", nullable= true, unique=true)
+	@Length(max = 7)
+
 	private String numeroDeCaf;
 	private double revenu;
 	

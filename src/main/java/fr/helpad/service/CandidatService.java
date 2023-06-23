@@ -10,5 +10,5 @@ public interface CandidatService {
     public List<Candidat> findAllCandidats();
     public Candidat get(Long id);
     public void delete(Long id);
-	Candidat findByUsername(String user);
+	Optional<Candidat> findByUsername(String user);
 }

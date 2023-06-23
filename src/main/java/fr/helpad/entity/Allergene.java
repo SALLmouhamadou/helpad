@@ -20,7 +20,7 @@ public class Allergene implements Serializable {
 	private static final long serialVersionUID = 3L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_ALLERGENE")
+	@Column(name = "ID_ALLERGENE", length = 50)
 	private Long idAllergene;
 	private String nomAllergene;
 	@ManyToMany(cascade = CascadeType.ALL)

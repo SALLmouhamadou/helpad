@@ -16,9 +16,10 @@ private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_role", length = 20)
 	private Long idRole;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String libelle;
 	
 	@ManyToMany(mappedBy = "roles")

@@ -19,7 +19,7 @@ public class Pensionnaire extends Personne implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2L;
+	//private static final long serialVersionUID = 2L;
 	@Autowired
 	@ManyToOne
 	private Chambre chambre;
@@ -35,8 +35,7 @@ public class Pensionnaire extends Personne implements Serializable {
 //	private List<Prescription> prescriptions;
 
 	private List<WebGouvMedic> medicaments;
-	@OneToMany(cascade = CascadeType.MERGE)
-	private List<Prescription> prescriptions;
+
 	@OneToOne
 	private Personne contactUrgence;
 
@@ -84,9 +83,9 @@ public class Pensionnaire extends Personne implements Serializable {
 	/**
 	 * @return the serialversionuid
 	 */
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
+//	public static long getSerialversionuid() {
+//		return serialVersionUID;
+//	}
 
 	/**
 	 * @return the contactUrgence

@@ -2,6 +2,7 @@ package fr.helpad.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import fr.helpad.entity.Adresse;
 import fr.helpad.entity.Candidat;
 import fr.helpad.entity.Candidature;
+import fr.helpad.entity.Personne;
 import fr.helpad.entity.Status;
 import fr.helpad.service.CandidatService;
 import fr.helpad.service.CandidatureServiceImpl;
@@ -48,7 +50,7 @@ public class AdmissionController {
 	@GetMapping("/getAdmission")
 	public ModelAndView showAdmissionForm(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
-			Candidat user = candidatService.findByUsername(userDetails.getUsername());
+			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
 			mav.addObject("user", user);
 			mav.setViewName("frontoffice/admission");
 		} else {
@@ -60,10 +62,10 @@ public class AdmissionController {
 	@GetMapping("/dashboard")
 	public ModelAndView showDashbord(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
-			Candidat candidat = candidatService.findByUsername(userDetails.getUsername());
+			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
 			System.out.println(userDetails.getUsername());
 			System.out.println(userDetails);
-			mav.addObject("candidat", candidat);
+			mav.addObject("user", candidat.get());
 			mav.addObject("title", "Espace usager");
 			mav.setViewName("frontoffice/espacepersonnel");
 		} else {
@@ -75,10 +77,8 @@ public class AdmissionController {
 	@GetMapping("/dashboard/candidature")
 	public ModelAndView getAllCandiduturesById(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
-			Candidat candidat = candidatService.findByUsername(userDetails.getUsername());
-			
-			System.out.println(userDetails);
-			mav.addObject("candidat", candidat);
+			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
+			mav.addObject("candidat", candidat.get());
 			mav.addObject("title", "Mes candidatures");
 			mav.setViewName("frontoffice/candidature");
 		} else {
@@ -111,12 +111,12 @@ public class AdmissionController {
 			mav.setViewName("redirect:/getAdmission");
 		}
 		try {
-			Candidat user = candidatService.findByUsername(userDetails.getUsername());
+			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
 			
-			candidat.setPassword(user.getPassword());
+			candidat.setPassword(user.get().getPassword());
 			String revenu = request.getParameter("revenu");
 			double revenuAnnuelle = Double.parseDouble(revenu);
-			candidat.setIdPersonne(user.getIdPersonne());
+			candidat.setIdPersonne(user.get().getIdPersonne());
 			candidat.setRevenu(revenuAnnuelle);
 			candidat.setAdresse(adresse);
 			Status status = statusService.findStatusByLibelle(libelle);
@@ -150,8 +150,8 @@ public class AdmissionController {
 	@GetMapping("/consulter")
 	public ModelAndView getDetailCandidature(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
-			Candidat candidatD = candidatService.findByUsername(userDetails.getUsername());
-			mav.addObject("candidat", candidatD);
+			Optional<Candidat> candidatD = candidatService.findByUsername(userDetails.getUsername());
+			mav.addObject("candidat", candidatD.get());
 			mav.addObject("title", "Recapitilatif");
 			mav.setViewName("frontoffice/recapitilatif");
 		} else {

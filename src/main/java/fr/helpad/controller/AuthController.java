@@ -50,6 +50,7 @@ public class AuthController {
                     mv.setViewName("frontoffice/inscription");
             } else {
             	try {
+//            		personne.setDateNaissance(LocalDate.of(0, 0, 0));
             		personne.setNumeroSecuriteSocial("");
             		personneService.save(personne);
                     mv.setViewName("redirect:/login");
@@ -57,7 +58,7 @@ public class AuthController {
             		List<Role> roles = roleServiceImpl.getRoles();
                     mv.addObject("roles", roles);
                     mv.addObject("personne", personne);
-                    mv.addObject("error", "Email existe déja");
+                    mv.addObject("error", e.getMessage());
                     mv.addObject("alertClass", "alert alert-danger alert-dismissible fade show");
                     mv.setViewName("frontoffice/inscription");
             	}

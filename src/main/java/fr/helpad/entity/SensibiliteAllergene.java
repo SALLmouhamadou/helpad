@@ -20,14 +20,14 @@ public class SensibiliteAllergene implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2817514642991327179L;
+//	private static final long serialVersionUID = -2817514642991327179L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	@Column(name = "ID_PERSONNE", unique = true, nullable = false)
-	@Autowired
+//	@Autowired
 	private Pensionnaire pensionnaire;
-	@Autowired
+//	@Autowired
 	@Column(name = "ID_ALLERGENE", unique = true, nullable = false)
 	private Allergene allergene;
 	@Column(name = "EN_CAS_DE_CRISE")

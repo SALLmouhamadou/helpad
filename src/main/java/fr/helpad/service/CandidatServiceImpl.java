@@ -35,7 +35,7 @@ public class CandidatServiceImpl implements CandidatService {
 	}
 
 	@Override
-	public Candidat findByUsername(String user) {
+	public Optional<Candidat> findByUsername(String user) {
 		return candidatRepository.findByEmail(user);
 	}
 

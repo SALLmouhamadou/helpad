@@ -126,7 +126,7 @@ public class InfirmerieControllerV2 {
 	public String chercher(Model model, @RequestParam(defaultValue = "") String nom,
 			@RequestParam(defaultValue = "off") String isStock, @RequestParam(defaultValue = "0") String page) {
 
-		if (nom == null || nom.length() > 1000 || nom.contains("\"") || isStock.length() > 3) {
+		if (nom == null || isStock == null || page == null || nom.length() > 1000 || nom.contains("\"") || isStock.length() > 3) {
 			System.out.println(nom + " : " + nom.length() + " caractères");
 			model.addAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
 			model.addAttribute("message", " Erreur : Requête invalide");

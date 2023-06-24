@@ -1,8 +1,5 @@
 var date_naissance_input = document.getElementById("dateNaissance");
 date_naissance_input.addEventListener("blur", validateDateNaissanceForm);
-var date_entree_input = document.getElementById("dateEntree");
-date_entree_input.addEventListener("blur", validateDateEntreeForm);
-
 function validateDateNaissanceForm() {
 	// Validation de la date de naissance
 	var date_naissance_input = document.getElementById("dateNaissance");
@@ -19,9 +16,91 @@ function validateDateNaissanceForm() {
 		return false;
 	} else {
 		date_naissance_error.innerHTML = "";
+		document.getElementById('btnDateNaissance').disabled = false;
 	}
 	return true;
 }
+//Validation de l'adresse
+// Validation de numéro de rue 
+var numberAdresse = document.getElementById("number");
+numberAdresse.addEventListener("blur", validateNumeroForm)
+function validateNumeroForm(){
+	var numberAdresse = document.getElementById("number");
+	if (numberAdresse.value == "") {
+		document.getElementById('numberError').innerHTML = "Numéro invalide. Merci de renseigner";
+		document.getElementById('btnAdresse').disabled = true;
+		return false;
+	} else {
+		document.getElementById('numberError').innerHTML = "";
+		document.getElementById('btnAdresse').disabled = false;
+	}
+	return true;
+}
+// Validation de nom de rue 
+var rueAdresse = document.getElementById("rue");
+rueAdresse.addEventListener("change", validateRueForm)
+function validateRueForm(){
+	var rueAdresse = document.getElementById("rue");
+	if (rueAdresse.value == "") {
+		document.getElementById('rueError').innerHTML = "Rue invalide. Merci de renseigner";
+		document.getElementById('btnAdresse').disabled = true;
+		return false;
+	} else {
+		document.getElementById('rueError').innerHTML = "";
+		document.getElementById('btnAdresse').disabled = false;
+	}
+	return true;
+}
+//validation de nom de la ville
+var villeAdresse = document.getElementById("ville");
+villeAdresse.addEventListener("blur", validateVilleForm)
+function validateVilleForm(){
+	var villeAdresse = document.getElementById("ville");
+	if (villeAdresse.value == "") {
+		document.getElementById('villeError').innerHTML = "Le nom de la ville est  invalide. Merci de renseigner";
+		document.getElementById('btnAdresse').disabled = true;
+		return false;
+	} else {
+		document.getElementById('villeError').innerHTML = "";
+		document.getElementById('btnAdresse').disabled = false;
+	}
+	return true;
+}
+// validation de code Postale
+var codePostalAdresse = document.getElementById("codePostal");
+codePostalAdresse.addEventListener("blur", validateCodePostalForm)
+function validateCodePostalForm(){
+	var codePostalAdresse = document.getElementById("codePostal");
+	if (codePostalAdresse.value != "") {
+		document.getElementById('codePostalError').innerHTML = "";
+		document.getElementById('btnAdresse').disabled = false;
+	} else {
+		document.getElementById('codePostalError').innerHTML = "Le code postale  est  invalide. Merci de renseigner";
+		document.getElementById('btnAdresse').disabled = true;
+		return false;
+	}
+	return true;
+}
+//Validation de pays 
+var paysAdresse = document.getElementById("pays");
+paysAdresse.addEventListener("change", validatePaysForm)
+function validatePaysForm(){
+	var paysAdresse = document.getElementById("pays");
+	if (paysAdresse.value != "") {
+		document.getElementById('paysError').innerHTML = "";
+		document.getElementById('btnAdresse').disabled = false;
+	} else {
+		document.getElementById('paysError').innerHTML = "Pays invalide. Merci de renseigner";
+		document.getElementById('btnAdresse').disabled = true;
+		return false;
+	}
+	return true;
+}
+
+
+var date_entree_input = document.getElementById("dateEntree");
+date_entree_input.addEventListener("blur", validateDateEntreeForm);
+//Validation candidature
 // Validation de la date d'entrée
 function validateDateEntreeForm() {
 	var date_entree_input = document.getElementById("dateEntree");
@@ -39,6 +118,7 @@ function validateDateEntreeForm() {
 		return false;
 	} else {
 		date_entree_error.innerHTML = "";
+		document.getElementById('btnDateEntree').disabled = false;
 	}
 
 	// Si toutes les validations sont réussies
@@ -50,7 +130,6 @@ function validateDateEntreeForm() {
 var fileInput = document.getElementsByClassName('fileInput');
 for(var i=0; i<fileInput.length; i++){
 	var errorMessage = document.getElementById('errorMessage');
-	console.log(fileInput[i])
 	fileInput[i].addEventListener('change', function(event) {
 	const file = event.target.files[0];
 	if (file.type.startsWith('image/')) {

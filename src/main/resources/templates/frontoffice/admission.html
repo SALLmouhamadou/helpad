@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Helpad</title>
+<title>Demande d'admission</title>
 <link rel="stylesheet" type="text/css"
 	href="../static/css/bootstrap.min.css"
 	th:href="@{/css/bootstrap.min.css}" />
@@ -38,12 +38,12 @@
 <!-- 		<input type="hidden" name="idPersonne" th:value="${user.idPersonne}"> -->
 				<label for="nom"> Nom <span class="text-danger">*</span></label> <input
 					type="text" placeholder="DUPONT" name="nom" 
-					required>
+					>
 			</div>
 			<div>
 				<label for="prenom">Prénom <span class="text-danger">*</span></label>
 				<input type="text" placeholder="Jean" name="prenom"
-					 required>
+					 >
 			</div>
 			<div>
 				<label for="email"> Email <span class="text-danger">*</span></label>
@@ -52,14 +52,14 @@
 			<div>
 				<label for="telephone">Téléphone<span class="text-danger">*</span></label>
 				<input type="text" placeholder="0033700000000" name="telephone"
-					required>
+					>
 			</div>
 			<div>
 				<label for="dateNaissance">Date naissance <span
 					class="text-danger">*</span></label> <br> <span
 					id="dateNaissanceError" class="text-danger"></span> <input
 					type="date" placeholder="Date naissance" id="dateNaissance"
-					name="dateNaissance">
+					name="dateNaissance" required>
 			</div>
 			<div class="index-btn-wrapper">
 				<button class="index-btn" id="btnDateNaissance" onclick="run(1, 2);">Suivant</button>
@@ -69,28 +69,36 @@
 		<div class="tab" id="tab-2">
 			<p>Adresse:</p>
 			<div>
-				<label for="numero"> N° <span class="text-danger">*</span></label> <input
-					type="number" placeholder="85" id="numero" name="numero">
+				<label for="numero"> N° <span class="text-danger">*</span></label>
+				<span id="numberError" class="text-danger"> </span>
+				 <input type="text" placeholder="85" id="number" name="numero" required>
 			</div>
 			<div>
-				<label for="rue">Rue <span class="text-danger">*</span></label> <input
-					type="text" placeholder="Boulevard de la paris" id="rue" name="rue">
+			
+				<label for="rue">Rue <span class="text-danger">*</span></label>
+				<span id="rueError" class="text-danger"> </span>
+				 <input
+					type="text" placeholder="Boulevard de la paris" id="rue" name="rue" required>
 				<div>
 					<label for="ville">Ville <span class="text-danger">*</span></label>
-					<input type="text" placeholder="Paris" id="ville" name="ville">
+					<span id="villeError" class="text-danger"> </span>
+					<input type="text" placeholder="Paris" id="ville" name="ville" required>
 				</div>
 				<div>
 					<label for="codePostal">Code postal <span
-						class="text-danger">*</span></label><input type="text" id="codePostal"
-						placeholder="75015" name="codePostal">
+						class="text-danger">*</span></label>
+						<span id="codePostalError" class="text-danger"> </span>
+						<input type="text" id="codePostal"
+						placeholder="75015" name="codePostal" required>
 				</div>
 				<div>
 					<label for="pays"> Pays <span class="text-danger">*</span></label>
-					<input type="text" placeholder="Pays" id="pays" name="pays">
+					<span id="paysError" class="text-danger"> </span>
+					<input type="text" placeholder="Pays" id="pays" name="pays" required>
 				</div>
 				<div class="index-btn-wrapper">
 					<div class="index-btn" onclick="run(2, 1);">Précedent</div>
-					<div class="index-btn" onclick="run(2, 3);">Suivant</div>
+					<button class="index-btn" id="btnAdresse" onclick="run(2, 3);">Suivant</button>
 				</div>
 			</div>
 		</div>
@@ -118,7 +126,7 @@
 					placeholder="Revenu" name="revenu">
 			</div>
 			<input type="hidden" name="libelle" value="En cours de traitement" />
-			<select name="pathologie" id="pathologie-select" required>
+			<select name="pathologie" id="pathologie-select">
 				<option value="">Avez vous des pathologies ?</option>
 				<option value="Oui">Oui</option>
 				<option value="Non">Non</option>
@@ -242,11 +250,23 @@
 		$(".tab").css("display", "none");
 		$("#tab-1").css("display", "block");
 
-		function run(hideTab, showTab) {
+		function run(hideTab, showTab){
+	        if(hideTab < showTab){ // If not press previous button
+	          // Validation if press next button
+	          var currentTab = 0;
+	          x = $('#tab-'+hideTab);
+	          y = $(x).find("required")
+	          for (i = 0; i < y.length; i++){
+	            if (y[i].value == ""){
+	              $(y[i]).css("background", "#ffdddd");
+	              return false;
+	            }
+	          }
+	        }
 
 			// Progress bar
 			for (i = 1; i < showTab; i++) {
-				$("#step-" + i).css("opacity", "4");
+				$("#step-" + i).css("opacity", "1");
 			}
 
 			// Switch tab

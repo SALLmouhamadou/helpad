@@ -21,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import net.bytebuddy.implementation.bytecode.Throw;
 
-
 @Service
 public class FileSystemStorageService implements StorageService {
 	private final Path rootLocation;
@@ -39,21 +38,28 @@ public class FileSystemStorageService implements StorageService {
 		} catch (IOException e) {
 		}
 	}
-	
+
 	@Override
 	public String store(MultipartFile[] files) throws Exception {
-		String filename="";
-		for(MultipartFile file :files) {
-			 filename = StringUtils.cleanPath(file.getOriginalFilename());
+		String filename = "";
+		for (MultipartFile file : files) {
+			filename = StringUtils.cleanPath(file.getOriginalFilename());
 			if (file.isEmpty()) {
+				
 			}
 			if (filename.contains("..")) {
 			}
-			if(filename.endsWith(".pdf")|| filename.endsWith(".jpg") || filename.endsWith(".jpeg")||filename.endsWith(".png")) {
-			try (InputStream inputStream = file.getInputStream()) {
-				Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException e) {}}
-			
+			if (filename.endsWith(".pdf") || filename.endsWith(".jpg") || filename.endsWith(".jpeg")
+					|| filename.endsWith(".png")) {
+				try (InputStream inputStream = file.getInputStream()) {
+					Files.copy(inputStream, this.rootLocation.resolve(filename), StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e) {
+				}
+			}
+			else {
+				System.out.println(filename);
+			}
+
 		}
 		return filename;
 	}

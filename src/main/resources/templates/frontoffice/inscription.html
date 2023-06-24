@@ -73,11 +73,7 @@
 											id="password" class="form-control form-control-lg"
 											placeholder="" required/>
 									</div>
-									<div th:each="personne : ${personne}">
-										<input type="text" th:each="role :${personne.roles}"
-											th:field="*{roles}" th:text="${role.libelle}"
-											th:value="${role.id}">
-									</div>
+<!-- 									<input type="hidden" name="libelle" value="ROLE_CANDIDAT"> -->
 								</div>
 							</div>
 							<div class="mt-4 pt-2">

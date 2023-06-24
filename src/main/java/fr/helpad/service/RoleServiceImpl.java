@@ -16,4 +16,5 @@ public class RoleServiceImpl {
 	public List<Role> getRoles(){
 		return (List<Role>) repository.findAll();
 	}
+	
 }

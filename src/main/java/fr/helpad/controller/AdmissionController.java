@@ -61,11 +61,19 @@ public class AdmissionController {
 
 	@GetMapping("/dashboard")
 	public ModelAndView showDashbord(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
-		if (userDetails != null) {
+	
+		if (userDetails != null && userDetails.getUsername()!=null) {
 			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
+			Optional<Personne> user = personneService.findByUsername(userDetails.getUsername());
 			System.out.println(userDetails.getUsername());
 			System.out.println(userDetails);
-			mav.addObject("user", candidat.get());
+			try {
+				mav.addObject("user", candidat.get());
+				mav.addObject("user", user.get());
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
 			mav.addObject("title", "Espace usager");
 			mav.setViewName("frontoffice/espacepersonnel");
 		} else {

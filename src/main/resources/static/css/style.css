@@ -46,15 +46,15 @@
   }
   
   .step{
-    height: 80px;
-    width: 150px;
+    height: 90px;
+    width: 180px;
     line-height: 60px;
     margin: 0 50px 0;
     color:white;
-    background:#4242f8;
+    background:blue;
     border-radius: 50%;
     display: inline-block;
-    opacity: 0.9;
+    opacity: 0.25;
   }
  
  /* confirmation */

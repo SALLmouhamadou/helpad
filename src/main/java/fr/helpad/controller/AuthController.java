@@ -50,7 +50,7 @@ public class AuthController {
                     mv.setViewName("frontoffice/inscription");
             } else {
             	try {
-//            		personne.setDateNaissance(LocalDate.of(0, 0, 0));
+            		personne.setDateNaissance(LocalDate.of(1953, 10, 01));
             		personne.setNumeroSecuriteSocial("");
             		personneService.save(personne);
                     mv.setViewName("redirect:/login");

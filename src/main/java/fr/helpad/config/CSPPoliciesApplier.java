@@ -155,10 +155,10 @@ public class CSPPoliciesApplier implements Filter {
         }
         byte[] digest = sha.digest(randomNum.getBytes());
         // --Encode it into HEXA
-        String scriptNonce = Hex.encodeHexString(digest);
-        policiesBuffer.append(";").append("script-nonce ").append(scriptNonce);
+        //String scriptNonce = Hex.encodeHexString(digest);
+        //policiesBuffer.append(";").append("script-nonce ").append(scriptNonce);
         // --Made available script nonce in view app layer
-        httpRequest.setAttribute("CSP_SCRIPT_NONCE", scriptNonce);
+        //httpRequest.setAttribute("CSP_SCRIPT_NONCE", scriptNonce);
 
         // Add policies to all HTTP headers
         for (String header : this.cspHeaders) {

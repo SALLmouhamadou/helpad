@@ -23,7 +23,7 @@ public class StockMedicamentService implements StockMedicamentServiceI {
 	
 	@Override
 	public StockMedicament sauvegarder(StockMedicament entity) throws NumberFormatException {
-		if (entity.getQuantite() < 0)
+		if (entity.getQuantite() < 0 || entity.getQuantite() > 1000)
 			throw new NumberFormatException();
 		return repo.save(entity);
 	}

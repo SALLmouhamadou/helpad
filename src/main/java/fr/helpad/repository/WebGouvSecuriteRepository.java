@@ -9,9 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import fr.helpad.entity.WebGouvSecurite;
 
 public interface WebGouvSecuriteRepository extends CrudRepository<WebGouvSecurite, Long> {
-	public List<WebGouvSecurite> findAll();
-
     public default Map<Long, WebGouvSecurite> findAllMap() {
-        return findAll().stream().collect(Collectors.toMap(WebGouvSecurite::getId, v -> v));
+        return ((List<WebGouvSecurite>) findAll()).stream().collect(Collectors.toMap(WebGouvSecurite::getId, v -> v));
     }
 }

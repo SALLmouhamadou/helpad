@@ -3,7 +3,7 @@ package fr.helpad.service;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public interface BasicBusiness<T> {
+public interface BasicService<T> {
 	public T sauvegarder(T entity);
 	
 	public List<T> listerTout();

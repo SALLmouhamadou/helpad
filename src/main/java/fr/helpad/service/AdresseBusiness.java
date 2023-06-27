@@ -10,7 +10,7 @@ import fr.helpad.entity.Adresse;
 import fr.helpad.repository.AdresseRepository;
 
 @Service("adresseBusiness")
-public class AdresseBusiness implements BasicBusiness<Adresse> {
+public class AdresseBusiness implements BasicService<Adresse> {
 
 	@Autowired
 	AdresseRepository repo;

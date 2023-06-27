@@ -4,6 +4,6 @@ import java.util.List;
 
 import fr.helpad.entity.Nutritionniste;
 
-public interface NutritionnisteService extends BasicBusiness<Nutritionniste>{
+public interface NutritionnisteService extends BasicService<Nutritionniste>{
 	
 }

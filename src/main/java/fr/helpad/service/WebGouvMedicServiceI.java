@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 
 import fr.helpad.entity.WebGouvMedic;
 
-public interface WebGouvMedicServiceI extends BasicBusiness<WebGouvMedic> {
+public interface WebGouvMedicServiceI extends BasicService<WebGouvMedic> {
 	public String setMedicaments() throws MalformedURLException, IOException, ProtocolException;
 	public List<WebGouvMedic> findByNameLimited(String nom, Pageable pageable);
 	public long count();

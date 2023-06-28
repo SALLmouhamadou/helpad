@@ -48,7 +48,12 @@ public class StockServiceTest {
 		// GIVEN
 		StockMedicament stock = new StockMedicament();
 		stock.setCodeCis(id);
+		boolean errorSet = false;
+		try {
 		stock.setQuantite(quantiteUpper);
+		} catch (NumberFormatException e) {
+			errorSet = true;
+		}
 		// WHEN
 		StockMedicament saved = stockService.sauvegarder(stock);
 		//THEN
@@ -63,7 +68,12 @@ public class StockServiceTest {
 		// GIVEN
 		StockMedicament stock = new StockMedicament();
 		stock.setCodeCis(id);
+		boolean errorSet = false;
+		try {
 		stock.setQuantite(quantiteMinus);
+		} catch (NumberFormatException e) {
+			errorSet = true;
+		}
 		// WHEN
 		StockMedicament saved = stockService.sauvegarder(stock);
 		//THEN

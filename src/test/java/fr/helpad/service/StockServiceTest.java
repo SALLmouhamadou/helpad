@@ -3,6 +3,7 @@ package fr.helpad.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -61,6 +62,7 @@ public class StockServiceTest {
 		assertNotNull(stock);
 		assertNotEquals(stock.getQuantite(), quantiteUpper);
 		assertEquals(saved.getQuantite(), stock.getQuantite());
+		assertTrue(errorSet);
 	}
 	
 	@Test
@@ -81,6 +83,7 @@ public class StockServiceTest {
 		assertNotNull(stock);
 		assertNotEquals(stock.getQuantite(), quantiteMinus);
 		assertEquals(saved.getQuantite(), stock.getQuantite());
+		assertTrue(errorSet);
 	}
 	
 	@Test

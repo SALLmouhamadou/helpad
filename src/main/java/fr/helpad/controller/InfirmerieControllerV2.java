@@ -222,8 +222,11 @@ public class InfirmerieControllerV2 {
 	@PostMapping("/infirmerie/modifier-stock")
 	public String saveStock(final HttpServletRequest request, HttpServletResponse response,
 			RedirectAttributes redirectAttributes) {
+		// Obtention de l'URL appelante
 		String requestUrl = request.getHeader("referer");
 
+		// Vérification de la taille de la requête et des paramètres
+		// Une requête trop volumineuse peut faire l'objet d'une attaque par déni de service distribué
 		if (request == null || request.getParameter("id") == null || request.getParameter("id").isEmpty()
 				|| request.getParameter("id").length() > 301 || request.getParameter("id").length() <= 0) {
 			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
@@ -241,9 +244,11 @@ public class InfirmerieControllerV2 {
 			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
 		}
 
+		// Récupération des paramètres
 		String[] idsString = request.getParameterValues("id");
 		String[] quantitesEnStock = request.getParameterValues("stock");
 		String[] noms = request.getParameterValues("nomMedic");
+		
 		int nbModif = 0;
 
 		if (idsString == null || noms == null || quantitesEnStock == null || idsString.length != quantitesEnStock.length

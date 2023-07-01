@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -53,7 +54,8 @@ public class WebSecurityConfig {
                                 "report-uri /report; report-to csp-violation-report;" +
                 				"style-src  https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/* 'unsafe-inline' 'self';" + 
                 				"font-src https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/* 'self';"))
-                .headers(headers -> headers.addHeaderWriter(new StaticHeadersWriter("Report-To", REPORT_TO)));
+                .headers(headers -> headers.addHeaderWriter(new StaticHeadersWriter("Report-To", REPORT_TO)))
+                .logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout")));
 		return http.build();
 	}
 

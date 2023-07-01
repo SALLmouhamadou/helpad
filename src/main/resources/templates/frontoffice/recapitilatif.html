@@ -8,6 +8,8 @@
 	th:href="@{/css/bootstrap.min.css}" />
 </head>
 <body>
+<nav
+		th:insert="~{ frontoffice/fragmentfrontoffice/templatefrontoffice :: navigation }"></nav>
 	<div class="container">
 		<img th:src="@{/image/logo-heplad.jpg}" style="width:100px; height:100px;">
 		<h3 class="text-primary pt-3">DEMANDE D'ADMISSION</h3>
@@ -76,15 +78,15 @@
 				</p>
 			</div>
 			<div th:each="candidature : ${candidat.mesCandidatures}">
-				<h4 class="bg-primary text-white ps-3">Information du
+				<h4 class="bg-primary text-white ps-3">Informations sur la
 					candidature</h4>
 				<p class="ps-3 fw-bold">
-					Date d'entrée souhaite : <input
+					Date d'entrée souhaitée : <input
 						class="border border-primary rounded" type="text"
 						th:value="${candidature.candidat.dateEntree}">
 				</p>
 				<p class="ps-3 fw-bold">
-					Avez vous des pathologies? : <input
+					Avez-vous des pathologies? : <input
 						class="border border-primary rounded" type="text"
 						th:value="${candidature.pathologie}">
 				</p>
@@ -93,23 +95,23 @@
 						type="text" th:value="${candidature.jourDeCandidature}">
 				</p>
 				<p class="ps-3 fw-bold">
-					Des informations complémentaires : <input
+					Informations complémentaires : <input
 						class="border border-primary rounded" type="text"
 						th:value="${candidature.informationComplementaire}">
 				</p>
 				<p class="ps-3 fw-bold">
-					Vous avez déclarez sur l'honneur exactitude des informations
+					Vous avez déclaré sur l'honneur l'exactitude des informations
 					renseignées : <input class="border border-primary rounded"
 						type="text"
 						th:value="${candidature.declarationExactitudeDesInformations}">
 				</p>
 				<p class="ps-3 fw-bold">
-					Vous acceptez les conditons générales d'utilisation des données : <input
+					Vous avez accepté les conditons générales d'utilisation des données : <input
 						class="border border-primary rounded" type="text"
 						th:value="${candidature.conditionGeneral}">
 				</p>
 			
-			<h4 class="bg-primary text-white ps-3">Les pièces justificatifs</h4>
+			<h4 class="bg-primary text-white ps-3">Les pièces justificatives</h4>
 			 <div>
 				<ul class="list-group">
 					<li class="list-group-item"><a target="_black" th:href="@{'/Stockage/' +${candidature.fileName1}}" th:text="${candidature.fileName1}"></a></li>

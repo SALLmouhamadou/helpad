@@ -43,8 +43,9 @@ public class WebSecurityConfig {
                         .contentSecurityPolicy(
 //                				"default-src http:// https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js 'self';" +
                                 "script-src https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" + 
+                                " https://www.google.com/maps/*" +
                                 " https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js 'unsafe-inline' 'self';" +
-                				"frame-src 'self';" + 
+                				"frame-src https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2631.535289347332!2d2.252469775189193!3d48.73347070949117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e67831935ebb83%3A0xb61ad29627d1475e!2sGRETA%20de%20Massy!5e0!3m2!1sfr!2sfr!4v1686051531647!5m2!1sfr!2sfr 'self';" + 
                                 // Sandbox : Attention à vérifier les autorisations
                                 "sandbox allow-same-origin allow-scripts allow-forms" + 
                 				" allow-storage-access-by-user-activation allow-popups allow-modals;" +

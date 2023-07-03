@@ -32,7 +32,7 @@ public class CandidatServiceTest {
 	private static final String email ="lamine.ba@gmaill.com";
 	private static final String phone = "0652755715";
 	private static final LocalDate birthDay = LocalDate.of(1959, 10, 02);
-	private static final int number = 04;
+	private static final String number = "04";
 	private static final String street = "square du clos de villaine";
 	private static final String city ="Massy";
 	private static final int postCode =91300;

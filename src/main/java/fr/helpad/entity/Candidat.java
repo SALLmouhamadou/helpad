@@ -30,14 +30,11 @@ public class Candidat extends Personne {
 	@Column(name = "date_entree")
 	private LocalDate dateEntree;
 
-	@Convert(converter = Encrypt.class)
-	@Column(name = "numero_security_social", nullable = false,unique = true)
-	@Length(max = 15)
+	//@Convert(converter = Encrypt.class)
+	@Column(name = "numero_security_social")
 	private String numeroSecuriteSocial;
-	@Convert(converter = Encrypt.class)
-	@Column(name = "numero_de_caf", nullable= true, unique=true)
-	@Length(max = 7)
-
+	//@Convert(converter = Encrypt.class)
+	@Column(name = "numero_de_caf")
 	private String numeroDeCaf;
 	private double revenu;
 	

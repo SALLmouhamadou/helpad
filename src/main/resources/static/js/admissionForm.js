@@ -96,7 +96,41 @@ function validatePaysForm(){
 	}
 	return true;
 }
+//Validation de numéro sécurité social
+var numero_securite_social = document.getElementById("numSecu")
+numero_securite_social.addEventListener("blur", valideNumeroSecuriteSocial)
+function valideNumeroSecuriteSocial(){
+	var numero_securite_social = document.getElementById("numSecu");
+	if(numero_securite_social.value.length > 15 || numero_securite_social.value.length < 15){
+		document.getElementById("numeroSecuError").innerHTML = "Le numéro sécurité social doit 15 caracteres";
+		document.getElementById('btnDateEntree').disabled = true;
+		return false;
+	}
+	else{
+		document.getElementById("numeroSecuError").innerHTML ="";
+		document.getElementById('btnDateEntree').disabled = false;
+		return true;
+	}
+	return true;
+}
 
+//Validation de numéro de caf
+var numero_caf = document.getElementById("numcaf")
+numero_caf.addEventListener("change", valideNumerocaf)
+function valideNumerocaf(){
+	var numero_caf = document.getElementById("numcaf");
+	if(numero_caf.value.length > 7 || numero_caf.value.length < 7){
+		document.getElementById("numerocafError").innerHTML = "Le numéro de CAF doit avoir 7 caracteres";
+		document.getElementById('btnDateEntree').disabled = true;
+		return false;
+	}
+	else{
+		document.getElementById("numerocafError").innerHTML ="";
+		document.getElementById('btnDateEntree').disabled = false;
+		return true;
+	}
+	return true;
+}
 
 var date_entree_input = document.getElementById("dateEntree");
 date_entree_input.addEventListener("blur", validateDateEntreeForm);

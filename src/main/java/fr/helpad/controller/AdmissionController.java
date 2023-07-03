@@ -51,7 +51,7 @@ public class AdmissionController {
 	public ModelAndView showAdmissionForm(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
 			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
-			mav.addObject("user", user);
+			mav.addObject("user", user.get());
 			mav.setViewName("frontoffice/admission");
 		} else {
 			mav.setViewName("redirect:/login");
@@ -61,8 +61,8 @@ public class AdmissionController {
 
 	@GetMapping("/dashboard")
 	public ModelAndView showDashbord(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
-	
-		if (userDetails != null && userDetails.getUsername()!=null) {
+
+		if (userDetails != null && userDetails.getUsername() != null) {
 			Optional<Candidat> candidat = candidatService.findByUsername(userDetails.getUsername());
 			Optional<Personne> user = personneService.findByUsername(userDetails.getUsername());
 			System.out.println(userDetails.getUsername());
@@ -71,7 +71,7 @@ public class AdmissionController {
 				mav.addObject("user", candidat.get());
 				mav.addObject("user", user.get());
 			} catch (Exception e) {
-				
+
 				e.printStackTrace();
 			}
 			mav.addObject("title", "Espace usager");
@@ -120,41 +120,44 @@ public class AdmissionController {
 		}
 		try {
 			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
-			
-			candidat.setPassword(user.get().getPassword());
-			String revenu = request.getParameter("revenu");
-			double revenuAnnuelle = Double.parseDouble(revenu);
-			candidat.setIdPersonne(user.get().getIdPersonne());
-			candidat.setRevenu(revenuAnnuelle);
-			candidat.setAdresse(adresse);
-			Status status = statusService.findStatusByLibelle(libelle);
-			candidature.setStatus(status);
-			candidature.setCandidat(candidat);
-			candidature.setFileName1(storageService.store(file1));
-			candidature.setFileName2(storageService.store(file2));
-			candidature.setFileName3(storageService.store(file3));
-			candidature.setFileName4(storageService.store(file4));
-			candidature.setFileName5(storageService.store(file5));
-			candidature.setFileName6(storageService.store(file6));
-			candidature.setFileName7(storageService.store(file7));
-			candidature.setFileName8(storageService.store(file8));
-			candidature.setFileName9(storageService.store(file9));
-			List<Candidature> candidatures = new ArrayList<Candidature>();
-			candidatures.add(candidature);
-			candidat.setMesCandidatures(candidatures);
-			candidatService.sauveCandidat(candidat);
-			mav.setViewName("redirect:/confirmation");
-			return mav;
-
+			if (candidat != null && adresse != null) {
+				candidat.setPassword(user.get().getPassword());
+				String revenu = request.getParameter("revenu");
+				double revenuAnnuelle = Double.parseDouble(revenu);
+				candidat.setIdPersonne(user.get().getIdPersonne());
+				candidat.setRevenu(revenuAnnuelle);
+				candidat.setAdresse(adresse);
+				Status status = statusService.findStatusByLibelle(libelle);
+				candidature.setStatus(status);
+				candidature.setCandidat(candidat);
+				candidature.setFileName1(storageService.store(file1));
+				candidature.setFileName2(storageService.store(file2));
+				candidature.setFileName3(storageService.store(file3));
+				candidature.setFileName4(storageService.store(file4));
+				candidature.setFileName5(storageService.store(file5));
+				candidature.setFileName6(storageService.store(file6));
+				candidature.setFileName7(storageService.store(file7));
+				candidature.setFileName8(storageService.store(file8));
+				candidature.setFileName9(storageService.store(file9));
+				List<Candidature> candidatures = new ArrayList<Candidature>();
+				candidatures.add(candidature);
+				candidat.setMesCandidatures(candidatures);
+				candidatService.sauveCandidat(candidat);
+				mav.setViewName("redirect:/confirmation");
+			} else {
+				mav.addObject("candidat", user);
+				mav.addObject("error", "Formulaire invalide merci de verifier votre saisi");
+				mav.setViewName("frontoffice/admission");
+			}
 		} catch (Exception e) {
-			mav.addObject("candidat", candidat);
+			Optional<Candidat> user = candidatService.findByUsername(userDetails.getUsername());
+			mav.addObject("candidat", user);
 			mav.addObject("error", "Formulaire invalide merci de verifier votre saisi");
 			mav.setViewName("frontoffice/admission");
-			
 		}
 		return mav;
 	}
-	
+
 	@GetMapping("/consulter")
 	public ModelAndView getDetailCandidature(ModelAndView mav, @AuthenticationPrincipal UserDetails userDetails) {
 		if (userDetails != null) {
@@ -198,8 +201,7 @@ public class AdmissionController {
 	// Long id = can.getId();
 
 	@PostMapping("/update/candidature")
-	public ModelAndView updateCandidature(ModelAndView mav,  Long id,
-			 String libelle) {
+	public ModelAndView updateCandidature(ModelAndView mav, Long id, String libelle) {
 		Candidature candidature = candidatureServiceImpl.getCandidaturesById(id);
 		Status status = statusService.findStatusByLibelle(libelle);
 		if (candidature != null && status != null) {

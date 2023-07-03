@@ -18,7 +18,7 @@ import fr.helpad.service.PersonneService;
 import fr.helpad.service.RoleServiceImpl;
 
 @Controller
-public class AuthController {
+public class PersonneController {
 	
 	@Autowired
 	RoleServiceImpl roleServiceImpl;
@@ -51,7 +51,7 @@ public class AuthController {
             } else {
             	try {
             		personne.setDateNaissance(LocalDate.of(1953, 10, 01));
-            		personne.setNumeroSecuriteSocial("");
+//            		personne.setNumeroSecuriteSocial("");
             		personneService.save(personne);
                     mv.setViewName("redirect:/login");
             	}catch(Exception e){

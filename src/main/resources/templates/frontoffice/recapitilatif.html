@@ -93,9 +93,10 @@
 						type="text" th:value="${candidature.jourDeCandidature}">
 				</p>
 				<p class="ps-3 fw-bold">
-					Des informations complémentaires : <input
-						class="border border-primary rounded" type="text"
-						th:value="${candidature.informationComplementaire}">
+					Des informations complémentaires : 
+						<textarea class="form-control" id="informationComplementaire"
+					name="informationComplementaire" th:value="${candidature.informationComplementaire}" rows="6" cols="1">
+				</textarea>
 				</p>
 				<p class="ps-3 fw-bold">
 					Vous avez déclarez sur l'honneur exactitude des informations

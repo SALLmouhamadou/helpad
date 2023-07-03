@@ -14,15 +14,12 @@ public class Adresse {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_ADRESSE")
 	private Long idAdresse;
-	private int numero;
+	private String numero;
 	private String rue;
 	private String ville;
 	@Column(name = "CODE_POSTAL", length=6)
 	private int codePostal;
 	private String pays;
-	//@OneToMany(cascade=CascadeType.MERGE)
-	//private List<Personne> personnes;
-
 	public Long getIdAdresse() {
 		return idAdresse;
 	}
@@ -31,11 +28,11 @@ public class Adresse {
 		this.idAdresse = idAdresse;
 	}
 
-	public int getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 
@@ -104,7 +101,7 @@ public class Adresse {
 				+ ", codePostal=" + codePostal + ", pays=" + pays;
 	}
 
-	public Adresse(Long idAdresse, int numero, String rue, String ville, int codePostal, String pays) {
+	public Adresse(Long idAdresse, String numero, String rue, String ville, int codePostal, String pays) {
 		super();
 		this.idAdresse = idAdresse;
 		this.numero = numero;
@@ -114,7 +111,7 @@ public class Adresse {
 		this.pays = pays;
 	}
 
-	public Adresse(int numero, String rue, String ville, int codePostal, String pays) {
+	public Adresse(String numero, String rue, String ville, int codePostal, String pays) {
 		super();
 		this.numero = numero;
 		this.rue = rue;

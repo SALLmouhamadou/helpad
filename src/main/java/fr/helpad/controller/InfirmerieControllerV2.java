@@ -2,7 +2,6 @@ package fr.helpad.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import fr.helpad.entity.StockMedicament;
 import fr.helpad.entity.WebGouvMAJDate;
@@ -126,7 +124,8 @@ public class InfirmerieControllerV2 {
 	public String chercher(Model model, @RequestParam(defaultValue = "") String nom,
 			@RequestParam(defaultValue = "off") String isStock, @RequestParam(defaultValue = "0") String page) {
 
-		if (nom == null || isStock == null || page == null || nom.length() > 1000 || nom.contains("\"") || isStock.length() > 3) {
+		if (nom == null || isStock == null || page == null || nom.length() > 1000 || nom.contains("\"")
+				|| isStock.length() > 3) {
 			System.out.println(nom + " : " + nom.length() + " caractères");
 			model.addAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
 			model.addAttribute("message", " Erreur : Requête invalide");
@@ -223,8 +222,11 @@ public class InfirmerieControllerV2 {
 	@PostMapping("/infirmerie/modifier-stock")
 	public String saveStock(final HttpServletRequest request, HttpServletResponse response,
 			RedirectAttributes redirectAttributes) {
+		// Obtention de l'URL appelante
 		String requestUrl = request.getHeader("referer");
 
+		// Vérification de la taille de la requête et des paramètres
+		// Une requête trop volumineuse peut faire l'objet d'une attaque par déni de service distribué
 		if (request == null || request.getParameter("id") == null || request.getParameter("id").isEmpty()
 				|| request.getParameter("id").length() > 301 || request.getParameter("id").length() <= 0) {
 			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
@@ -242,9 +244,11 @@ public class InfirmerieControllerV2 {
 			redirectAttributes.addFlashAttribute("alertClass", "alert alert-danger alert-dismissible fade show");
 		}
 
+		// Récupération des paramètres
 		String[] idsString = request.getParameterValues("id");
 		String[] quantitesEnStock = request.getParameterValues("stock");
 		String[] noms = request.getParameterValues("nomMedic");
+		
 		int nbModif = 0;
 
 		if (idsString == null || noms == null || quantitesEnStock == null || idsString.length != quantitesEnStock.length
@@ -313,10 +317,9 @@ public class InfirmerieControllerV2 {
 					if (stock == verifId.getStock().getQuantite())
 						continue;
 
-					if (stock >= 0 && stock <= 999) {
+					try {
 						verifId.getStock().setQuantite(stock);
-						nbModif++;
-					} else {
+					} catch (NumberFormatException e) {
 						TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
 						redirectAttributes.addFlashAttribute("message",
 								"Erreur : La quantité en stock doit être un nombre positif entre 0 et 999");
@@ -324,6 +327,7 @@ public class InfirmerieControllerV2 {
 								"alert alert-danger alert-dismissible fade show");
 						return "redirect:" + requestUrl;
 					}
+					nbModif++;
 				} else {
 					System.out.println("[" + index + "]" + " IsValide est faux. verifNom.size = " + verifNom.size()
 							+ (verifNom.size() > 0 ? " et verifNom == verifId " + verifNom.get(0).equals(verifId)

@@ -10,7 +10,7 @@ import fr.helpad.entity.Etage;
 import fr.helpad.repository.EtageRepository;
 
 @Service("etageBusiness")
-public class EtageService implements BasicBusiness<Etage> {
+public class EtageService implements BasicService<Etage> {
 
 	@Autowired
 	EtageRepository repo;

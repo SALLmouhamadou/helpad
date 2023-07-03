@@ -2,7 +2,6 @@ package fr.helpad;
 
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -17,9 +16,7 @@ import org.springframework.data.domain.PageRequest;
 
 import fr.helpad.entity.Allergene;
 import fr.helpad.entity.Plat;
-import fr.helpad.entity.Repas;
 import fr.helpad.entity.StockMedicament;
-import fr.helpad.entity.WebGouvMedic;
 import fr.helpad.service.AllergeneService;
 import fr.helpad.service.PlatService;
 import fr.helpad.service.RepasService;

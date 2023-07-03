@@ -1,9 +1,12 @@
 package fr.helpad.service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,7 +36,7 @@ public class PersonneServiceImpl implements PersonneService,UserDetailsService {
 	}
 
 	@Override
-	public void save(Personne user) {
+	public void save(Personne user) throws SQLIntegrityConstraintViolationException, ConstraintViolationException {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		personneRepository.save(user);
 	}

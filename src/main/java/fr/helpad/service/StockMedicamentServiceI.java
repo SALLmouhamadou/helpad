@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import fr.helpad.entity.StockMedicament;
 import fr.helpad.entity.WebGouvMedic;
 
-public interface StockMedicamentServiceI extends BasicBusiness<StockMedicament> {
+public interface StockMedicamentServiceI extends BasicService<StockMedicament> {
 	public WebGouvMedic getMedicament(Long id) throws NoSuchElementException;
 	public List<StockMedicament> findByQuantiteGreaterThan(short quantite, Pageable pageable);
 	public long countPositive();

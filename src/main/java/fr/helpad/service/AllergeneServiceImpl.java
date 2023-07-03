@@ -1,5 +1,6 @@
 package fr.helpad.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -14,10 +15,18 @@ public class AllergeneServiceImpl implements AllergeneService {
 
 	@Autowired
 	AllergeneRepository allergeneRepository;
-	
+
 	@Override
 	public Allergene sauvegarder(Allergene allergene) {
-		return allergeneRepository.save(allergene);
+		List<Allergene> aller = new ArrayList<>();
+		try {
+		aller = findByNom(allergene.getNomAllergene());
+		} catch (Exception e) {
+			
+		}
+		if (aller == null || aller.isEmpty())
+			return allergeneRepository.save(allergene);
+		return allergene;
 	}
 
 	@Override
@@ -33,6 +42,11 @@ public class AllergeneServiceImpl implements AllergeneService {
 	@Override
 	public void supprimer(Long id) throws IllegalArgumentException {
 		allergeneRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Allergene> findByNom(String nom) throws NoSuchElementException {
+		return allergeneRepository.findByNomAllergene(nom);
 	}
 
 }

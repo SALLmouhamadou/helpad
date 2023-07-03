@@ -10,7 +10,7 @@ import fr.helpad.entity.Fonction;
 import fr.helpad.repository.FonctionRepository;
 
 @Service("fonctionBusiness")
-public class FonctionService implements BasicBusiness<Fonction> {
+public class FonctionService implements BasicService<Fonction> {
 
 	@Autowired
 	FonctionRepository repo;

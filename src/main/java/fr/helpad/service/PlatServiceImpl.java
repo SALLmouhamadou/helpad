@@ -14,10 +14,13 @@ public class PlatServiceImpl implements PlatService {
 
 	@Autowired
 	PlatRepository platRepo;
-	
+
 	@Override
 	public Plat sauvegarder(Plat plat) {
-		return platRepo.save(plat);
+		List<Plat> plats = platRepo.findByNom(plat.getNom());
+		if (plats == null || plats.isEmpty())
+			return platRepo.save(plat);
+		return plat;
 	}
 
 	@Override
@@ -33,7 +36,12 @@ public class PlatServiceImpl implements PlatService {
 	@Override
 	public void supprimer(Long id) throws IllegalArgumentException {
 		platRepo.deleteById(id);
-		
+
+	}
+
+	@Override
+	public List<Plat> findByNom(String nom) {
+		return platRepo.findByNom(nom);
 	}
 
 }

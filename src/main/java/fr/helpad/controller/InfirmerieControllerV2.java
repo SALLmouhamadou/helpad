@@ -2,6 +2,7 @@ package fr.helpad.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -226,7 +227,8 @@ public class InfirmerieControllerV2 {
 		String requestUrl = request.getHeader("referer");
 
 		// Vérification de la taille de la requête et des paramètres
-		// Une requête trop volumineuse peut faire l'objet d'une attaque par déni de service distribué
+		// Une requête trop volumineuse peut faire l'objet d'une attaque par déni de
+		// service distribué
 		if (request == null || request.getParameter("id") == null || request.getParameter("id").isEmpty()
 				|| request.getParameter("id").length() > 301 || request.getParameter("id").length() <= 0) {
 			redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
@@ -248,7 +250,7 @@ public class InfirmerieControllerV2 {
 		String[] idsString = request.getParameterValues("id");
 		String[] quantitesEnStock = request.getParameterValues("stock");
 		String[] noms = request.getParameterValues("nomMedic");
-		
+
 		int nbModif = 0;
 
 		if (idsString == null || noms == null || quantitesEnStock == null || idsString.length != quantitesEnStock.length
@@ -283,14 +285,10 @@ public class InfirmerieControllerV2 {
 					return "redirect:" + requestUrl;
 				}
 
-				List<WebGouvMedic> verifNom;
-				WebGouvMedic verifId;
-				boolean isValide = false;
-
-				if (nom.length() > 2 && nom.length() < 1000 && id.toString().length() == 8) {
-					verifNom = medicService.findByNameExactLimited(nom, PageRequest.of(0, 1));
+				WebGouvMedic verifId; // Le médicament
+				try {
 					verifId = medicService.get(id);
-				} else {
+				} catch (NoSuchElementException e) {
 					System.out.println("nom : " + nom + " id : " + id);
 					TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
 					redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide.");
@@ -298,50 +296,37 @@ public class InfirmerieControllerV2 {
 							"alert alert-danger alert-dismissible fade show");
 					return "redirect:" + requestUrl;
 				}
-
-				if (verifNom.size() > 0 && verifNom.get(0).equals(verifId))
-					isValide = true;
-
-				if (isValide) {
-					short stock = -1;
-					try {
-						stock = Short.parseShort(quantiteEnStock);
-					} catch (NumberFormatException e) {
-						TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
-						redirectAttributes.addFlashAttribute("message", "Erreur : Format du stock invalide.");
-						redirectAttributes.addFlashAttribute("alertClass",
-								"alert alert-danger alert-dismissible fade show");
-						return "redirect:" + requestUrl;
-					}
-
-					if (stock == verifId.getStock().getQuantite())
-						continue;
-
-					try {
-						verifId.getStock().setQuantite(stock);
-					} catch (NumberFormatException e) {
-						TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
-						redirectAttributes.addFlashAttribute("message",
-								"Erreur : La quantité en stock doit être un nombre positif entre 0 et 999");
-						redirectAttributes.addFlashAttribute("alertClass",
-								"alert alert-danger alert-dismissible fade show");
-						return "redirect:" + requestUrl;
-					}
-					nbModif++;
-				} else {
-					System.out.println("[" + index + "]" + " IsValide est faux. verifNom.size = " + verifNom.size()
-							+ (verifNom.size() > 0 ? " et verifNom == verifId " + verifNom.get(0).equals(verifId)
-									+ " verifNom nom et id : " + verifNom.get(0).getNom() + " "
-									+ verifNom.get(0).getId() : "")
-							+ " verifId nom et id : " + verifId.getNom() + " " + verifId.getId());
+				short stock = -1;
+				try {
+					stock = Short.parseShort(quantiteEnStock);
+				} catch (NumberFormatException e) {
 					TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
-					redirectAttributes.addFlashAttribute("message", "Erreur : Requête invalide");
+					redirectAttributes.addFlashAttribute("message", "Erreur : Format du stock invalide.");
 					redirectAttributes.addFlashAttribute("alertClass",
 							"alert alert-danger alert-dismissible fade show");
 					return "redirect:" + requestUrl;
 				}
 
-				medicService.sauvegarder(verifId);
+				if (stock == verifId.getStock().getQuantite())
+					continue;
+
+				try {
+					verifId.getStock().setQuantite(stock);
+				} catch (NumberFormatException e) {
+					TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
+					redirectAttributes.addFlashAttribute("message",
+							"Erreur : La quantité en stock doit être un nombre positif entre 0 et 999");
+					redirectAttributes.addFlashAttribute("alertClass",
+							"alert alert-danger alert-dismissible fade show");
+					return "redirect:" + requestUrl;
+				}
+				nbModif++;
+
+				try {
+					medicService.sauvegarder(verifId);
+				} catch (Exception e) {
+					System.out.println(e);
+				}
 			}
 			if (nbModif > 0) {
 				redirectAttributes.addFlashAttribute("message", "Succès de la modification du stock" + ".");
